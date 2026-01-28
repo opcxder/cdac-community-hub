@@ -1,0 +1,26 @@
+package com.cdac.hostel.dto;
+
+ 
+import java.math.BigDecimal;
+import lombok.Data;
+
+@Data
+public class HostelRequest {
+
+    private String hostelName;
+    private String description;
+    private String address;
+    private String city;
+    private String locality;
+
+    private BigDecimal monthlyRentMin;
+    private BigDecimal monthlyRentMax;
+
+    private Boolean hasWifi;
+    private Boolean hasAc;
+    private Boolean hasMess;
+    private Boolean hasLaundry;
+
+    private String contactPersonName;
+    private String contactPersonPhone;
+}
