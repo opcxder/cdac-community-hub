@@ -39,12 +39,12 @@ public class ImageService {
      * Uploads an image for a hostel to Cloudinary and saves metadata to database.
      * Enforces the 5-image limit per hostel.
      *
-     * @param hostelId The ID of the hostel
-     * @param file The image file to upload
+     * @param hostelId     The ID of the hostel
+     * @param file         The image file to upload
      * @param displayOrder The display order (1-5)
      * @return The created HostelImage entity
      * @throws InvalidRequestException if image limit exceeded
-     * @throws ImageUploadException if upload fails
+     * @throws ImageUploadException    if upload fails
      */
     public HostelImage uploadImage(Long hostelId, MultipartFile file, Integer displayOrder) {
         logger.info("Uploading image for hostel: hostelId={}, displayOrder={}", hostelId, displayOrder);
@@ -52,18 +52,17 @@ public class ImageService {
         // Check image limit
         long currentImageCount = imageRepository.countByHostelId(hostelId);
         if (currentImageCount >= MAX_IMAGES_PER_HOSTEL) {
-            logger.error("Image upload failed - Maximum limit reached: hostelId={}, currentCount={}", 
-                        hostelId, currentImageCount);
+            logger.error("Image upload failed - Maximum limit reached: hostelId={}, currentCount={}",
+                    hostelId, currentImageCount);
             throw new InvalidRequestException("Maximum " + MAX_IMAGES_PER_HOSTEL + " images allowed per hostel");
         }
 
         try {
             // Upload to Cloudinary
-            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), 
-                ObjectUtils.asMap(
-                    "folder", "hostel-service/hostels",
-                    "resource_type", "image"
-                ));
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", "hostel-service/hostels",
+                            "resource_type", "image"));
 
             String imageUrl = (String) uploadResult.get("secure_url");
             String publicId = (String) uploadResult.get("public_id");
@@ -78,8 +77,8 @@ public class ImageService {
             hostelImage.setDisplayOrder(displayOrder);
 
             HostelImage savedImage = imageRepository.save(hostelImage);
-            logger.info("Image metadata saved to database: imageId={}, hostelId={}", 
-                       savedImage.getImageId(), hostelId);
+            logger.info("Image metadata saved to database: imageId={}, hostelId={}",
+                    savedImage.getImageId(), hostelId);
 
             return savedImage;
 
@@ -107,7 +106,7 @@ public class ImageService {
      *
      * @param imageId The ID of the image to delete
      * @throws ResourceNotFoundException if image not found
-     * @throws ImageUploadException if deletion fails
+     * @throws ImageUploadException      if deletion fails
      */
     public void deleteImage(Long imageId) {
         logger.info("Deleting image: imageId={}", imageId);
@@ -120,9 +119,11 @@ public class ImageService {
 
         try {
             // Delete from Cloudinary
-            Map deleteResult = cloudinary.uploader().destroy(image.getPublicId(), ObjectUtils.emptyMap());
-            logger.info("Image deleted from Cloudinary: publicId={}, result={}", 
-                       image.getPublicId(), deleteResult.get("result"));
+            @SuppressWarnings("unchecked")
+            Map<String, Object> deleteResult = cloudinary.uploader().destroy(image.getPublicId(),
+                    ObjectUtils.emptyMap());
+            logger.info("Image deleted from Cloudinary: publicId={}, result={}",
+                    image.getPublicId(), deleteResult.get("result"));
 
             // Delete from database
             imageRepository.deleteById(imageId);
@@ -150,8 +151,8 @@ public class ImageService {
                 cloudinary.uploader().destroy(image.getPublicId(), ObjectUtils.emptyMap());
                 logger.debug("Deleted image from Cloudinary: publicId={}", image.getPublicId());
             } catch (IOException e) {
-                logger.warn("Failed to delete image from Cloudinary: publicId={}, error={}", 
-                           image.getPublicId(), e.getMessage());
+                logger.warn("Failed to delete image from Cloudinary: publicId={}, error={}",
+                        image.getPublicId(), e.getMessage());
             }
         }
 

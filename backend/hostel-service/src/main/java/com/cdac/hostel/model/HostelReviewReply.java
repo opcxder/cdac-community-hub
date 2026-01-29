@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import lombok.Data;
 
 /**
  * Entity representing a reply to a hostel review/rating.
@@ -19,14 +18,8 @@ import lombok.Data;
  * Only one reply is allowed per rating (enforced by unique constraint).
  */
 @Entity
-@Data
-@Table(
-    name = "hostel_review_replies",
-    uniqueConstraints = @UniqueConstraint(
-        name = "unique_rating_reply",
-        columnNames = {"ratingId"}
-    )
-)
+@Table(name = "hostel_review_replies", uniqueConstraints = @UniqueConstraint(name = "unique_rating_reply", columnNames = {
+        "ratingId" }))
 public class HostelReviewReply {
 
     @Id
@@ -56,4 +49,45 @@ public class HostelReviewReply {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Timestamp repliedAt;
+
+    // Getters and Setters
+    public Long getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(Long replyId) {
+        this.replyId = replyId;
+    }
+
+    public Long getRatingId() {
+        return ratingId;
+    }
+
+    public void setRatingId(Long ratingId) {
+        this.ratingId = ratingId;
+    }
+
+    public Long getRepliedByUserId() {
+        return repliedByUserId;
+    }
+
+    public void setRepliedByUserId(Long repliedByUserId) {
+        this.repliedByUserId = repliedByUserId;
+    }
+
+    public String getReplyText() {
+        return replyText;
+    }
+
+    public void setReplyText(String replyText) {
+        this.replyText = replyText;
+    }
+
+    public Timestamp getRepliedAt() {
+        return repliedAt;
+    }
+
+    public void setRepliedAt(Timestamp repliedAt) {
+        this.repliedAt = repliedAt;
+    }
 }

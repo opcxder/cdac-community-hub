@@ -17,7 +17,8 @@ import com.cdac.hostel.exception.ResourceNotFoundException;
 /**
  * Service layer for hostel management operations.
  * Handles hostel creation, retrieval, and admin approval/rejection workflows.
- * All hostels start in PENDING status and require admin approval before being visible to users.
+ * All hostels start in PENDING status and require admin approval before being
+ * visible to users.
  */
 @Service
 public class HostelService {
@@ -30,6 +31,9 @@ public class HostelService {
     @Autowired
     private AuthServiceClient authClient;
 
+    @Autowired
+    private ImageService imageService;
+
     /**
      * Creates a new hostel submission.
      * Validates that the submitting user exists before creating the hostel.
@@ -41,23 +45,23 @@ public class HostelService {
      * @throws RuntimeException if user does not exist
      */
     public Hostel createHostel(Hostel hostel, Long userId) {
-        logger.info("Creating new hostel submission: name={}, submittedBy={}", 
-                    hostel.getHostelName(), userId);
-        
+        logger.info("Creating new hostel submission: name={}, submittedBy={}",
+                hostel.getHostelName(), userId);
+
         // Validate user exists via Auth Service
         if (!authClient.userExists(userId)) {
             logger.error("Hostel creation failed - User not found: userId={}", userId);
             throw new ResourceNotFoundException("User not found");
         }
-        
+
         // Set submission metadata
         hostel.setSubmittedByUserId(userId);
         hostel.setStatus(HostelStatus.PENDING);
-        
+
         Hostel savedHostel = hostelRepository.save(hostel);
-        logger.info("Hostel created successfully: hostelId={}, name={}, status={}", 
-                    savedHostel.getHostelId(), savedHostel.getHostelName(), savedHostel.getStatus());
-        
+        logger.info("Hostel created successfully: hostelId={}, name={}, status={}",
+                savedHostel.getHostelId(), savedHostel.getHostelName(), savedHostel.getStatus());
+
         return savedHostel;
     }
 
@@ -72,7 +76,7 @@ public class HostelService {
         logger.info("Retrieved {} approved hostels", hostels.size());
         return hostels;
     }
-    
+
     /**
      * Retrieves all pending hostels awaiting admin approval.
      * Used by admin interface to review submissions.
@@ -85,7 +89,7 @@ public class HostelService {
         logger.info("Retrieved {} pending hostels", hostels.size());
         return hostels;
     }
-    
+
     /**
      * Approves a pending hostel, making it visible to public users.
      * Sets the approval timestamp and changes status to APPROVED.
@@ -96,7 +100,7 @@ public class HostelService {
      */
     public Hostel approveHostel(Long hostelId) {
         logger.info("Approving hostel: hostelId={}", hostelId);
-        
+
         Hostel hostel = hostelRepository.findById(hostelId)
                 .orElseThrow(() -> {
                     logger.error("Hostel approval failed - Hostel not found: hostelId={}", hostelId);
@@ -105,11 +109,11 @@ public class HostelService {
 
         hostel.setStatus(HostelStatus.APPROVED);
         hostel.setApprovedAt(new Timestamp(System.currentTimeMillis()));
-        
+
         Hostel approvedHostel = hostelRepository.save(hostel);
-        logger.info("Hostel approved successfully: hostelId={}, name={}", 
-                    approvedHostel.getHostelId(), approvedHostel.getHostelName());
-        
+        logger.info("Hostel approved successfully: hostelId={}, name={}",
+                approvedHostel.getHostelId(), approvedHostel.getHostelName());
+
         return approvedHostel;
     }
 
@@ -118,13 +122,13 @@ public class HostelService {
      * Rejected hostels are not visible to public users.
      *
      * @param hostelId The ID of the hostel to reject
-     * @param reason Optional reason for rejection
+     * @param reason   Optional reason for rejection
      * @return The rejected hostel entity
      * @throws RuntimeException if hostel not found
      */
     public Hostel rejectHostel(Long hostelId, String reason) {
         logger.info("Rejecting hostel: hostelId={}, reason={}", hostelId, reason);
-        
+
         Hostel hostel = hostelRepository.findById(hostelId)
                 .orElseThrow(() -> {
                     logger.error("Hostel rejection failed - Hostel not found: hostelId={}", hostelId);
@@ -132,14 +136,23 @@ public class HostelService {
 
                 });
 
+        // Delete all associated images from Cloudinary and database
+        try {
+            imageService.deleteAllImagesForHostel(hostelId);
+            logger.info("Deleted all images for rejected hostel: hostelId={}", hostelId);
+        } catch (Exception e) {
+            logger.error("Failed to delete images for hostel: hostelId={}, error={}",
+                    hostelId, e.getMessage());
+            // Continue with rejection even if image deletion fails
+        }
+
         hostel.setStatus(HostelStatus.REJECTED);
         hostel.setRejectionReason(reason);
-        
+
         Hostel rejectedHostel = hostelRepository.save(hostel);
-        logger.info("Hostel rejected successfully: hostelId={}, name={}", 
-                    rejectedHostel.getHostelId(), rejectedHostel.getHostelName());
-        
+        logger.info("Hostel rejected successfully: hostelId={}, name={}",
+                rejectedHostel.getHostelId(), rejectedHostel.getHostelName());
+
         return rejectedHostel;
     }
 }
-

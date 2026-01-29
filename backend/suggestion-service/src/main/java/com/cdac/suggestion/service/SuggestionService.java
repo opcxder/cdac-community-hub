@@ -6,7 +6,8 @@ import com.cdac.suggestion.dto.UserDTO;
 import com.cdac.suggestion.model.Suggestion;
 import com.cdac.suggestion.model.SuggestionCategory;
 import com.cdac.suggestion.repository.SuggestionRepository;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class SuggestionService {
+
+    private static final Logger log = LoggerFactory.getLogger(SuggestionService.class);
 
     @Autowired
     private SuggestionRepository repository;
@@ -51,12 +53,12 @@ public class SuggestionService {
                 .map(s -> SuggestionDTO.from(s, user.getUsername()))
                 .collect(Collectors.toList());
     }
+
     public Page<SuggestionDTO> getAllSuggestions(Pageable pageable) {
 
         return repository.findAll(pageable)
                 .map(s -> {
-                    String username =
-                            userCacheService.getUserWithCache(s.getUserId()).getUsername();
+                    String username = userCacheService.getUserWithCache(s.getUserId()).getUsername();
                     return SuggestionDTO.from(s, username);
                 });
     }
@@ -65,8 +67,7 @@ public class SuggestionService {
 
         return repository.findByCategory(category).stream()
                 .map(s -> {
-                    String username =
-                            userCacheService.getUserWithCache(s.getUserId()).getUsername();
+                    String username = userCacheService.getUserWithCache(s.getUserId()).getUsername();
                     return SuggestionDTO.from(s, username);
                 })
                 .toList();

@@ -23,9 +23,9 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface PendingFood {
-    foodId: number;
-    name: string;
-    category: { categoryId: number; name: string };
+    placeId: number;  // Fixed: was foodId
+    placeName: string;  // Fixed: was name
+    category: { categoryId: number; categoryName: string };  // Fixed: was name
     location: string;
     imageUrl: string;
     submittedBy: { userId: number; username: string };
@@ -50,7 +50,8 @@ export default function FoodApprovalsPage() {
             setLoading(true);
             setError(null);
             try {
-                const response = await client.get<PendingFood[]>("/api/admin/food/pending");
+                // Fixed: /api/admin/food → /api/admin/foods
+                const response = await client.get<PendingFood[]>("/api/admin/foods/pending");
                 setFoods(response.data);
             } catch (err: any) {
                 setError(err?.response?.data?.message || "Failed to load pending foods");
@@ -80,9 +81,10 @@ export default function FoodApprovalsPage() {
         setActionError(null);
 
         try {
-            await client.post(`/api/admin/food/${selectedFood.foodId}/${actionType}`);
+            // Fixed: /api/admin/food → /api/admin/foods, foodId → placeId
+            await client.post(`/api/admin/foods/${selectedFood.placeId}/${actionType}`);
             // Remove food from table after success
-            setFoods((prev) => prev.filter((f) => f.foodId !== selectedFood.foodId));
+            setFoods((prev) => prev.filter((f) => f.placeId !== selectedFood.placeId));
             closeDialog();
         } catch (err: any) {
             const msg = err?.response?.data?.message || `Failed to ${actionType} food`;
@@ -152,18 +154,18 @@ export default function FoodApprovalsPage() {
                     <TableBody>
                         {foods.map((food) => (
                             <TableRow
-                                key={food.foodId}
+                                key={food.placeId}
                                 className="hover:bg-zinc-50 transition-colors"
                             >
                                 <TableCell>
                                     <img
                                         src={food.imageUrl}
-                                        alt={food.name}
+                                        alt={food.placeName}
                                         className="h-12 w-12 rounded object-cover"
                                     />
                                 </TableCell>
-                                <TableCell>{food.name}</TableCell>
-                                <TableCell>{food.category.name}</TableCell>
+                                <TableCell>{food.placeName}</TableCell>
+                                <TableCell>{food.category.categoryName}</TableCell>
                                 <TableCell>{food.submittedBy.username}</TableCell>
                                 <TableCell>{food.location}</TableCell>
                                 <TableCell className="space-x-2">
@@ -204,7 +206,7 @@ export default function FoodApprovalsPage() {
                         </AlertDialogTitle>
                         <AlertDialogDescription>
                             Are you sure you want to {actionType}{" "}
-                            <span className="font-semibold">{selectedFood?.name}</span> submitted by{" "}
+                            <span className="font-semibold">{selectedFood?.placeName}</span> submitted by{" "}
                             <span className="font-semibold">{selectedFood?.submittedBy.username}</span>?
                         </AlertDialogDescription>
                     </AlertDialogHeader>

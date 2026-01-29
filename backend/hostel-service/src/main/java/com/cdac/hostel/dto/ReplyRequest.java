@@ -1,11 +1,17 @@
 package com.cdac.hostel.dto;
 
-import lombok.Data;
-
 /**
  * DTO for creating a reply to a hostel review/rating.
  */
-@Data
 public class ReplyRequest {
     private String replyText;
+
+    // Getters and Setters
+    public String getReplyText() {
+        return replyText;
+    }
+
+    public void setReplyText(String replyText) {
+        this.replyText = replyText;
+    }
 }

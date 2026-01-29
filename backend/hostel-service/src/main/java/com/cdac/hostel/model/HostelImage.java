@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 /**
  * Entity representing an image associated with a hostel.
@@ -18,7 +17,6 @@ import lombok.Data;
  * Only the Cloudinary URL is stored in the database, not the actual image file.
  */
 @Entity
-@Data
 @Table(name = "hostel_images")
 public class HostelImage {
 
@@ -53,4 +51,53 @@ public class HostelImage {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Timestamp uploadedAt;
+
+    // Getters and Setters
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
+    }
+
+    public Long getHostelId() {
+        return hostelId;
+    }
+
+    public void setHostelId(Long hostelId) {
+        this.hostelId = hostelId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public Timestamp getUploadedAt() {
+        return uploadedAt;
+    }
+
+    public void setUploadedAt(Timestamp uploadedAt) {
+        this.uploadedAt = uploadedAt;
+    }
 }

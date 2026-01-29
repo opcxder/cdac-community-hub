@@ -12,16 +12,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 /**
  * Entity representing a hostel category.
- * Categories are user-submitted and require admin approval before being visible.
+ * Categories are user-submitted and require admin approval before being
+ * visible.
  * Examples: PG, Hostel, Boys Only, Girls Only, Co-living
  * Users can create new categories dynamically while submitting hostels.
  */
 @Entity
-@Data
 @Table(name = "hostel_categories")
 public class HostelCategory {
 
@@ -47,4 +46,53 @@ public class HostelCategory {
     private Timestamp createdAt;
 
     private Timestamp approvedAt;
+
+    // Getters and Setters
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Long getCreatedByUserId() {
+        return createdByUserId;
+    }
+
+    public void setCreatedByUserId(Long createdByUserId) {
+        this.createdByUserId = createdByUserId;
+    }
+
+    public CategoryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CategoryStatus status) {
+        this.status = status;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getApprovedAt() {
+        return approvedAt;
+    }
+
+    public void setApprovedAt(Timestamp approvedAt) {
+        this.approvedAt = approvedAt;
+    }
 }

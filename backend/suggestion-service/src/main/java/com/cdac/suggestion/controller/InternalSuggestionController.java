@@ -3,7 +3,8 @@ package com.cdac.suggestion.controller;
 import com.cdac.suggestion.dto.SuggestionDTO;
 import com.cdac.suggestion.model.SuggestionCategory;
 import com.cdac.suggestion.service.SuggestionService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -13,37 +14,35 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/internal/suggestions")
-@Slf4j
 public class InternalSuggestionController {
 
-    @Autowired
-    private SuggestionService suggestionService;
+        private static final Logger log = LoggerFactory.getLogger(InternalSuggestionController.class);
 
-    @GetMapping
-    public ResponseEntity<Page<SuggestionDTO>> getAllSuggestions(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+        @Autowired
+        private SuggestionService suggestionService;
 
-        log.info("Admin fetching all suggestions: page={}, size={}", page, size);
+        @GetMapping
+        public ResponseEntity<Page<SuggestionDTO>> getAllSuggestions(
+                        @RequestParam(defaultValue = "0") int page,
+                        @RequestParam(defaultValue = "20") int size) {
 
-        Pageable pageable =
-                PageRequest.of(page, size, Sort.by("createdAt").descending());
+                log.info("Admin fetching all suggestions: page={}, size={}", page, size);
 
-        Page<SuggestionDTO> suggestions =
-                suggestionService.getAllSuggestions(pageable);
+                Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        return ResponseEntity.ok(suggestions);
-    }
+                Page<SuggestionDTO> suggestions = suggestionService.getAllSuggestions(pageable);
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<SuggestionDTO>> getSuggestionsByCategory(
-            @PathVariable SuggestionCategory category) {
+                return ResponseEntity.ok(suggestions);
+        }
 
-        log.info("Admin fetching suggestions by category: {}", category);
+        @GetMapping("/category/{category}")
+        public ResponseEntity<List<SuggestionDTO>> getSuggestionsByCategory(
+                        @PathVariable SuggestionCategory category) {
 
-        List<SuggestionDTO> suggestions =
-                suggestionService.getSuggestionsByCategory(category);
+                log.info("Admin fetching suggestions by category: {}", category);
 
-        return ResponseEntity.ok(suggestions);
-    }
+                List<SuggestionDTO> suggestions = suggestionService.getSuggestionsByCategory(category);
+
+                return ResponseEntity.ok(suggestions);
+        }
 }

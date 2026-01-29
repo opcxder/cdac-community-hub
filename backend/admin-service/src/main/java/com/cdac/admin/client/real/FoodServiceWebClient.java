@@ -34,44 +34,42 @@ public class FoodServiceWebClient implements FoodServiceClient {
 	@Override
 	public List<PendingFoodDto> getPendingFood() {
 		log.info("Calling {}:  getting  pending foods", SERVICE_NAME);
-		return webClient.get().uri("/internal/foods/pending").retrieve()
+		return webClient.get().uri("/internal/places/pending").retrieve()
 				.onStatus(HttpStatusCode::is4xxClientError, response -> {
-		            if (response.statusCode() == HttpStatus.NOT_FOUND) {
-		                return response.bodyToMono(String.class)
-		                    .map(body -> new ResourceNotFoundException(
-		                        SERVICE_NAME + ": food not found - " + body));
-		            }
-		            return response.bodyToMono(String.class)
-		                .map(body -> new IllegalArgumentException(
-		                    SERVICE_NAME + ": bad request - " + body));
-		        })
-		        .onStatus(HttpStatusCode::is5xxServerError, response ->
-		            response.bodyToMono(String.class)
-		                .map(body -> new ServiceUnavailableException(
-		                    SERVICE_NAME + " unavailable - " + body))
-		        ).bodyToFlux(PendingFoodDto.class).collectList().block(Duration.ofSeconds(5));
+					if (response.statusCode() == HttpStatus.NOT_FOUND) {
+						return response.bodyToMono(String.class)
+								.map(body -> new ResourceNotFoundException(
+										SERVICE_NAME + ": food not found - " + body));
+					}
+					return response.bodyToMono(String.class)
+							.map(body -> new IllegalArgumentException(
+									SERVICE_NAME + ": bad request - " + body));
+				})
+				.onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
+						.map(body -> new ServiceUnavailableException(
+								SERVICE_NAME + " unavailable - " + body)))
+				.bodyToFlux(PendingFoodDto.class).collectList().block(Duration.ofSeconds(5));
 	}
 
 	@Override
 	public void approveFood(Long foodId) {
 		log.info("Calling {}: approve  food id {}", SERVICE_NAME, foodId);
 
-		webClient.post().uri("/internal/foods/{foodId}/approve", foodId).retrieve()
-		.onStatus(HttpStatusCode::is4xxClientError, response -> {
-            if (response.statusCode() == HttpStatus.NOT_FOUND) {
-                return response.bodyToMono(String.class)
-                    .map(body -> new ResourceNotFoundException(
-                        SERVICE_NAME + ": food not found - " + body));
-            }
-            return response.bodyToMono(String.class)
-                .map(body -> new IllegalArgumentException(
-                    SERVICE_NAME + ": invalid approve request - " + body));
-        })
-        .onStatus(HttpStatusCode::is5xxServerError, response ->
-            response.bodyToMono(String.class)
-                .map(body -> new ServiceUnavailableException(
-                    SERVICE_NAME + " unavailable - " + body))
-        ).toBodilessEntity().block(Duration.ofSeconds(5));
+		webClient.post().uri("/internal/places/{id}/approve", foodId).retrieve()
+				.onStatus(HttpStatusCode::is4xxClientError, response -> {
+					if (response.statusCode() == HttpStatus.NOT_FOUND) {
+						return response.bodyToMono(String.class)
+								.map(body -> new ResourceNotFoundException(
+										SERVICE_NAME + ": food not found - " + body));
+					}
+					return response.bodyToMono(String.class)
+							.map(body -> new IllegalArgumentException(
+									SERVICE_NAME + ": invalid approve request - " + body));
+				})
+				.onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
+						.map(body -> new ServiceUnavailableException(
+								SERVICE_NAME + " unavailable - " + body)))
+				.toBodilessEntity().block(Duration.ofSeconds(5));
 
 	}
 
@@ -79,80 +77,73 @@ public class FoodServiceWebClient implements FoodServiceClient {
 	public void rejectFood(Long foodId, String reason) {
 		log.info("Calling {}: reject food  {} with reason: {}", SERVICE_NAME, foodId, reason);
 
-		webClient.post().uri("/internal/foods/{foodId}/reject", foodId).bodyValue(new RejectFoodDto(reason)).retrieve()
-		.onStatus(HttpStatusCode::is4xxClientError, response -> {
-            if (response.statusCode() == HttpStatus.NOT_FOUND) {
-                return response.bodyToMono(String.class)
-                    .map(body -> new ResourceNotFoundException(
-                        SERVICE_NAME + ": user not found - " + body));
-            }
-            return response.bodyToMono(String.class)
-                .map(body -> new IllegalArgumentException(
-                    SERVICE_NAME + ": invalid reject request - " + body));
-        })
-        .onStatus(HttpStatusCode::is5xxServerError, response ->
-            response.bodyToMono(String.class)
-                .map(body -> new ServiceUnavailableException(
-                    SERVICE_NAME + " unavailable - " + body))
-        ).toBodilessEntity().block(Duration.ofSeconds(5));
+		webClient.post().uri("/internal/places/{id}/reject", foodId).bodyValue(new RejectFoodDto(reason)).retrieve()
+				.onStatus(HttpStatusCode::is4xxClientError, response -> {
+					if (response.statusCode() == HttpStatus.NOT_FOUND) {
+						return response.bodyToMono(String.class)
+								.map(body -> new ResourceNotFoundException(
+										SERVICE_NAME + ": user not found - " + body));
+					}
+					return response.bodyToMono(String.class)
+							.map(body -> new IllegalArgumentException(
+									SERVICE_NAME + ": invalid reject request - " + body));
+				})
+				.onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
+						.map(body -> new ServiceUnavailableException(
+								SERVICE_NAME + " unavailable - " + body)))
+				.toBodilessEntity().block(Duration.ofSeconds(5));
 
 	}
-	
-	
-	
+
 	@Override
 	public List<PendingCategoryDto> getPendingCategories() {
 
-	    log.info("Calling {}: getting pending categories", SERVICE_NAME);
+		log.info("Calling {}: getting pending categories", SERVICE_NAME);
 
-	    return webClient.get()
-	        .uri("/internal/categories/pending")
-	        .retrieve()
-	        .onStatus(HttpStatusCode::is4xxClientError, response -> {
-	            if (response.statusCode() == HttpStatus.NOT_FOUND) {
-	                return response.bodyToMono(String.class)
-	                    .map(body -> new ResourceNotFoundException(
-	                        SERVICE_NAME + ": category not found - " + body));
-	            }
-	            return response.bodyToMono(String.class)
-	                .map(body -> new IllegalArgumentException(
-	                    SERVICE_NAME + ": bad request - " + body));
-	        })
-	        .onStatus(HttpStatusCode::is5xxServerError, response ->
-	            response.bodyToMono(String.class)
-	                .map(body -> new ServiceUnavailableException(
-	                    SERVICE_NAME + " unavailable - " + body))
-	        )
-	        .bodyToFlux(PendingCategoryDto.class)
-	        .collectList()
-	        .block(Duration.ofSeconds(5));
+		return webClient.get()
+				.uri("/internal/categories/pending")
+				.retrieve()
+				.onStatus(HttpStatusCode::is4xxClientError, response -> {
+					if (response.statusCode() == HttpStatus.NOT_FOUND) {
+						return response.bodyToMono(String.class)
+								.map(body -> new ResourceNotFoundException(
+										SERVICE_NAME + ": category not found - " + body));
+					}
+					return response.bodyToMono(String.class)
+							.map(body -> new IllegalArgumentException(
+									SERVICE_NAME + ": bad request - " + body));
+				})
+				.onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
+						.map(body -> new ServiceUnavailableException(
+								SERVICE_NAME + " unavailable - " + body)))
+				.bodyToFlux(PendingCategoryDto.class)
+				.collectList()
+				.block(Duration.ofSeconds(5));
 	}
 
 	@Override
 	public void approveCategory(Long categoryId) {
 
-	    log.info("Calling {}: approve category {}", SERVICE_NAME, categoryId);
+		log.info("Calling {}: approve category {}", SERVICE_NAME, categoryId);
 
-	    webClient.post()
-	        .uri("/internal/categories/{id}/approve", categoryId)
-	        .retrieve()
-	        .onStatus(HttpStatusCode::is4xxClientError, response -> {
-	            if (response.statusCode() == HttpStatus.NOT_FOUND) {
-	                return response.bodyToMono(String.class)
-	                    .map(body -> new ResourceNotFoundException(
-	                        SERVICE_NAME + ": category not found - " + body));
-	            }
-	            return response.bodyToMono(String.class)
-	                .map(body -> new IllegalArgumentException(
-	                    SERVICE_NAME + ": invalid approve request - " + body));
-	        })
-	        .onStatus(HttpStatusCode::is5xxServerError, response ->
-	            response.bodyToMono(String.class)
-	                .map(body -> new ServiceUnavailableException(
-	                    SERVICE_NAME + " unavailable - " + body))
-	        )
-	        .toBodilessEntity()
-	        .block(Duration.ofSeconds(5));
+		webClient.post()
+				.uri("/internal/categories/{id}/approve", categoryId)
+				.retrieve()
+				.onStatus(HttpStatusCode::is4xxClientError, response -> {
+					if (response.statusCode() == HttpStatus.NOT_FOUND) {
+						return response.bodyToMono(String.class)
+								.map(body -> new ResourceNotFoundException(
+										SERVICE_NAME + ": category not found - " + body));
+					}
+					return response.bodyToMono(String.class)
+							.map(body -> new IllegalArgumentException(
+									SERVICE_NAME + ": invalid approve request - " + body));
+				})
+				.onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
+						.map(body -> new ServiceUnavailableException(
+								SERVICE_NAME + " unavailable - " + body)))
+				.toBodilessEntity()
+				.block(Duration.ofSeconds(5));
 	}
 
 }

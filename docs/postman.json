@@ -1,0 +1,1680 @@
+{
+    "info": {
+        "name": "CDAC Community Hub - Complete API Testing",
+        "description": "Comprehensive Postman collection for testing all microservices in the CDAC Community Hub system.\n\n**Services Covered:**\n- Auth Service (8081)\n- Food Service (8086)\n- Hostel Service (8092)\n- Suggestion Service (8096)\n- Admin Service (8101)\n- API Gateway (8080)\n\n**Setup Instructions:**\n1. Import this collection into Postman\n2. Set environment variables (see Variables tab)\n3. Run 'Auth - Register Admin' and 'Auth - Login Admin' first to get JWT token\n4. Token will auto-populate in subsequent requests\n5. Test services individually or via API Gateway\n\n**Testing Scenarios:**\n- Scenario 1: Direct service access (localhost:PORT)\n- Scenario 2: Via API Gateway (localhost:8080/api/SERVICE)\n- Scenario 3: Admin dashboard aggregation\n- Scenario 4: Inter-service communication",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "auth_base_url",
+            "value": "http://localhost:8081",
+            "type": "string"
+        },
+        {
+            "key": "food_base_url",
+            "value": "http://localhost:8086",
+            "type": "string"
+        },
+        {
+            "key": "hostel_base_url",
+            "value": "http://localhost:8092",
+            "type": "string"
+        },
+        {
+            "key": "suggestion_base_url",
+            "value": "http://localhost:8096",
+            "type": "string"
+        },
+        {
+            "key": "admin_base_url",
+            "value": "http://localhost:8101",
+            "type": "string"
+        },
+        {
+            "key": "gateway_base_url",
+            "value": "http://localhost:8080",
+            "type": "string"
+        },
+        {
+            "key": "jwt_token",
+            "value": "0bqJUqj+jkMXpDkYKrMG4WuptRKkc/nBe33Pq3euEd0=",
+            "type": "string"
+        },
+        {
+            "key": "refresh_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "user_id",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "1. Auth Service (8081)",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{auth_base_url}}/",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                ""
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Register Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200 || pm.response.code === 201) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    if (jsonData.token) {",
+                                    "        pm.collectionVariables.set('jwt_token', jsonData.token);",
+                                    "    }",
+                                    "    if (jsonData.refreshToken) {",
+                                    "        pm.collectionVariables.set('refresh_token', jsonData.refreshToken);",
+                                    "    }",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@cdac.in\",\n  \"password\": \"adminpassword\",\n  \"fullName\": \"System Administrator\",\n  \"role\": \"ADMIN\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{auth_base_url}}/api/auth/register",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Register Regular User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"student@cdac.in\",\n  \"password\": \"password123\",\n  \"fullName\": \"Test Student\",\n  \"role\": \"USER\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{auth_base_url}}/api/auth/register",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Login Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.collectionVariables.set('jwt_token', jsonData.token);",
+                                    "    pm.collectionVariables.set('refresh_token', jsonData.refreshToken);",
+                                    "    console.log('JWT Token saved:', jsonData.token);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@cdac.in\",\n  \"password\": \"adminpassword\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{auth_base_url}}/api/auth/login",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Login User",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.collectionVariables.set('jwt_token', jsonData.token);",
+                                    "    pm.collectionVariables.set('refresh_token', jsonData.refreshToken);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"student@cdac.in\",\n  \"password\": \"password123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{auth_base_url}}/api/auth/login",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Refresh Token",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{auth_base_url}}/api/auth/refresh",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "refresh"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Internal - Get Pending Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{auth_base_url}}/internal/users/pending",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "internal",
+                                "users",
+                                "pending"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Internal - Approve User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{auth_base_url}}/internal/users/approve",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "internal",
+                                "users",
+                                "approve"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Internal - Reject User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": 1,\n  \"reason\": \"Invalid credentials\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{auth_base_url}}/internal/users/reject",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "internal",
+                                "users",
+                                "reject"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Internal - Get User by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{auth_base_url}}/internal/users/1",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "internal",
+                                "users",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Internal - Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{auth_base_url}}/internal/users/all",
+                            "host": [
+                                "{{auth_base_url}}"
+                            ],
+                            "path": [
+                                "internal",
+                                "users",
+                                "all"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "2. Food Service (8086)",
+            "item": [
+                {
+                    "name": "Categories",
+                    "item": [
+                        {
+                            "name": "Get All Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/categories",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "categories"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Create Category",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Fast Food\",\n  \"description\": \"Quick service restaurants\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/categories",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "categories"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Update Category",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Fast Food Updated\",\n  \"description\": \"Quick service restaurants and cafes\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/categories/1",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "categories",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Delete Category",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/categories/1",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "categories",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Food Places",
+                    "item": [
+                        {
+                            "name": "Get All Food Places",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/places",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "places"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Food Place by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/places/1",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "places",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Create Food Place",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Pizza Corner\",\n  \"description\": \"Best pizzas in town\",\n  \"address\": \"Near CDAC Main Gate\",\n  \"contactNumber\": \"9876543210\",\n  \"categoryId\": 1,\n  \"latitude\": 18.5204,\n  \"longitude\": 73.8567\n}"
+                                },
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/places",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "places"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Update Food Place",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Pizza Corner Updated\",\n  \"description\": \"Best Italian pizzas\",\n  \"address\": \"Near CDAC Main Gate\",\n  \"contactNumber\": \"9876543210\",\n  \"categoryId\": 1\n}"
+                                },
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/places/1",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "places",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Delete Food Place",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/places/1",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "places",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Places by Category",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/places/category/1",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "places",
+                                        "category",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Ratings & Reviews",
+                    "item": [
+                        {
+                            "name": "Add Rating",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"foodPlaceId\": 1,\n  \"rating\": 4.5,\n  \"review\": \"Great food and service!\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/ratings",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "ratings"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Ratings for Place",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{food_base_url}}/api/food/ratings/place/1",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "ratings",
+                                        "place",
+                                        "1"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Internal Endpoints",
+                    "item": [
+                        {
+                            "name": "Internal - Get Pending Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{food_base_url}}/internal/food/categories/pending",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "food",
+                                        "categories",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Get Pending Places",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{food_base_url}}/internal/food/places/pending",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "food",
+                                        "places",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Approve Category",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{food_base_url}}/internal/food/categories/1/approve",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "food",
+                                        "categories",
+                                        "1",
+                                        "approve"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Reject Category",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"Duplicate category\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{food_base_url}}/internal/food/categories/1/reject",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "food",
+                                        "categories",
+                                        "1",
+                                        "reject"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Approve Place",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{food_base_url}}/internal/food/places/1/approve",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "food",
+                                        "places",
+                                        "1",
+                                        "approve"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Reject Place",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"Incomplete information\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{food_base_url}}/internal/food/places/1/reject",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "food",
+                                        "places",
+                                        "1",
+                                        "reject"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Get Stats",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{food_base_url}}/internal/food/stats",
+                                    "host": [
+                                        "{{food_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "food",
+                                        "stats"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "3. Hostel Service (8092)",
+            "item": [
+                {
+                    "name": "Categories",
+                    "item": [
+                        {
+                            "name": "Get All Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/api/hostel/categories",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "hostel",
+                                        "categories"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Create Category",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Boys Hostel\",\n  \"description\": \"Hostels for male students\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/api/hostel/categories",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "hostel",
+                                        "categories"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Hostels",
+                    "item": [
+                        {
+                            "name": "Get All Hostels",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/api/hostel/hostels",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "hostel",
+                                        "hostels"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Create Hostel",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Sunshine Hostel\",\n  \"description\": \"Comfortable accommodation near CDAC\",\n  \"address\": \"Pune University Road\",\n  \"contactNumber\": \"9876543210\",\n  \"categoryId\": 1,\n  \"latitude\": 18.5204,\n  \"longitude\": 73.8567,\n  \"pricePerMonth\": 8000\n}"
+                                },
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/api/hostel/hostels",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "hostel",
+                                        "hostels"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Ratings",
+                    "item": [
+                        {
+                            "name": "Add Rating",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"hostelId\": 1,\n  \"cleanlinessRating\": 4.5,\n  \"foodQualityRating\": 4.0,\n  \"facilitiesRating\": 4.2,\n  \"locationRating\": 4.8,\n  \"valueForMoneyRating\": 4.3,\n  \"review\": \"Great hostel with good facilities\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/api/hostel/ratings",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "hostel",
+                                        "ratings"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Internal Endpoints",
+                    "item": [
+                        {
+                            "name": "Internal - Get Pending Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/internal/hostel/categories/pending",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "hostel",
+                                        "categories",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Get Pending Hostels",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/internal/hostel/hostels/pending",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "hostel",
+                                        "hostels",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Approve Category",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/internal/hostel/categories/1/approve",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "hostel",
+                                        "categories",
+                                        "1",
+                                        "approve"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Reject Hostel",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"Incomplete details\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/internal/hostel/hostels/1/reject",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "hostel",
+                                        "hostels",
+                                        "1",
+                                        "reject"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Internal - Get Stats",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{hostel_base_url}}/internal/hostel/stats",
+                                    "host": [
+                                        "{{hostel_base_url}}"
+                                    ],
+                                    "path": [
+                                        "internal",
+                                        "hostel",
+                                        "stats"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "4. Suggestion Service (8096)",
+            "item": [
+                {
+                    "name": "Submit Suggestion",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"category\": \"INFRASTRUCTURE\",\n  \"suggestion\": \"Please add more benches in the cafeteria area\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{suggestion_base_url}}/api/suggestions",
+                            "host": [
+                                "{{suggestion_base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "suggestions"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get My Suggestions",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{suggestion_base_url}}/api/suggestions/my",
+                            "host": [
+                                "{{suggestion_base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "suggestions",
+                                "my"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Internal - Get All Suggestions",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{suggestion_base_url}}/internal/suggestions/all",
+                            "host": [
+                                "{{suggestion_base_url}}"
+                            ],
+                            "path": [
+                                "internal",
+                                "suggestions",
+                                "all"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Internal - Get Stats",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{suggestion_base_url}}/internal/suggestions/stats",
+                            "host": [
+                                "{{suggestion_base_url}}"
+                            ],
+                            "path": [
+                                "internal",
+                                "suggestions",
+                                "stats"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "5. Admin Service (8101)",
+            "item": [
+                {
+                    "name": "Dashboard",
+                    "item": [
+                        {
+                            "name": "Get Dashboard Stats",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/dashboard/stats",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "dashboard",
+                                        "stats"
+                                    ]
+                                },
+                                "description": "**Expected Response (Empty Database):**\n```json\n{\n  \"totalUsers\": 0,\n  \"pendingUsers\": 0,\n  \"totalFoodPlaces\": 0,\n  \"pendingFoodPlaces\": 0,\n  \"totalHostels\": 0,\n  \"pendingHostels\": 0,\n  \"totalSuggestions\": 0\n}\n```"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "User Management",
+                    "item": [
+                        {
+                            "name": "Get Pending Users",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/users/pending",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "users",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Approve User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"userId\": 1\n}"
+                                },
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/users/approve",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "users",
+                                        "approve"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Reject User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"userId\": 1,\n  \"reason\": \"Invalid credentials\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/users/reject",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "users",
+                                        "reject"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Food Management",
+                    "item": [
+                        {
+                            "name": "Get Pending Food Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/food/categories/pending",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "food",
+                                        "categories",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Pending Food Places",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/food/places/pending",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "food",
+                                        "places",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Approve Food Category",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/food/categories/1/approve",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "food",
+                                        "categories",
+                                        "1",
+                                        "approve"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Reject Food Place",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"Duplicate entry\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/food/places/1/reject",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "food",
+                                        "places",
+                                        "1",
+                                        "reject"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Hostel Management",
+                    "item": [
+                        {
+                            "name": "Get Pending Hostel Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/hostel/categories/pending",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "hostel",
+                                        "categories",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Get Pending Hostels",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/hostel/hostels/pending",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "hostel",
+                                        "hostels",
+                                        "pending"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Approve Hostel",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/hostel/hostels/1/approve",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "hostel",
+                                        "hostels",
+                                        "1",
+                                        "approve"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Suggestions",
+                    "item": [
+                        {
+                            "name": "Get All Suggestions",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{admin_base_url}}/api/admin/suggestions",
+                                    "host": [
+                                        "{{admin_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "suggestions"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "6. Via API Gateway (8080)",
+            "item": [
+                {
+                    "name": "Auth via Gateway",
+                    "item": [
+                        {
+                            "name": "Gateway - Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"admin@cdac.in\",\n  \"password\": \"admin\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{gateway_base_url}}/api/auth/login",
+                                    "host": [
+                                        "{{gateway_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "auth",
+                                        "login"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Food via Gateway",
+                    "item": [
+                        {
+                            "name": "Gateway - Get Food Categories",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{gateway_base_url}}/api/food/categories",
+                                    "host": [
+                                        "{{gateway_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "food",
+                                        "categories"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Admin via Gateway",
+                    "item": [
+                        {
+                            "name": "Gateway - Dashboard Stats",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{gateway_base_url}}/api/admin/dashboard/stats",
+                                    "host": [
+                                        "{{gateway_base_url}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "admin",
+                                        "dashboard",
+                                        "stats"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

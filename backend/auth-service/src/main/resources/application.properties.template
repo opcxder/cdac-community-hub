@@ -1,0 +1,40 @@
+# Application Configuration Template
+# Copy this file to application.properties and fill in your values
+
+# Application Name
+spring.application.name=auth-service
+
+# Server Port
+server.port=8081
+
+# Active Profile (dev/prod)
+spring.profiles.active=dev
+
+# Database Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/auth_db
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA Configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# JWT Configuration (IMPORTANT: Use same secret across all services)
+jwt.secret=YOUR_BASE64_ENCODED_SECRET_KEY_HERE
+jwt.expiration=86400000
+
+# Admin Credentials
+admin.email=admin@cdac.in
+admin.password=adminpassword
+
+# Eureka Configuration
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+eureka.instance.prefer-ip-address=true
+
+# Logging
+logging.level.root=INFO
+logging.level.com.example.demo=DEBUG
