@@ -18,46 +18,48 @@ import com.cdac.admin.service.FoodAdminService;
 @RestController
 @RequestMapping("/api/admin/foods")
 public class FoodAdminController {
-  
-	
-	 private final FoodAdminService foodAdminService;
-	 
-	 public FoodAdminController(FoodAdminService foodAdminService) {
-		 this.foodAdminService = foodAdminService;
-	 }
-	 
-	 
-	 @GetMapping("/pending")
-	 public ResponseEntity<List<PendingFoodDto>> getPendingFood(){
-		     List<PendingFoodDto> pendingFoods = foodAdminService.getPendingFoods();
-		    return ResponseEntity.ok(pendingFoods); 
-	 }
-	 
-	 
-	 @PostMapping("/{id}/approve")
-	 public ResponseEntity<Void> approveFood( @PathVariable("id") Long foodId ) {
-		  foodAdminService.approveFood(foodId);
-		  return ResponseEntity.ok().build();
-	 }
-	 
-	 @PostMapping("/{id}/reject")
-	 public ResponseEntity<Void>  rejectFood(@PathVariable("id") Long id , @RequestBody RejectFoodDto rejectFood  )  {
-		 foodAdminService.rejectFood(id, rejectFood.getFoodReason());
-		  return ResponseEntity.ok().build();
-	 }
-	 
-	 
-	 @GetMapping("/categories/pending")
-	 public ResponseEntity<List<PendingCategoryDto>> getPendingCategories() {
-	     return ResponseEntity.ok(foodAdminService.getPendingCategories());
-	 }
 
-	 @PostMapping("/categories/{id}/approve")
-	 public ResponseEntity<Void> approveCategory(@PathVariable Long id) {
-	     foodAdminService.approveCategory(id);
-	     return ResponseEntity.ok().build();
-	 }
+	private final FoodAdminService foodAdminService;
 
-	 
-	
+	public FoodAdminController(FoodAdminService foodAdminService) {
+		this.foodAdminService = foodAdminService;
+	}
+
+	@GetMapping("/pending")
+	public ResponseEntity<List<PendingFoodDto>> getPendingFood() {
+		List<PendingFoodDto> pendingFoods = foodAdminService.getPendingFoods();
+		return ResponseEntity.ok(pendingFoods);
+	}
+
+	@PostMapping("/{id}/approve")
+	public ResponseEntity<Void> approveFood(@PathVariable("id") Long foodId) {
+		foodAdminService.approveFood(foodId);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/{id}/reject")
+	public ResponseEntity<Void> rejectFood(@PathVariable("id") Long id, @RequestBody RejectFoodDto rejectFood) {
+		foodAdminService.rejectFood(id, rejectFood.getFoodReason());
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/categories/pending")
+	public ResponseEntity<List<PendingCategoryDto>> getPendingCategories() {
+		return ResponseEntity.ok(foodAdminService.getPendingCategories());
+	}
+
+	@PostMapping("/categories/{id}/approve")
+	public ResponseEntity<Void> approveCategory(@PathVariable Long id) {
+		foodAdminService.approveCategory(id);
+		return ResponseEntity.ok().build();
+	}
+
+	@PostMapping("/categories/{id}/reject")
+	public ResponseEntity<Void> rejectCategory(
+			@PathVariable Long id,
+			@RequestBody com.cdac.admin.dto.RejectCategoryDto dto) {
+		foodAdminService.rejectCategory(id, dto.getReason());
+		return ResponseEntity.ok().build();
+	}
+
 }

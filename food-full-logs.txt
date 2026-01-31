@@ -1,0 +1,90 @@
+﻿
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.0)
+
+2026-01-30 12:05:34 [main] INFO  c.cdac.food.FoodServiceApplication - Starting FoodServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:05:34 [main] DEBUG c.cdac.food.FoodServiceApplication - Running with Spring Boot v4.0.0, Spring v7.0.1
+2026-01-30 12:05:34 [main] INFO  c.cdac.food.FoodServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:05:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:05:49 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1571 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:05:53 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=3ce8a04e-6a63-336b-9acf-d0146cd2012a
+2026-01-30 12:05:56 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8086 (http)
+2026-01-30 12:05:57 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:05:57 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.14]
+2026-01-30 12:05:57 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 21963 ms
+2026-01-30 12:05:59 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:06:01 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6f655dbd
+2026-01-30 12:06:01 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:06:03 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:06:05 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 7.1.8.Final
+2026-01-30 12:06:13 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:06:13 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-30 12:06:14 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://food-db:3306/food_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: food_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:06:19 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table food_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED')
+Hibernate: 
+    alter table food_places 
+       modify column price_range enum ('BUDGET_FRIENDLY','EXPENSIVE','MEDIUM')
+Hibernate: 
+    alter table food_places 
+       modify column status enum ('APPROVED','PENDING','REJECTED')
+2026-01-30 12:06:20 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:06:21 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:06:29 [main] INFO  c.c.food.config.RestTemplateConfig - Configuring RestTemplate for inter-service communication
+2026-01-30 12:06:31 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-30 12:06:36 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestClient.
+2026-01-30 12:06:37 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-01-30 12:06:37 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2026-01-30 12:06:37 [main] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2026-01-30 12:06:37 [main] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2026-01-30 12:06:37 [main] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2026-01-30 12:06:39 [main] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2026-01-30 12:06:39 [main] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2026-01-30 12:06:39 [main] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-01-30 12:06:39 [main] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1769774799883 with initial instances count: 0
+2026-01-30 12:06:39 [main] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application FOOD-SERVICE with eureka with status UP
+2026-01-30 12:06:39 [main] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1769774799904, current=UP, previous=STARTING]
+2026-01-30 12:06:39 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/04fe842be3a7:food-service:8086: registering service...
+2026-01-30 12:06:39 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8086 (http) with context path '/'
+2026-01-30 12:06:39 [main] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8086
+2026-01-30 12:06:40 [main] INFO  c.cdac.food.FoodServiceApplication - Started FoodServiceApplication in 71.275 seconds (process running for 78.148)
+2026-01-30 12:06:40 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/04fe842be3a7:food-service:8086 - registration status: 204
+2026-01-30 12:06:40 [main] INFO  c.cdac.food.FoodServiceApplication - Food Service started successfully on port 8086
+2026-01-30 12:06:49 [http-nio-8086-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-30 12:06:49 [http-nio-8086-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-01-30 12:06:49 [http-nio-8086-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: false
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2026-01-30 12:07:09 [DiscoveryClient-CacheRefreshExecutor-%d] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2026-01-30 12:11:37 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration

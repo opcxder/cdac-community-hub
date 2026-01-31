@@ -14,52 +14,52 @@ import com.cdac.admin.dto.PendingHostelDto;
 
 @Service
 @Profile("dev")
-public class MockHostelServiceClient  implements HostelServiceClient {
+public class MockHostelServiceClient implements HostelServiceClient {
 
-private static final Logger log = LoggerFactory.getLogger(MockHostelServiceClient.class);
-	
-	
+	private static final Logger log = LoggerFactory.getLogger(MockHostelServiceClient.class);
 
 	@Override
 	public List<PendingHostelDto> getPendingHostel() {
-		log.info("Mock: Fetching the pending hostel" );
+		log.info("Mock: Fetching the pending hostel");
 		List<PendingHostelDto> hostel = new ArrayList<>();
-		hostel.add(new PendingHostelDto(1L , "DhanaLaxmi PG" , "housing Board" , "PENDING"));
-		hostel.add(new PendingHostelDto(2L , "Colnal Joshi PG" , "housing Board" ,"PENDING"));
-		
+		hostel.add(new PendingHostelDto(1L, "DhanaLaxmi PG", "housing Board", "PENDING"));
+		hostel.add(new PendingHostelDto(2L, "Colnal Joshi PG", "housing Board", "PENDING"));
+
 		return hostel;
 	}
 
 	@Override
 	public void approveHostel(Long hostelId) {
-		log.info("Mock : Approving hostel id: {} ", hostelId );
-		
+		log.info("Mock : Approving hostel id: {} ", hostelId);
+
 	}
 
 	@Override
 	public void rejectHostel(Long hostelId, String reason) {
-		log.info("Mock: rejecting the hostel with id {} for {}" , hostelId , reason);
-		
+		log.info("Mock: rejecting the hostel with id {} for {}", hostelId, reason);
+
 	}
 
 	@Override
 	public List<PendingCategoryDto> getPendingCategories() {
 		log.info("Mock: fetching pending hostel categories");
-		
-		List<PendingCategoryDto> pendingCategory =  new ArrayList<>();
-		pendingCategory.add(new PendingCategoryDto(1L ,"Dhanlaxmi" , "PENDING"));
-		pendingCategory.add(new PendingCategoryDto(2L ,"VEKATSH" , "PENDING"));
-		
+
+		List<PendingCategoryDto> pendingCategory = new ArrayList<>();
+		pendingCategory.add(new PendingCategoryDto(1L, "Dhanlaxmi", "PENDING"));
+		pendingCategory.add(new PendingCategoryDto(2L, "VEKATSH", "PENDING"));
+
 		return pendingCategory;
 	}
 
 	@Override
 	public void approveCategory(Long categoryId) {
 		log.info("Mock: approved category {}", categoryId);
-		
+
 	}
-   
-	
-	 
-	
+
+	@Override
+	public void rejectCategory(Long categoryId, String reason) {
+		log.info("Mock: rejected category {} with reason: {}", categoryId, reason);
+	}
+
 }

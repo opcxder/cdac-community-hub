@@ -5,7 +5,8 @@ import java.time.LocalDateTime;
 
 /**
  * Entity representing food categories (e.g., Breakfast, Lunch, Biryani).
- * Categories can be created by users and must be approved by admin before being visible.
+ * Categories can be created by users and must be approved by admin before being
+ * visible.
  */
 @Entity
 @Table(name = "food_categories")
@@ -35,6 +36,9 @@ public class FoodCategory {
 
     @Column(name = "approved_at")
     private LocalDateTime approvedAt;
+
+    @Column(name = "rejection_reason", length = 500)
+    private String rejectionReason;
 
     // Constructors
     public FoodCategory() {
@@ -88,5 +92,13 @@ public class FoodCategory {
 
     public void setApprovedAt(LocalDateTime approvedAt) {
         this.approvedAt = approvedAt;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 }

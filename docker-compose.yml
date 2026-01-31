@@ -1,0 +1,337 @@
+services:
+  # ============================================
+  # DATABASES (MySQL)
+  # ============================================
+
+  auth-db:
+    image: mysql:8.0
+    container_name: cdac-auth-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: ${MYSQL_USER:-cdac_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-cdac_password}
+    ports:
+      - "3307:3306"
+    volumes:
+      - auth-db-data:/var/lib/mysql
+    networks:
+      - cdac-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  food-db:
+    image: mysql:8.0
+    container_name: cdac-food-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: food_db
+      MYSQL_USER: ${MYSQL_USER:-cdac_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-cdac_password}
+    ports:
+      - "3308:3306"
+    volumes:
+      - food-db-data:/var/lib/mysql
+    networks:
+      - cdac-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  hostel-db:
+    image: mysql:8.0
+    container_name: cdac-hostel-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: hostel_db
+      MYSQL_USER: ${MYSQL_USER:-cdac_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-cdac_password}
+    ports:
+      - "3309:3306"
+    volumes:
+      - hostel-db-data:/var/lib/mysql
+    networks:
+      - cdac-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  suggestion-db:
+    image: mysql:8.0
+    container_name: cdac-suggestion-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: suggestion_db
+      MYSQL_USER: ${MYSQL_USER:-cdac_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-cdac_password}
+    ports:
+      - "3310:3306"
+    volumes:
+      - suggestion-db-data:/var/lib/mysql
+    networks:
+      - cdac-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # EUREKA SERVER (Service Discovery)
+  # ============================================
+
+  eureka-server:
+    build:
+      context: ./backend/eureka-server
+      dockerfile: Dockerfile
+    container_name: cdac-eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - cdac-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8761/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  # ============================================
+  # BACKEND SERVICES
+  # ============================================
+
+  auth-service:
+    build:
+      context: ./backend/auth-service
+      dockerfile: Dockerfile
+    container_name: cdac-auth-service
+    ports:
+      - "8081:8081"
+    networks:
+      - cdac-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://auth-db:3306/auth_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER:-cdac_user}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD:-cdac_password}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-in-production}
+    depends_on:
+      auth-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  food-service:
+    build:
+      context: ./backend/food-service
+      dockerfile: Dockerfile
+    container_name: cdac-food-service
+    ports:
+      - "8082:8086"
+    networks:
+      - cdac-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://food-db:3306/food_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER:-cdac_user}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD:-cdac_password}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      food-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8086/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  hostel-service:
+    build:
+      context: ./backend/hostel-service
+      dockerfile: Dockerfile
+    container_name: cdac-hostel-service
+    ports:
+      - "8083:8092"
+    networks:
+      - cdac-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER:-cdac_user}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD:-cdac_password}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      hostel-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8092/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  suggestion-service:
+    build:
+      context: ./backend/suggestion-service
+      dockerfile: Dockerfile
+    container_name: cdac-suggestion-service
+    ports:
+      - "8085:8096"
+    networks:
+      - cdac-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://suggestion-db:3306/suggestion_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER:-cdac_user}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD:-cdac_password}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      suggestion-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8096/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  admin-service:
+    build:
+      context: ./backend/admin-service
+      dockerfile: Dockerfile
+    container_name: cdac-admin-service
+    ports:
+      - "8084:8084"
+    networks:
+      - cdac-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - FOOD_SERVICE_URL=http://food-service:8082
+      - HOSTEL_SERVICE_URL=http://hostel-service:8083
+      - AUTH_SERVICE_URL=http://auth-service:8081
+      - SUGGESTION_SERVICE_URL=http://suggestion-service:8085
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      food-service:
+        condition: service_healthy
+      hostel-service:
+        condition: service_healthy
+      suggestion-service:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8084/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  # ============================================
+  # API GATEWAY
+  # ============================================
+
+  api-gateway:
+    build:
+      context: ./backend/api-gateway
+      dockerfile: Dockerfile
+    container_name: cdac-api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - cdac-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      food-service:
+        condition: service_healthy
+      hostel-service:
+        condition: service_healthy
+      admin-service:
+        condition: service_healthy
+      suggestion-service:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+
+  # ============================================
+  # FRONTEND
+  # ============================================
+
+  admin-frontend:
+    build:
+      context: ./frontend/admin-frontend
+      dockerfile: Dockerfile
+    container_name: cdac-admin-frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - cdac-network
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8080
+      - VITE_CLOUDINARY_FOOD_CLOUD_NAME=${CLOUDINARY_FOOD_CLOUD_NAME}
+      - VITE_CLOUDINARY_FOOD_UPLOAD_PRESET=${CLOUDINARY_FOOD_UPLOAD_PRESET:-cdac_unsigned}
+      - VITE_CLOUDINARY_HOSTEL_CLOUD_NAME=${CLOUDINARY_HOSTEL_CLOUD_NAME}
+      - VITE_CLOUDINARY_HOSTEL_UPLOAD_PRESET=${CLOUDINARY_HOSTEL_UPLOAD_PRESET:-cdac_unsigned}
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+
+# ============================================
+# NETWORKS
+# ============================================
+
+networks:
+  cdac-network:
+    driver: bridge
+
+# ============================================
+# VOLUMES
+# ============================================
+
+volumes:
+  auth-db-data:
+  food-db-data:
+  hostel-db-data:
+  suggestion-db-data:

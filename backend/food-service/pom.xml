@@ -43,6 +43,12 @@
 			<scope>runtime</scope>
 		</dependency>
 		
+		<!-- ACTUATOR -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		
 		<!-- Lombok removed intentionally as per user request to use manual SLF4J -->
 		<!-- Kept only if needed for other utilities, but main code uses manual loggers -->
 		<!--

@@ -47,7 +47,7 @@ public class InternalFoodController {
 
     @PostMapping("/places/{id}/reject")
     public ResponseEntity<FoodPlaceDTO> rejectPlace(
-            @PathVariable Long id, 
+            @PathVariable Long id,
             @RequestBody Map<String, String> body) {
         String reason = body.getOrDefault("reason", "Rejected by admin");
         logger.info("Admin request: reject food place {} with reason: {}", id, reason);
@@ -76,8 +76,11 @@ public class InternalFoodController {
     }
 
     @PostMapping("/categories/{id}/reject")
-    public ResponseEntity<CategoryDTO> rejectCategory(@PathVariable Long id) {
-        logger.info("Admin request: reject category {}", id);
-        return ResponseEntity.ok(categoryService.rejectCategory(id));
+    public ResponseEntity<CategoryDTO> rejectCategory(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String reason = body.getOrDefault("reason", "Rejected by admin");
+        logger.info("Admin request: reject category {} with reason: {}", id, reason);
+        return ResponseEntity.ok(categoryService.rejectCategory(id, reason));
     }
 }

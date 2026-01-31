@@ -47,6 +47,9 @@ public class HostelCategory {
 
     private Timestamp approvedAt;
 
+    @Column(name = "rejection_reason", length = 500)
+    private String rejectionReason;
+
     // Getters and Setters
     public Long getCategoryId() {
         return categoryId;
@@ -94,5 +97,13 @@ public class HostelCategory {
 
     public void setApprovedAt(Timestamp approvedAt) {
         this.approvedAt = approvedAt;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 }

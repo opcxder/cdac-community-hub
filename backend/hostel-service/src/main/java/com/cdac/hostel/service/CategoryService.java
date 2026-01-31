@@ -18,7 +18,8 @@ import com.cdac.hostel.exception.ResourceNotFoundException;
 /**
  * Service layer for hostel category management.
  * Handles category creation, retrieval, and admin approval workflows.
- * Categories allow dynamic classification of hostels (e.g., PG, Boys Only, Co-living).
+ * Categories allow dynamic classification of hostels (e.g., PG, Boys Only,
+ * Co-living).
  */
 @Service
 public class CategoryService {
@@ -37,7 +38,7 @@ public class CategoryService {
      * New categories start in PENDING status and require admin approval.
      *
      * @param categoryName The name of the category to create
-     * @param userId The ID of the user creating the category
+     * @param userId       The ID of the user creating the category
      * @return The created category entity
      * @throws RuntimeException if user not found or category name already exists
      */
@@ -52,8 +53,8 @@ public class CategoryService {
 
         // Check for duplicate category name
         categoryRepository.findByCategoryName(categoryName).ifPresent(existing -> {
-            logger.warn("Category creation failed - Duplicate name: name={}, existingId={}", 
-                       categoryName, existing.getCategoryId());
+            logger.warn("Category creation failed - Duplicate name: name={}, existingId={}",
+                    categoryName, existing.getCategoryId());
             throw new DuplicateResourceException("Category with this name already exists");
         });
 
@@ -64,9 +65,9 @@ public class CategoryService {
         category.setStatus(CategoryStatus.PENDING);
 
         HostelCategory savedCategory = categoryRepository.save(category);
-        logger.info("Category created successfully: categoryId={}, name={}, status={}", 
-                    savedCategory.getCategoryId(), savedCategory.getCategoryName(), 
-                    savedCategory.getStatus());
+        logger.info("Category created successfully: categoryId={}, name={}, status={}",
+                savedCategory.getCategoryId(), savedCategory.getCategoryName(),
+                savedCategory.getStatus());
 
         return savedCategory;
     }
@@ -126,8 +127,8 @@ public class CategoryService {
 
         HostelCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
-                    logger.error("Category approval failed - Category not found: categoryId={}", 
-                                categoryId);
+                    logger.error("Category approval failed - Category not found: categoryId={}",
+                            categoryId);
                     throw new ResourceNotFoundException("Category", categoryId);
                 });
 
@@ -135,8 +136,8 @@ public class CategoryService {
         category.setApprovedAt(new Timestamp(System.currentTimeMillis()));
 
         HostelCategory approvedCategory = categoryRepository.save(category);
-        logger.info("Category approved successfully: categoryId={}, name={}", 
-                    approvedCategory.getCategoryId(), approvedCategory.getCategoryName());
+        logger.info("Category approved successfully: categoryId={}, name={}",
+                approvedCategory.getCategoryId(), approvedCategory.getCategoryName());
 
         return approvedCategory;
     }
@@ -146,24 +147,26 @@ public class CategoryService {
      * Rejected categories cannot be used for hostel classification.
      *
      * @param categoryId The ID of the category to reject
+     * @param reason     The reason for rejection
      * @return The rejected category entity
      * @throws RuntimeException if category not found
      */
-    public HostelCategory rejectCategory(Long categoryId) {
-        logger.info("Rejecting category: categoryId={}", categoryId);
+    public HostelCategory rejectCategory(Long categoryId, String reason) {
+        logger.info("Rejecting category: categoryId={}, reason={}", categoryId, reason);
 
         HostelCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
-                    logger.error("Category rejection failed - Category not found: categoryId={}", 
-                                categoryId);
+                    logger.error("Category rejection failed - Category not found: categoryId={}",
+                            categoryId);
                     throw new ResourceNotFoundException("Category", categoryId);
                 });
 
         category.setStatus(CategoryStatus.REJECTED);
+        category.setRejectionReason(reason);
 
         HostelCategory rejectedCategory = categoryRepository.save(category);
-        logger.info("Category rejected successfully: categoryId={}, name={}", 
-                    rejectedCategory.getCategoryId(), rejectedCategory.getCategoryName());
+        logger.info("Category rejected successfully: categoryId={}, name={}",
+                rejectedCategory.getCategoryId(), rejectedCategory.getCategoryName());
 
         return rejectedCategory;
     }

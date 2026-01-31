@@ -1,6 +1,5 @@
 package com.cdac.hostel.controller;
 
- 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class InternalHostelController {
      * Called by Admin Service after admin rejection.
      *
      * @param hostelId The ID of the hostel to reject
-     * @param reason Optional reason for rejection
+     * @param reason   Optional reason for rejection
      * @return The rejected hostel entity
      */
     @PostMapping("/{hostelId}/reject")
@@ -93,16 +92,18 @@ public class InternalHostelController {
     }
 
     /**
-     * Rejects a pending category.
+     * Rejects a pending category with a reason.
      * Called by Admin Service after admin rejection.
      *
      * @param categoryId The ID of the category to reject
+     * @param body       Request body containing rejection reason
      * @return The rejected category entity
      */
     @PostMapping("/categories/{categoryId}/reject")
-    public HostelCategory rejectCategory(@PathVariable Long categoryId) {
-        return categoryService.rejectCategory(categoryId);
+    public HostelCategory rejectCategory(
+            @PathVariable Long categoryId,
+            @RequestBody java.util.Map<String, String> body) {
+        String reason = body.getOrDefault("reason", "Rejected by admin");
+        return categoryService.rejectCategory(categoryId, reason);
     }
 }
-
-

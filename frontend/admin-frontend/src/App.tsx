@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import LandingPage from "@/pages/public/LandingPage";
 import LoginPage from "@/pages/public/LoginPage";
 import SignupPage from "@/pages/public/SignupPage";
 import BrowseFoodPage from "@/pages/public/BrowseFoodPage";
@@ -9,20 +10,28 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import DashboardPage from "@/pages/user/DashboardPage";
 import SubmitFoodPage from "@/pages/user/SubmitFoodPage";
 import SubmitHostelPage from "@/pages/user/SubmitHostelPage";
-import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
 
 import { Toaster } from 'sonner';
 import AdminRoute from "./components/auth/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
-import UserApprovalsPage from "./pages/admin/UserApprovalPage";
-import FoodApprovalsPage from "./pages/admin/FoodApprovalsPage";
-import HostelApprovalsPage from "./pages/admin/HostelApprovalsPage";
+
+// Import all new admin pages
+import {
+  AdminDashboard,
+  UserManagement,
+  FoodPlaceManagement,
+  FoodCategoryManagement,
+  HostelManagement,
+  HostelCategoryManagement,
+  SuggestionsManagement,
+} from "@/pages/admin";
 
 export default function App() {
   return (
     <BrowserRouter><ErrorBoundary>
       <Routes>
         {/* Public routes */}
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/food" element={<BrowseFoodPage />} />
@@ -37,17 +46,19 @@ export default function App() {
           {/* Admin routes (all nested inside AdminRouteLayout) */}
           <Route element={<AdminRoute />}>
             <Route element={<AdminLayout />}>
-              <Route path="/admin" element={<AdminDashboardPage />} />
-              <Route path="/admin/users" element={<UserApprovalsPage />} />
-              <Route path="/admin/food" element={<FoodApprovalsPage />} />
-              <Route path="/admin/hostels" element={<HostelApprovalsPage />} />
-              {/*   <Route path="/admin/suggestions" element={<AdminSuggestionsPage />} /> */}
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/users" element={<UserManagement />} />
+              <Route path="/admin/food" element={<FoodPlaceManagement />} />
+              <Route path="/admin/food-categories" element={<FoodCategoryManagement />} />
+              <Route path="/admin/hostels" element={<HostelManagement />} />
+              <Route path="/admin/hostel-categories" element={<HostelCategoryManagement />} />
+              <Route path="/admin/suggestions" element={<SuggestionsManagement />} />
             </Route>
           </Route>
         </Route>
 
-        {/* Catch-all → redirect to login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Catch-all → redirect to landing page */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster richColors />
     </ErrorBoundary>

@@ -7,13 +7,16 @@ import com.cdac.admin.dto.PendingHostelDto;
 
 public interface HostelServiceClient {
 
-	
-	 List<PendingHostelDto> getPendingHostel();
-	 void approveHostel(Long hostelId);
-	 void rejectHostel(Long hostelId, String reason);
-	 
-	 
-	 List<PendingCategoryDto> getPendingCategories();
-	    void approveCategory(Long categoryId);
-	
+	List<PendingHostelDto> getPendingHostel();
+
+	void approveHostel(Long hostelId);
+
+	void rejectHostel(Long hostelId, String reason);
+
+	List<PendingCategoryDto> getPendingCategories();
+
+	void approveCategory(Long categoryId);
+
+	void rejectCategory(Long categoryId, String reason);
+
 }

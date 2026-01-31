@@ -146,4 +146,29 @@ public class FoodServiceWebClient implements FoodServiceClient {
 				.block(Duration.ofSeconds(5));
 	}
 
+	@Override
+	public void rejectCategory(Long categoryId, String reason) {
+		log.info("Calling {}: reject category {} with reason: {}", SERVICE_NAME, categoryId, reason);
+
+		webClient.post()
+				.uri("/internal/categories/{id}/reject", categoryId)
+				.bodyValue(java.util.Map.of("reason", reason))
+				.retrieve()
+				.onStatus(HttpStatusCode::is4xxClientError, response -> {
+					if (response.statusCode() == HttpStatus.NOT_FOUND) {
+						return response.bodyToMono(String.class)
+								.map(body -> new ResourceNotFoundException(
+										SERVICE_NAME + ": category not found - " + body));
+					}
+					return response.bodyToMono(String.class)
+							.map(body -> new IllegalArgumentException(
+									SERVICE_NAME + ": invalid reject request - " + body));
+				})
+				.onStatus(HttpStatusCode::is5xxServerError, response -> response.bodyToMono(String.class)
+						.map(body -> new ServiceUnavailableException(
+								SERVICE_NAME + " unavailable - " + body)))
+				.toBodilessEntity()
+				.block(Duration.ofSeconds(5));
+	}
+
 }

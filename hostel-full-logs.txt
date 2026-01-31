@@ -1,0 +1,1914 @@
+﻿
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:05:33 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:05:33 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:05:33 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:05:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:05:48 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1006 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:05:51 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:05:54 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:05:54 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:05:54 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:05:54 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 21247 ms
+2026-01-30 12:05:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:06:01 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@75805562
+2026-01-30 12:06:01 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:06:01 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:06:02 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:06:13 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:06:14 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:06:20 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:06:21 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:06:21 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:06:22 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:06:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:06:22 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:06:22 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:06:22 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:06:23 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:06:23 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:06:35 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:06:35 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:06:35 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:06:41 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:06:41 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 407 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:06:42 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:06:43 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:06:43 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:06:43 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:06:43 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 7332 ms
+2026-01-30 12:06:48 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:06:50 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24018c8b
+2026-01-30 12:06:50 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:06:51 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:06:51 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:06:52 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:06:52 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:06:54 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:06:54 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:06:55 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:06:55 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:06:55 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:06:55 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:06:55 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:06:55 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:06:55 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:06:55 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:06:58 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:06:58 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:06:58 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:07:01 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:07:01 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 415 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:07:02 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:07:03 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:07:03 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:07:03 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:07:03 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4962 ms
+2026-01-30 12:07:04 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:07:04 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5072e638
+2026-01-30 12:07:04 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:07:04 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:07:05 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:07:06 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:07:06 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:07:10 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:07:10 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:10 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:07:11 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:07:11 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:07:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:07:11 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:07:11 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:07:11 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:07:13 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:07:13 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:07:13 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:07:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:07:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 259 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:07:17 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:07:17 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:07:17 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:07:17 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:07:17 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 3871 ms
+2026-01-30 12:07:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:07:18 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5950054d
+2026-01-30 12:07:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:07:19 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:07:19 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:07:20 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:07:20 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:07:22 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:07:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:22 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:07:23 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:07:23 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:07:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:07:23 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:07:23 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:07:23 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:07:26 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:07:26 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:07:26 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:07:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:07:29 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 319 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:07:30 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:07:31 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:07:31 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:07:31 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:07:31 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4703 ms
+2026-01-30 12:07:31 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:07:32 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5072e638
+2026-01-30 12:07:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:07:32 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:07:32 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:07:33 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:07:34 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:07:35 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:07:36 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:36 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:07:36 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:07:36 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:07:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:07:36 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:07:36 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:07:36 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:07:39 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:07:39 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:07:39 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:07:42 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:07:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 323 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:07:43 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:07:44 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:07:44 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:07:44 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:07:44 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 5360 ms
+2026-01-30 12:07:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:07:45 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5950054d
+2026-01-30 12:07:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:07:46 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:07:46 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:07:47 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:07:47 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:07:49 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:07:49 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:49 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:07:50 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:07:50 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:07:50 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:07:50 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:07:50 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:07:50 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:07:50 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:07:53 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:07:53 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:07:53 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:07:55 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:07:56 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 354 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:07:56 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:07:57 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:07:57 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:07:57 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:07:57 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4501 ms
+2026-01-30 12:07:58 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:07:59 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5950054d
+2026-01-30 12:07:59 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:07:59 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:07:59 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:08:01 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:08:01 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:08:03 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:08:03 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:03 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:08:04 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:08:04 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:04 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:08:04 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:08:04 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:08:04 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:08:04 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:08:07 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:08:07 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:08:07 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:08:09 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:08:09 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 468 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:08:10 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:08:11 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:08:11 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:08:11 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:08:11 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4634 ms
+2026-01-30 12:08:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:08:12 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4fd37449
+2026-01-30 12:08:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:08:13 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:08:13 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:08:14 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:08:14 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:08:16 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:08:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:16 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:08:16 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:08:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:16 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:08:16 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:08:16 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:08:16 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:08:16 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:08:20 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:08:20 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:08:20 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:08:23 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:08:23 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 313 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:08:24 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:08:25 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:08:25 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:08:25 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:08:25 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4565 ms
+2026-01-30 12:08:26 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:08:27 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24018c8b
+2026-01-30 12:08:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:08:27 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:08:27 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:08:29 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:08:29 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:08:31 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:08:32 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:32 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:08:32 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:08:32 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:08:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:08:32 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:08:32 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:08:32 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:08:35 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:08:35 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:08:35 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:08:38 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:08:38 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 251 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:08:39 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:08:40 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:08:40 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:08:40 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:08:40 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4633 ms
+2026-01-30 12:08:41 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:08:42 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17befef0
+2026-01-30 12:08:42 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:08:42 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:08:42 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:08:43 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:08:43 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:08:45 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:08:45 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:46 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:08:46 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:08:46 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:46 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:08:46 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:08:46 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:08:46 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:08:46 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:08:48 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:08:48 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:08:48 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:08:51 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:08:52 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 416 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:08:52 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:08:53 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:08:53 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:08:53 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:08:53 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4492 ms
+2026-01-30 12:08:54 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:08:54 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5072e638
+2026-01-30 12:08:54 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:08:54 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:08:54 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:08:55 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:08:56 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:08:57 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:08:58 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:58 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:08:58 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:08:58 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:08:58 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:08:58 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:08:58 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:08:58 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:08:58 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:09:01 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:09:01 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:09:01 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:09:03 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:09:04 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 254 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:09:04 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:09:05 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:09:05 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:09:05 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:09:05 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 3939 ms
+2026-01-30 12:09:06 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:09:06 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4fd37449
+2026-01-30 12:09:06 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:09:06 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:09:06 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:09:07 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:09:08 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:09:10 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:09:10 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:10 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:09:11 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:09:11 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:09:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:09:11 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:09:11 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:09:11 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:09:14 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:09:14 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:09:14 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:09:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:09:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 265 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:09:17 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:09:18 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:09:18 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:09:18 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:09:18 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 3854 ms
+2026-01-30 12:09:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:09:19 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17befef0
+2026-01-30 12:09:19 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:09:19 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:09:19 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:09:20 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:09:21 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:09:22 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:09:23 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:23 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:09:23 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:09:23 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:09:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:09:23 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:09:23 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:09:23 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:09:26 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:09:26 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:09:26 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:09:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:09:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 269 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:09:29 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:09:30 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:09:30 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:09:30 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:09:30 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4270 ms
+2026-01-30 12:09:30 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:09:31 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@431babe6
+2026-01-30 12:09:31 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:09:31 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:09:31 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:09:33 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:09:33 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:09:34 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:09:34 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:35 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:09:35 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:09:35 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:35 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:09:35 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:09:35 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:09:35 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:09:35 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:09:37 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:09:37 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:09:37 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:09:40 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:09:40 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 393 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:09:41 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:09:42 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:09:42 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:09:42 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:09:42 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4205 ms
+2026-01-30 12:09:42 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:09:43 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17befef0
+2026-01-30 12:09:43 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:09:43 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:09:43 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:09:44 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:09:44 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:09:45 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:09:46 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:46 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:09:46 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:09:46 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:46 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:09:46 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:09:46 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:09:46 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:09:46 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:09:49 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:09:49 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:09:49 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:09:52 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:09:52 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 356 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:09:53 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:09:54 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:09:54 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:09:54 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:09:54 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 5675 ms
+2026-01-30 12:09:55 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:09:55 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24018c8b
+2026-01-30 12:09:55 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:09:56 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:09:56 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:09:57 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:09:57 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:09:58 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:09:58 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:59 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:09:59 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:09:59 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:09:59 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:09:59 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:09:59 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:09:59 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:09:59 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:10:02 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:10:02 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:10:02 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:10:04 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:10:04 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 273 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:10:05 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:10:06 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:10:06 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:10:06 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:10:06 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 3809 ms
+2026-01-30 12:10:06 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:10:07 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4fd37449
+2026-01-30 12:10:07 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:10:07 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:10:07 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:10:08 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:10:08 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:10:10 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:10:10 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:10 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:10:11 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:10:11 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:10:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:10:11 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:10:11 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:10:11 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:10:14 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:10:14 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:10:14 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:10:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:10:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 273 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:10:16 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:10:17 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:10:17 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:10:17 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:10:17 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 3531 ms
+2026-01-30 12:10:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:10:18 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@8debe42
+2026-01-30 12:10:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:10:18 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:10:18 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:10:19 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:10:20 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:10:22 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:10:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:22 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:10:22 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:10:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:22 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:10:22 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:10:22 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:10:22 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:10:22 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:10:25 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:10:25 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:10:25 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:10:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:10:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 343 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:10:28 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:10:29 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:10:29 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:10:29 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:10:29 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 3648 ms
+2026-01-30 12:10:29 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:10:30 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@431babe6
+2026-01-30 12:10:30 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:10:30 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:10:30 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:10:31 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:10:32 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:10:33 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:10:33 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:33 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:10:34 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:10:34 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:34 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:10:34 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:10:34 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:10:34 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:10:34 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:10:36 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:10:36 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:10:36 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:10:38 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:10:38 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 269 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:10:39 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:10:40 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:10:40 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:10:40 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:10:40 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4002 ms
+2026-01-30 12:10:40 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:10:41 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17befef0
+2026-01-30 12:10:41 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:10:41 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:10:41 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:10:42 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:10:43 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:10:44 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:10:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:44 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:10:45 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:10:45 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:10:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:10:45 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:10:45 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:10:45 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:10:47 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:10:47 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:10:47 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:10:49 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:10:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 368 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:10:51 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:10:51 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:10:51 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:10:51 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:10:51 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4288 ms
+2026-01-30 12:10:52 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:10:53 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2f73f0c7
+2026-01-30 12:10:53 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:10:53 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:10:53 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:10:54 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:10:54 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:10:56 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:10:56 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:56 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:10:56 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:10:56 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:10:56 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:10:56 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:10:57 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:10:57 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:10:57 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:11:00 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:11:00 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:11:00 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:11:02 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:11:03 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 295 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:11:04 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:11:04 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:11:04 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:11:04 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:11:04 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4533 ms
+2026-01-30 12:11:05 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:11:05 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@70c31b17
+2026-01-30 12:11:05 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:11:05 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:11:05 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:11:06 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:11:07 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:11:09 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:11:09 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:09 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:11:10 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:11:10 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:10 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:11:10 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:11:10 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:11:10 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:11:10 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:11:13 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:11:13 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:11:13 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:11:15 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:11:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 383 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:11:16 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:11:17 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:11:17 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:11:17 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:11:17 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4157 ms
+2026-01-30 12:11:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:11:18 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3dc55719
+2026-01-30 12:11:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:11:19 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:11:19 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:11:20 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:11:20 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:11:22 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:11:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:22 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:11:23 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:11:23 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:11:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:11:23 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:11:23 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:11:23 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:11:25 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:11:26 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:11:26 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:11:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:11:29 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 244 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:11:29 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:11:31 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:11:31 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:11:31 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:11:31 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 5648 ms
+2026-01-30 12:11:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:11:33 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5950054d
+2026-01-30 12:11:33 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:11:33 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:11:33 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:11:34 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:11:35 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:11:36 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:11:37 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:37 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:11:37 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:11:37 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:37 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:11:37 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:11:37 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:11:37 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:11:37 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:11:39 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:11:39 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:11:39 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:11:41 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:11:42 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 275 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:11:42 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:11:43 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:11:43 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:11:43 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:11:43 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4054 ms
+2026-01-30 12:11:44 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:11:44 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@8debe42
+2026-01-30 12:11:44 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:11:44 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:11:45 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:11:46 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:11:46 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:11:47 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:11:48 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:48 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:11:48 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:11:48 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:11:48 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:11:48 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:11:48 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:11:48 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:11:48 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:11:51 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:11:51 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:11:51 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:11:54 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:11:54 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 237 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:11:55 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
+2026-01-30 12:11:56 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8092 (http)
+2026-01-30 12:11:56 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-30 12:11:56 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-01-30 12:11:56 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4835 ms
+2026-01-30 12:11:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-30 12:11:57 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5950054d
+2026-01-30 12:11:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-30 12:11:57 [main] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-01-30 12:11:58 [main] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.0.Final
+2026-01-30 12:11:59 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-30 12:11:59 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://hostel-db:3306/hostel_db?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hostel_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-30 12:12:01 [main] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table hostel_categories 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+Hibernate: 
+    alter table hostels 
+       modify column status enum ('APPROVED','PENDING','REJECTED') not null
+2026-01-30 12:12:01 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:12:01 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-30 12:12:02 [main] WARN  o.s.b.w.s.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'categoryController': Unsatisfied dependency expressed through field 'categoryService': Error creating bean with name 'categoryService': Unsatisfied dependency expressed through field 'authClient': No qualifying bean of type 'com.cdac.hostel.client.AuthServiceClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2026-01-30 12:12:02 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-30 12:12:02 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-30 12:12:02 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-30 12:12:02 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-01-30 12:12:02 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-30 12:12:02 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field authClient in com.cdac.hostel.service.CategoryService required a bean of type 'com.cdac.hostel.client.AuthServiceClient' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cdac.hostel.client.AuthServiceClient' in your configuration.
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.1)
+
+2026-01-30 12:12:05 [main] INFO  c.c.hostel.HostelServiceApplication - Starting HostelServiceApplication v0.0.1-SNAPSHOT using Java 17.0.17 with PID 1 (/app/app.jar started by root in /app)
+2026-01-30 12:12:05 [main] DEBUG c.c.hostel.HostelServiceApplication - Running with Spring Boot v4.0.1, Spring v7.0.2
+2026-01-30 12:12:05 [main] INFO  c.c.hostel.HostelServiceApplication - The following 1 profile is active: "docker"
+2026-01-30 12:12:08 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-30 12:12:08 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 267 ms. Found 6 JPA repository interfaces.
+2026-01-30 12:12:09 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=4ab9c078-d554-3210-a9a0-ade123cefe93
