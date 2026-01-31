@@ -69,12 +69,16 @@ export function FoodCard({ foodPlace, onClick, showStatus = false }: FoodCardPro
                     </div>
                 )}
 
-                {/* Rating */}
-                <div className="mb-3 flex items-center gap-1 text-sm">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-medium">{foodPlace.averageRating.toFixed(1)}</span>
-                    <span className="text-muted-foreground">/ 5.0</span>
-                </div>
+                {/* Rating - Only show for approved places, not in admin review */}
+                {!showStatus && (
+                    <div className="mb-3 flex items-center gap-1 text-sm">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="font-medium">
+                            {foodPlace.averageRating != null ? foodPlace.averageRating.toFixed(1) : '0.0'}
+                        </span>
+                        <span className="text-muted-foreground">/ 5.0</span>
+                    </div>
+                )}
 
                 {/* Categories */}
                 {foodPlace.categories && foodPlace.categories.length > 0 && (

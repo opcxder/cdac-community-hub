@@ -206,7 +206,12 @@ export function UserManagement() {
                                     <TableCell>
                                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                             <Calendar className="h-4 w-4" />
-                                            <span>{format(new Date(user.createdAt), 'MMM dd, yyyy')}</span>
+                                            <span>
+                                                {user.createdAt
+                                                    ? format(new Date(user.createdAt), 'MMM dd, yyyy')
+                                                    : 'N/A'
+                                                }
+                                            </span>
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-right">

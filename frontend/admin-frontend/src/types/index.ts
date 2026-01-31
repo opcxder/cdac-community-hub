@@ -113,29 +113,28 @@ export interface HostelCategory {
 export interface Hostel {
   hostelId: number;
   hostelName: string;
-  description?: string;
   address: string;
   city?: string;
   locality?: string;
   landmark?: string;
-  mapLocation?: string;
   distanceFromCdac?: string;
   monthlyRentMin?: number;
   monthlyRentMax?: number;
-  hasWifi?: boolean;
-  hasAc?: boolean;
-  hasMess?: boolean;
-  hasLaundry?: boolean;
   roomCapacity?: number;
+  hasWifi: boolean;
+  hasAc: boolean;
+  hasMess: boolean;
+  hasLaundry: boolean;
   contactPersonName?: string;
   contactPersonPhone?: string;
-  submittedByUserId: number;
+  description?: string;
+  categories?: HostelCategory[];
+  imageUrls?: string[];
   status: ApprovalStatus;
   rejectionReason?: string;
-  categories?: HostelCategory[];
-  categoryIds?: number[];
+  submittedByUserId: number;
   createdAt: string;
-  approvedAt?: string;
+  updatedAt: string;
 }
 
 export interface CreateHostelRequest {
@@ -171,7 +170,7 @@ export interface Suggestion {
   suggestionId: number;
   userId: number;
   category: SuggestionCategory;
-  content: string;
+  suggestionText: string;
   createdAt: string;
 }
 

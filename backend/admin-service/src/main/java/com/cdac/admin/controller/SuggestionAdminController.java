@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cdac.admin.dto.SuggestionDto;
 import com.cdac.admin.service.SuggestionAdminService;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/admin/suggestions")
 public class SuggestionAdminController {
+
+    private static final Logger logger = LoggerFactory.getLogger(SuggestionAdminController.class);
 
     private final SuggestionAdminService suggestionAdminService;
 
@@ -29,9 +32,14 @@ public class SuggestionAdminController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
-        return ResponseEntity.ok(
-            suggestionAdminService.getSuggestions(page, size)
-        );
+        logger.info("💡 [SUGGESTION-ADMIN] Fetching suggestions: page={}, size={}", page, size);
+        List<SuggestionDto> suggestions = suggestionAdminService.getSuggestions(page, size);
+        logger.info("💡 [SUGGESTION-ADMIN] Found {} suggestions", suggestions.size());
+        if (!suggestions.isEmpty()) {
+            logger.info("💡 [SUGGESTION-ADMIN] First item: {}", suggestions.get(0));
+        }
+
+        return ResponseEntity.ok(suggestions);
     }
 
     @GetMapping("/category/{category}")
@@ -39,7 +47,6 @@ public class SuggestionAdminController {
             @PathVariable String category) {
 
         return ResponseEntity.ok(
-            suggestionAdminService.getSuggestionsByCategory(category)
-        );
+                suggestionAdminService.getSuggestionsByCategory(category));
     }
 }

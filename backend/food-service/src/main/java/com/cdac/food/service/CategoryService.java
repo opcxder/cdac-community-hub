@@ -81,11 +81,19 @@ public class CategoryService {
      * @return list of approved categories
      */
     public List<CategoryDTO> getAllApprovedCategories() {
-        logger.debug("Fetching all approved categories");
+        logger.info("🔍 [CATEGORY-SERVICE] Fetching all approved categories from database");
 
         List<FoodCategory> categories = categoryRepository.findByStatus(ApprovalStatus.APPROVED);
 
-        logger.debug("Found {} approved categories", categories.size());
+        logger.info("📊 [CATEGORY-SERVICE] Found {} approved categories", categories.size());
+
+        if (categories.isEmpty()) {
+            logger.warn(
+                    "⚠️  [CATEGORY-SERVICE] No approved categories in database! Check if data seeding ran successfully.");
+        } else {
+            logger.debug("📋 [CATEGORY-SERVICE] Approved categories: {}",
+                    categories.stream().map(FoodCategory::getCategoryName).toList());
+        }
 
         return categories.stream()
                 .map(this::mapToDTO)

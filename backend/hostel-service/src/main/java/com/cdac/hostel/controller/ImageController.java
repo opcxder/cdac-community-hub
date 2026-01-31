@@ -1,9 +1,11 @@
 package com.cdac.hostel.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,29 +24,32 @@ import com.cdac.hostel.service.ImageService;
  * Handles image upload, retrieval, and deletion.
  */
 @RestController
-@RequestMapping("/api/hostel/images")
+@RequestMapping("/api/hostel")
 public class ImageController {
 
     @Autowired
     private ImageService imageService;
 
     /**
-     * Uploads an image for a hostel.
-     * Maximum 5 images allowed per hostel.
+     * Upload images for a hostel.
+     * POST /api/hostel/hostels/{hostelId}/images
      *
      * @param hostelId The ID of the hostel
-     * @param file The image file to upload
-     * @param displayOrder The display order (1-5)
-     * @return The created HostelImage entity with 201 CREATED status
+     * @param files    The image files (can be multiple)
+     * @return Map containing list of uploaded image URLs
      */
-    @PostMapping("/upload")
-    public ResponseEntity<HostelImage> uploadImage(
-            @RequestParam Long hostelId,
-            @RequestParam MultipartFile file,
-            @RequestParam Integer displayOrder) {
+    @PostMapping("/hostels/{hostelId}/images")
+    public ResponseEntity<Map<String, Object>> uploadImages(
+            @PathVariable Long hostelId,
+            @RequestParam("images") MultipartFile[] files) {
 
-        HostelImage image = imageService.uploadImage(hostelId, file, displayOrder);
-        return ResponseEntity.status(HttpStatus.CREATED).body(image);
+        List<String> imageUrls = imageService.uploadImages(hostelId, files);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("imageUrls", imageUrls);
+        response.put("message", "Images uploaded successfully");
+
+        return ResponseEntity.ok(response);
     }
 
     /**

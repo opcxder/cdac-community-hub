@@ -6,39 +6,39 @@ package com.cdac.food.model;
  */
 public enum PriceRange {
     /**
-     * Budget-friendly pricing (with hyphen as per database requirement)
+     * Budget-friendly pricing
      */
-    BUDGET_FRIENDLY("Budget-friendly"),
-    
+    BUDGET("Budget"),
+
     /**
      * Medium pricing
      */
     MEDIUM("Medium"),
-    
+
     /**
      * Expensive pricing
      */
     EXPENSIVE("Expensive");
-    
+
     private final String displayValue;
-    
+
     PriceRange(String displayValue) {
         this.displayValue = displayValue;
     }
-    
+
     /**
-     * Get the database/display value with proper formatting (e.g., "Budget-friendly")
+     * Get the database/display value with proper formatting
      */
     public String getDisplayValue() {
         return displayValue;
     }
-    
+
     /**
      * Convert from database string value to enum
      */
     public static PriceRange fromDisplayValue(String value) {
         for (PriceRange range : PriceRange.values()) {
-            if (range.displayValue.equals(value)) {
+            if (range.displayValue.equalsIgnoreCase(value) || range.name().equalsIgnoreCase(value)) {
                 return range;
             }
         }

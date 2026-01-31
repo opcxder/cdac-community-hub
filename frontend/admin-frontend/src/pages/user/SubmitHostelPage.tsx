@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import client from "@/api/client";
+import { useAuthStore } from "@/stores/authStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +22,9 @@ const hostelSchema = z.object({
     address: z.string().min(5, "Address is required"),
     city: z.string().min(2, "City is required"),
     locality: z.string().min(2, "Locality is required"),
+    landmark: z.string().optional(),
     distanceFromCDAC: z.string().min(1, "Distance is required"),
+    mapLocation: z.string().optional(),
     monthlyRentMin: z.number({ required_error: "Minimum rent is required" }).min(0),
     monthlyRentMax: z.number({ required_error: "Maximum rent is required" }).min(0),
     contactPersonName: z.string().min(2, "Contact person name is required"),
@@ -57,10 +60,17 @@ export default function SubmitHostelPage() {
     useEffect(() => {
         async function fetchCategories() {
             try {
+                console.log('🏠 [SUBMIT-HOSTEL] Fetching categories from /api/hostel/categories');
                 const response = await client.get<Category[]>("/api/hostel/categories");
+                console.log('✅ [SUBMIT-HOSTEL] Categories fetched successfully:', response.data);
+                console.log('📊 [SUBMIT-HOSTEL] Number of categories:', response.data.length);
                 setCategories(response.data);
+
+                if (response.data.length === 0) {
+                    console.warn('⚠️  [SUBMIT-HOSTEL] No categories available! Check if hostel-service is running and categories are seeded.');
+                }
             } catch (err) {
-                console.error("Failed to load categories:", err);
+                console.error("❌ [SUBMIT-HOSTEL] Failed to load categories:", err);
             }
         }
         fetchCategories();
@@ -89,9 +99,19 @@ export default function SubmitHostelPage() {
         setError(null);
 
         try {
+            console.log('🏠 [SUBMIT-HOSTEL] Submitting hostel data:', data);
+
+            // Get userId from auth store
+            const userId = useAuthStore.getState().user?.userId;
+            if (!userId) {
+                throw new Error("User not authenticated");
+            }
+
+            console.log('👤 [SUBMIT-HOSTEL] User ID:', userId);
+
             // Step 1: Create hostel
-            const hostelResponse = await client.post("/api/hostel/hostels", {
-                name: data.name,
+            const hostelResponse = await client.post(`/api/hostel/hostels?userId=${userId}`, {
+                hostelName: data.name,  // Backend expects hostelName, not name
                 description: data.description || "",
                 address: data.address,
                 city: data.city,
@@ -107,20 +127,26 @@ export default function SubmitHostelPage() {
                 roomTypes: selectedRoomTypes
             });
 
+            console.log('✅ [SUBMIT-HOSTEL] Hostel created successfully:', hostelResponse.data);
             const hostelId = hostelResponse.data.hostelId;
 
             // Step 2: Upload images
             const formData = new FormData();
             images.forEach(image => formData.append('images', image));
 
+            console.log('📤 [SUBMIT-HOSTEL] Uploading images for hostel ID:', hostelId);
             await client.post(`/api/hostel/hostels/${hostelId}/images`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
+            console.log('✅ [SUBMIT-HOSTEL] Images uploaded successfully');
             toast.success("Hostel submitted for approval!");
             navigate("/dashboard");
         } catch (err: any) {
-            const message = err?.response?.data?.message || "Failed to submit hostel";
+            console.error("❌ [SUBMIT-HOSTEL] Submission failed:", err);
+            console.error("❌ [SUBMIT-HOSTEL] Error response:", err?.response?.data);
+
+            const message = err?.response?.data?.message || err?.response?.data?.error || "Failed to submit hostel";
             setError(message);
             toast.error(message);
         } finally {
@@ -214,6 +240,18 @@ export default function SubmitHostelPage() {
                                 </div>
 
                                 <div className="space-y-2">
+                                    <Label htmlFor="landmark">Landmark</Label>
+                                    <Input
+                                        id="landmark"
+                                        placeholder="e.g., Near Metro Station"
+                                        {...register("landmark")}
+                                        disabled={loading}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
                                     <Label htmlFor="distanceFromCDAC">Distance from CDAC *</Label>
                                     <Input
                                         id="distanceFromCDAC"
@@ -224,6 +262,16 @@ export default function SubmitHostelPage() {
                                     {errors.distanceFromCDAC && (
                                         <p className="text-sm text-red-600">{errors.distanceFromCDAC.message}</p>
                                     )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="mapLocation">Map Location (Google Maps Link)</Label>
+                                    <Input
+                                        id="mapLocation"
+                                        placeholder="https://maps.google.com/..."
+                                        {...register("mapLocation")}
+                                        disabled={loading}
+                                    />
                                 </div>
                             </div>
 

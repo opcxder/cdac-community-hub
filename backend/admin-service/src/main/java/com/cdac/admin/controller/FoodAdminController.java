@@ -15,9 +15,14 @@ import com.cdac.admin.dto.PendingFoodDto;
 import com.cdac.admin.dto.RejectFoodDto;
 import com.cdac.admin.service.FoodAdminService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/admin/foods")
 public class FoodAdminController {
+
+	private static final Logger logger = LoggerFactory.getLogger(FoodAdminController.class);
 
 	private final FoodAdminService foodAdminService;
 
@@ -27,7 +32,12 @@ public class FoodAdminController {
 
 	@GetMapping("/pending")
 	public ResponseEntity<List<PendingFoodDto>> getPendingFood() {
+		logger.info("🍔 [FOOD-ADMIN] Fetching pending food places...");
 		List<PendingFoodDto> pendingFoods = foodAdminService.getPendingFoods();
+		logger.info("🍔 [FOOD-ADMIN] Found {} pending food places", pendingFoods.size());
+		if (!pendingFoods.isEmpty()) {
+			logger.info("🍔 [FOOD-ADMIN] First item: {}", pendingFoods.get(0));
+		}
 		return ResponseEntity.ok(pendingFoods);
 	}
 

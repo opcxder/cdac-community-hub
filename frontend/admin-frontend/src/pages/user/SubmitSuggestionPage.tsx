@@ -1,160 +1,135 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import client from "@/api/client";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle2 } from "lucide-react";
-import type { CreateSuggestionRequest } from "@/types/api";
-
-const suggestionSchema = z.object({
-    category: z.enum(['FOOD', 'HOSTEL', 'GENERAL'], {
-        required_error: "Please select a category"
-    }),
-    content: z.string().min(10, "Suggestion must be at least 10 characters").max(1000, "Suggestion must be less than 1000 characters")
-});
-
-type SuggestionFormData = z.infer<typeof suggestionSchema>;
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import client from "@/api/client";
+import { MessageSquare } from "lucide-react";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function SubmitSuggestionPage() {
+    const [suggestion, setSuggestion] = useState("");
+    const [category, setCategory] = useState("OTHER");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<'FOOD' | 'HOSTEL' | 'GENERAL'>('GENERAL');
+    const navigate = useNavigate();
+    const { toast } = useToast();
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<SuggestionFormData>({
-        resolver: zodResolver(suggestionSchema),
-        defaultValues: {
-            category: 'GENERAL'
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!suggestion.trim()) {
+            toast({
+                title: "Validation Error",
+                description: "Please enter your suggestion",
+                variant: "destructive",
+            });
+            return;
         }
-    });
-
-    const onSubmit = async (data: SuggestionFormData) => {
-        setLoading(true);
-        setError(null);
 
         try {
-            // Get userId from localStorage (assuming it's stored after login)
-            const userStr = localStorage.getItem('user');
-            if (!userStr) {
-                throw new Error('Please login first');
-            }
-            const user = JSON.parse(userStr) as { userId: number };
+            setLoading(true);
 
-            const requestData: CreateSuggestionRequest = {
-                userId: user.userId,
-                category: data.category,
-                content: data.content
-            };
+            // Get userId from auth store
+            const userId = useAuthStore.getState().user?.userId;
+            console.log("📝 [SUBMIT-SUGGESTION] Submitting suggestion:", {
+                suggestionText: suggestion,
+                category: category,
+                userId: userId
+            });
 
-            await client.post('/api/suggestions', requestData);
+            const response = await client.post("/api/suggestions", {
+                suggestionText: suggestion,
+                category: category,
+                userId: userId
+            });
 
-            setSuccess(true);
-            reset();
+            console.log("✅ [SUBMIT-SUGGESTION] Success:", response.data);
 
-            // Reset success message after 5 seconds
-            setTimeout(() => {
-                setSuccess(false);
-            }, 5000);
-        } catch (err: unknown) {
-            const message = (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-                (err as Error).message ||
-                "Failed to submit suggestion. Please try again.";
-            setError(message);
+            toast({
+                title: "Success",
+                description: "Your suggestion has been submitted successfully!",
+            });
+            setSuggestion("");
+            setCategory("OTHER");
+            navigate("/dashboard");
+        } catch (error: any) {
+            console.error("❌ [SUBMIT-SUGGESTION] Error:", error);
+            console.error("❌ [SUBMIT-SUGGESTION] Response:", error.response?.data);
+            toast({
+                title: "Error",
+                description: error.response?.data?.message || "Failed to submit suggestion. Please try again.",
+                variant: "destructive",
+            });
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="container mx-auto p-6 max-w-2xl">
+        <div className="container mx-auto py-6 max-w-2xl">
+            <div className="mb-6">
+                <h1 className="text-3xl font-bold">Share Your Suggestions</h1>
+                <p className="text-muted-foreground">
+                    Help us improve the platform with your feedback and ideas
+                </p>
+            </div>
+
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-2xl">Submit a Suggestion</CardTitle>
+                    <div className="flex items-center gap-2">
+                        <MessageSquare className="h-5 w-5 text-primary" />
+                        <CardTitle>Submit a Suggestion</CardTitle>
+                    </div>
                     <CardDescription>
-                        Help us improve the CDAC Community Hub by sharing your ideas and feedback
+                        Share your thoughts on how we can make this platform better for the CDAC community
                     </CardDescription>
                 </CardHeader>
-
                 <CardContent>
-                    {success && (
-                        <Alert className="mb-4 border-green-200 bg-green-50">
-                            <CheckCircle2 className="h-4 w-4 text-green-600" />
-                            <AlertDescription className="text-green-800">
-                                Thank you! Your suggestion has been submitted successfully.
-                            </AlertDescription>
-                        </Alert>
-                    )}
-
-                    {error && (
-                        <Alert variant="destructive" className="mb-4">
-                            <AlertDescription>{error}</AlertDescription>
-                        </Alert>
-                    )}
-
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="category">Category *</Label>
-                            <Select
-                                value={selectedCategory}
-                                onValueChange={(value) => {
-                                    setSelectedCategory(value as 'FOOD' | 'HOSTEL' | 'GENERAL');
-                                }}
-                                disabled={loading}
-                            >
+                            <Select value={category} onValueChange={setCategory}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a category" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="GENERAL">General</SelectItem>
-                                    <SelectItem value="FOOD">Food Places</SelectItem>
-                                    <SelectItem value="HOSTEL">Hostels</SelectItem>
+                                    <SelectItem value="OTHER">General / Other</SelectItem>
+                                    <SelectItem value="FACILITIES">Facilities</SelectItem>
+                                    <SelectItem value="CANTEEN">Canteen</SelectItem>
+                                    <SelectItem value="CLASSROOM">Classroom</SelectItem>
                                 </SelectContent>
                             </Select>
-                            <input type="hidden" {...register("category")} value={selectedCategory} />
-                            {errors.category && (
-                                <p className="text-sm text-red-600">{errors.category.message}</p>
-                            )}
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="content">Your Suggestion *</Label>
+                            <Label htmlFor="suggestion">Your Suggestion *</Label>
                             <Textarea
-                                id="content"
-                                placeholder="Share your ideas, feedback, or suggestions here..."
+                                id="suggestion"
+                                placeholder="e.g., It would be great if we could filter food places by cuisine type..."
+                                value={suggestion}
+                                onChange={(e) => setSuggestion(e.target.value)}
                                 rows={8}
-                                {...register("content")}
-                                disabled={loading}
                                 className="resize-none"
                             />
-                            {errors.content && (
-                                <p className="text-sm text-red-600">{errors.content.message}</p>
-                            )}
-                            <p className="text-xs text-muted-foreground">
-                                Minimum 10 characters, maximum 1000 characters
+                            <p className="text-sm text-muted-foreground">
+                                Be as detailed as possible to help us understand your suggestion better
                             </p>
                         </div>
 
-                        <div className="flex gap-3">
-                            <Button
-                                type="submit"
-                                className="flex-1"
-                                disabled={loading}
-                            >
+                        <div className="flex gap-2">
+                            <Button type="submit" disabled={loading || !suggestion.trim()}>
                                 {loading ? "Submitting..." : "Submit Suggestion"}
                             </Button>
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={() => reset()}
+                                onClick={() => navigate("/dashboard")}
                                 disabled={loading}
                             >
-                                Clear
+                                Cancel
                             </Button>
                         </div>
                     </form>

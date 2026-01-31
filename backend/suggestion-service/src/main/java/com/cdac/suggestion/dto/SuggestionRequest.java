@@ -6,6 +6,7 @@ public class SuggestionRequest {
 
     private String suggestionText;
     private SuggestionCategory category;
+    private Long userId;
 
     // Getters and Setters
     public String getSuggestionText() {
@@ -22,5 +23,13 @@ public class SuggestionRequest {
 
     public void setCategory(SuggestionCategory category) {
         this.category = category;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -37,16 +37,28 @@ export default function SignupPage() {
 
     // Generate username function
     const generateUsername = async () => {
+        console.log('🔄 [SIGNUP] Starting username generation...');
         setGeneratingUsername(true);
         try {
+            console.log('📡 [SIGNUP] Making API call to:', '/api/auth/generate-username');
             const response = await client.get<{ username: string }>('/api/auth/generate-username');
+            console.log('✅ [SIGNUP] API call successful! Response:', response.data);
             setGeneratedUsername(response.data.username);
+            console.log('✅ [SIGNUP] Username set to:', response.data.username);
         } catch (err) {
-            console.error('Failed to generate username:', err);
+            console.error('❌ [SIGNUP] Failed to generate username:', err);
+            console.error('❌ [SIGNUP] Error details:', {
+                message: (err as any)?.message,
+                response: (err as any)?.response?.data,
+                status: (err as any)?.response?.status
+            });
             // Fallback to client-side generation
-            setGeneratedUsername('user_' + Math.random().toString(36).substring(7));
+            const fallbackUsername = 'user_' + Math.random().toString(36).substring(7);
+            console.log('🔄 [SIGNUP] Using fallback username:', fallbackUsername);
+            setGeneratedUsername(fallbackUsername);
         } finally {
             setGeneratingUsername(false);
+            console.log('✅ [SIGNUP] Username generation complete');
         }
     };
 

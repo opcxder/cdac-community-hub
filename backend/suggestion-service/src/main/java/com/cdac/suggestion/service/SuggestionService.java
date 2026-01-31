@@ -73,4 +73,18 @@ public class SuggestionService {
                 .toList();
     }
 
+    /**
+     * Get all suggestions for public community view (non-paginated)
+     */
+    public List<SuggestionDTO> getAllSuggestions() {
+        log.info("Fetching all suggestions for community view");
+
+        return repository.findAll().stream()
+                .map(s -> {
+                    String username = userCacheService.getUserWithCache(s.getUserId()).getUsername();
+                    return SuggestionDTO.from(s, username);
+                })
+                .collect(Collectors.toList());
+    }
+
 }

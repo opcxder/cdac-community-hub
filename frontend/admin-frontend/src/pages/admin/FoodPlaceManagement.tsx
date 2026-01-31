@@ -37,9 +37,16 @@ export function FoodPlaceManagement() {
     const fetchFoodPlaces = async () => {
         try {
             setLoading(true);
+            console.log("🍔 [FOOD-ADMIN] Fetching pending food places...");
             const data = await adminService.getPendingFood();
+            console.log("🍔 [FOOD-ADMIN] Received data:", {
+                count: data.length,
+                firstItem: data[0],
+                allData: data
+            });
             setFoodPlaces(data);
         } catch (error) {
+            console.error("❌ [FOOD-ADMIN] Error fetching food places:", error);
             toast({
                 title: 'Error',
                 description: 'Failed to fetch food places',
@@ -139,7 +146,7 @@ export function FoodPlaceManagement() {
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {foodPlaces.map((place) => (
                         <div key={place.placeId} className="relative">
-                            <FoodCard foodPlace={place} />
+                            <FoodCard foodPlace={place} showStatus={true} />
                             <div className="mt-3 flex gap-2">
                                 <Button
                                     size="sm"

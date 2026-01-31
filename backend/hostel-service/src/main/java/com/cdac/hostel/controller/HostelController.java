@@ -2,6 +2,8 @@ package com.cdac.hostel.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,8 @@ import com.cdac.hostel.service.RankingService;
 @RequestMapping("/api/hostel/hostels")
 public class HostelController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HostelController.class);
+
     @Autowired
     private HostelService hostelService;
 
@@ -41,19 +45,23 @@ public class HostelController {
 
     @PostMapping
     public Hostel createHostel(
-            @RequestBody Hostel hostel,
+            @RequestBody com.cdac.hostel.dto.HostelRequest request,
             @RequestParam Long userId) {
 
-        return hostelService.createHostel(hostel, userId);
+        logger.info("🏠 [HOSTEL-CONTROLLER] Received hostel submission: name={}, userId={}",
+                request.getHostelName(), userId);
+        logger.info("🏠 [HOSTEL-CONTROLLER] Request data: {}", request);
+
+        return hostelService.createHostel(request, userId);
     }
 
     @GetMapping("/approved")
     public List<Hostel> getApprovedHostels() {
         return hostelService.getApprovedHostels();
     }
-    
+
     @GetMapping("/pending")
-    public List<Hostel> getPendingHostels() {
+    public List<com.cdac.hostel.dto.HostelDTO> getPendingHostels() {
         return hostelService.getPendingHostels();
     }
 
@@ -116,7 +124,7 @@ public class HostelController {
     @GetMapping("/ranked/top")
     public ResponseEntity<List<RankedHostelDTO>> getTopRankedHostels(
             @RequestParam(defaultValue = "10") int limit) {
-        
+
         List<RankedHostelDTO> topRanked = rankingService.getTopRankedHostels(limit);
         return ResponseEntity.ok(topRanked);
     }

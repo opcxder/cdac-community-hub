@@ -36,56 +36,67 @@ public class ImageService {
     private Cloudinary cloudinary;
 
     /**
-     * Uploads an image for a hostel to Cloudinary and saves metadata to database.
+     * Uploads multiple images for a hostel.
      * Enforces the 5-image limit per hostel.
      *
-     * @param hostelId     The ID of the hostel
-     * @param file         The image file to upload
-     * @param displayOrder The display order (1-5)
-     * @return The created HostelImage entity
-     * @throws InvalidRequestException if image limit exceeded
-     * @throws ImageUploadException    if upload fails
+     * @param hostelId The ID of the hostel
+     * @param files    The image files to upload
+     * @return List of uploaded image URLs
      */
-    public HostelImage uploadImage(Long hostelId, MultipartFile file, Integer displayOrder) {
-        logger.info("Uploading image for hostel: hostelId={}, displayOrder={}", hostelId, displayOrder);
+    public List<String> uploadImages(Long hostelId, MultipartFile[] files) {
+        logger.info("Uploading {} images for hostel: hostelId={}", files.length, hostelId);
 
         // Check image limit
         long currentImageCount = imageRepository.countByHostelId(hostelId);
-        if (currentImageCount >= MAX_IMAGES_PER_HOSTEL) {
-            logger.error("Image upload failed - Maximum limit reached: hostelId={}, currentCount={}",
-                    hostelId, currentImageCount);
-            throw new InvalidRequestException("Maximum " + MAX_IMAGES_PER_HOSTEL + " images allowed per hostel");
+        if (currentImageCount + files.length > MAX_IMAGES_PER_HOSTEL) {
+            throw new InvalidRequestException(
+                    "Cannot upload " + files.length + " images. Maximum " + MAX_IMAGES_PER_HOSTEL
+                            + " images allowed per hostel. Current count: " + currentImageCount);
         }
 
-        try {
-            // Upload to Cloudinary
-            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(),
-                    ObjectUtils.asMap(
-                            "folder", "hostel-service/hostels",
-                            "resource_type", "image"));
+        List<String> uploadedUrls = new java.util.ArrayList<>();
 
-            String imageUrl = (String) uploadResult.get("secure_url");
-            String publicId = (String) uploadResult.get("public_id");
+        for (int i = 0; i < files.length; i++) {
+            MultipartFile file = files[i];
+            try {
+                // Upload to Cloudinary
+                Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                        ObjectUtils.asMap(
+                                "folder", "hostel-service/hostels",
+                                "resource_type", "image"));
 
-            logger.info("Image uploaded to Cloudinary: publicId={}, url={}", publicId, imageUrl);
+                String imageUrl = (String) uploadResult.get("secure_url");
+                String publicId = (String) uploadResult.get("public_id");
 
-            // Save to database
-            HostelImage hostelImage = new HostelImage();
-            hostelImage.setHostelId(hostelId);
-            hostelImage.setImageUrl(imageUrl);
-            hostelImage.setPublicId(publicId);
-            hostelImage.setDisplayOrder(displayOrder);
+                // Save to database
+                HostelImage hostelImage = new HostelImage();
+                hostelImage.setHostelId(hostelId);
+                hostelImage.setImageUrl(imageUrl);
+                hostelImage.setPublicId(publicId);
+                // Calculate display order: current count + loop index + 1
+                hostelImage.setDisplayOrder((int) currentImageCount + i + 1);
 
-            HostelImage savedImage = imageRepository.save(hostelImage);
-            logger.info("Image metadata saved to database: imageId={}, hostelId={}",
-                    savedImage.getImageId(), hostelId);
+                imageRepository.save(hostelImage);
+                uploadedUrls.add(imageUrl);
 
-            return savedImage;
+                logger.debug("Uploaded image {}/{}: url={}", i + 1, files.length, imageUrl);
 
-        } catch (IOException e) {
-            logger.error("Image upload failed for hostelId={}: {}", hostelId, e.getMessage(), e);
-            throw new ImageUploadException("Failed to upload image: " + e.getMessage(), e);
+            } catch (IOException e) {
+                logger.error("Failed to upload image {} for hostelId={}: {}", file.getOriginalFilename(), hostelId,
+                        e.getMessage());
+                throw new ImageUploadException("Failed to upload image: " + file.getOriginalFilename(), e);
+            }
         }
+
+        logger.info("Successfully uploaded {} images for hostelId={}", uploadedUrls.size(), hostelId);
+        return uploadedUrls;
+    }
+
+    /**
+     * Uploads a single image (Legacy support, internal use).
+     */
+    public HostelImage uploadImage(Long hostelId, MultipartFile file, Integer displayOrder) {
+        return null; // Not used anymore by controller
     }
 
     /**

@@ -52,7 +52,7 @@ export function SuggestionsManagement() {
     const filteredSuggestions = suggestions?.content.filter((suggestion) => {
         const matchesSearch =
             !searchQuery ||
-            suggestion.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            suggestion.suggestionText.toLowerCase().includes(searchQuery.toLowerCase()) ||
             suggestion.userId.toString().includes(searchQuery);
 
         const matchesCategory =
@@ -63,11 +63,13 @@ export function SuggestionsManagement() {
 
     const getCategoryColor = (category: string) => {
         switch (category) {
-            case 'FOOD':
+            case 'CANTEEN':
                 return 'bg-orange-100 text-orange-800';
-            case 'HOSTEL':
+            case 'CLASSROOM':
                 return 'bg-purple-100 text-purple-800';
-            case 'GENERAL':
+            case 'FACILITIES':
+                return 'bg-green-100 text-green-800';
+            case 'OTHER':
                 return 'bg-blue-100 text-blue-800';
             default:
                 return 'bg-gray-100 text-gray-800';
@@ -103,9 +105,10 @@ export function SuggestionsManagement() {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">All Categories</SelectItem>
-                        <SelectItem value="FOOD">Food</SelectItem>
-                        <SelectItem value="HOSTEL">Hostel</SelectItem>
-                        <SelectItem value="GENERAL">General</SelectItem>
+                        <SelectItem value="OTHER">General / Other</SelectItem>
+                        <SelectItem value="FACILITIES">Facilities</SelectItem>
+                        <SelectItem value="CANTEEN">Canteen</SelectItem>
+                        <SelectItem value="CLASSROOM">Classroom</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
@@ -113,7 +116,7 @@ export function SuggestionsManagement() {
             {/* Suggestions List */}
             {!filteredSuggestions || filteredSuggestions.length === 0 ? (
                 <EmptyState
-                    icon={MessageSquare}
+                    icon={<MessageSquare />}
                     title="No suggestions found"
                     description={
                         searchQuery || categoryFilter !== 'all'
@@ -155,7 +158,7 @@ export function SuggestionsManagement() {
                                     </div>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-sm text-muted-foreground">{suggestion.content}</p>
+                                    <p className="text-sm text-muted-foreground">{suggestion.suggestionText}</p>
                                 </CardContent>
                             </Card>
                         ))}

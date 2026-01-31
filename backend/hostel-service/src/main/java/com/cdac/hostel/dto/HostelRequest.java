@@ -1,7 +1,12 @@
 package com.cdac.hostel.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+/**
+ * DTO for hostel submission requests from frontend.
+ * Maps frontend field names to backend Hostel entity.
+ */
 public class HostelRequest {
 
     private String hostelName;
@@ -9,17 +14,16 @@ public class HostelRequest {
     private String address;
     private String city;
     private String locality;
-
+    private String landmark;
+    private String mapLocation;
+    private String distanceFromCDAC; // Frontend sends this
     private BigDecimal monthlyRentMin;
     private BigDecimal monthlyRentMax;
-
-    private Boolean hasWifi;
-    private Boolean hasAc;
-    private Boolean hasMess;
-    private Boolean hasLaundry;
-
     private String contactPersonName;
-    private String contactPersonPhone;
+    private String contactPhone; // Frontend sends this
+    private List<String> facilities; // ["wifi", "ac", "mess", "laundry"]
+    private List<String> roomTypes; // ["single", "double", "triple", "quad"]
+    private Long categoryId;
 
     // Getters and Setters
     public String getHostelName() {
@@ -62,6 +66,30 @@ public class HostelRequest {
         this.locality = locality;
     }
 
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public String getMapLocation() {
+        return mapLocation;
+    }
+
+    public void setMapLocation(String mapLocation) {
+        this.mapLocation = mapLocation;
+    }
+
+    public String getDistanceFromCDAC() {
+        return distanceFromCDAC;
+    }
+
+    public void setDistanceFromCDAC(String distanceFromCDAC) {
+        this.distanceFromCDAC = distanceFromCDAC;
+    }
+
     public BigDecimal getMonthlyRentMin() {
         return monthlyRentMin;
     }
@@ -78,38 +106,6 @@ public class HostelRequest {
         this.monthlyRentMax = monthlyRentMax;
     }
 
-    public Boolean getHasWifi() {
-        return hasWifi;
-    }
-
-    public void setHasWifi(Boolean hasWifi) {
-        this.hasWifi = hasWifi;
-    }
-
-    public Boolean getHasAc() {
-        return hasAc;
-    }
-
-    public void setHasAc(Boolean hasAc) {
-        this.hasAc = hasAc;
-    }
-
-    public Boolean getHasMess() {
-        return hasMess;
-    }
-
-    public void setHasMess(Boolean hasMess) {
-        this.hasMess = hasMess;
-    }
-
-    public Boolean getHasLaundry() {
-        return hasLaundry;
-    }
-
-    public void setHasLaundry(Boolean hasLaundry) {
-        this.hasLaundry = hasLaundry;
-    }
-
     public String getContactPersonName() {
         return contactPersonName;
     }
@@ -118,11 +114,35 @@ public class HostelRequest {
         this.contactPersonName = contactPersonName;
     }
 
-    public String getContactPersonPhone() {
-        return contactPersonPhone;
+    public String getContactPhone() {
+        return contactPhone;
     }
 
-    public void setContactPersonPhone(String contactPersonPhone) {
-        this.contactPersonPhone = contactPersonPhone;
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public List<String> getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(List<String> facilities) {
+        this.facilities = facilities;
+    }
+
+    public List<String> getRoomTypes() {
+        return roomTypes;
+    }
+
+    public void setRoomTypes(List<String> roomTypes) {
+        this.roomTypes = roomTypes;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

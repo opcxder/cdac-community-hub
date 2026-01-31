@@ -2,6 +2,8 @@ package com.cdac.hostel.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ import com.cdac.hostel.service.CategoryService;
 @RequestMapping("/api/hostel/categories")
 public class CategoryController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
+
     @Autowired
     private CategoryService categoryService;
 
@@ -32,7 +36,7 @@ public class CategoryController {
      * Category will be in PENDING status until approved by admin.
      *
      * @param request Map containing "categoryName" field
-     * @param userId ID of the user creating the category
+     * @param userId  ID of the user creating the category
      * @return The created category with 201 CREATED status
      */
     @PostMapping
@@ -53,7 +57,15 @@ public class CategoryController {
      */
     @GetMapping
     public ResponseEntity<List<HostelCategory>> getApprovedCategories() {
+        logger.info("🏠 [HOSTEL-CATEGORY-CONTROLLER] GET /api/hostel/categories - Fetching all approved categories");
+
         List<HostelCategory> categories = categoryService.getApprovedCategories();
+
+        logger.info("📤 [HOSTEL-CATEGORY-CONTROLLER] Returning {} approved categories", categories.size());
+        if (categories.isEmpty()) {
+            logger.warn("⚠️  [HOSTEL-CATEGORY-CONTROLLER] No approved categories found in database!");
+        }
+
         return ResponseEntity.ok(categories);
     }
 

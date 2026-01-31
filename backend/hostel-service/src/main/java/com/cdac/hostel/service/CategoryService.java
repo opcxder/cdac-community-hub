@@ -79,9 +79,20 @@ public class CategoryService {
      * @return List of approved categories
      */
     public List<HostelCategory> getApprovedCategories() {
-        logger.debug("Fetching all approved categories");
+        logger.info("🔍 [HOSTEL-CATEGORY-SERVICE] Fetching all approved categories from database");
+
         List<HostelCategory> categories = categoryRepository.findByStatus(CategoryStatus.APPROVED);
-        logger.info("Retrieved {} approved categories", categories.size());
+
+        logger.info("📊 [HOSTEL-CATEGORY-SERVICE] Found {} approved categories", categories.size());
+
+        if (categories.isEmpty()) {
+            logger.warn(
+                    "⚠️  [HOSTEL-CATEGORY-SERVICE] No approved categories in database! Check if data seeding ran successfully.");
+        } else {
+            logger.debug("📋 [HOSTEL-CATEGORY-SERVICE] Approved categories: {}",
+                    categories.stream().map(HostelCategory::getCategoryName).toList());
+        }
+
         return categories;
     }
 

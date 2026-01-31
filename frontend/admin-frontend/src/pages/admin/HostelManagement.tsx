@@ -37,9 +37,16 @@ export function HostelManagement() {
     const fetchHostels = async () => {
         try {
             setLoading(true);
+            console.log("🏠 [HOSTEL-ADMIN] Fetching pending hostels...");
             const data = await adminService.getPendingHostels();
+            console.log("🏠 [HOSTEL-ADMIN] Received data:", {
+                count: data.length,
+                firstItem: data[0],
+                allData: data
+            });
             setHostels(data);
         } catch (error) {
+            console.error("❌ [HOSTEL-ADMIN] Error fetching hostels:", error);
             toast({
                 title: 'Error',
                 description: 'Failed to fetch hostels',
@@ -277,6 +284,21 @@ export function HostelManagement() {
                                             >
                                                 {typeof cat === 'string' ? cat : cat.categoryName}
                                             </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            {selectedHostel.imageUrls && selectedHostel.imageUrls.length > 0 && (
+                                <div>
+                                    <h3 className="font-semibold mb-2">Images</h3>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {selectedHostel.imageUrls.map((url, idx) => (
+                                            <img
+                                                key={idx}
+                                                src={url}
+                                                alt={`${selectedHostel.hostelName} ${idx + 1}`}
+                                                className="rounded-md object-cover aspect-video"
+                                            />
                                         ))}
                                     </div>
                                 </div>

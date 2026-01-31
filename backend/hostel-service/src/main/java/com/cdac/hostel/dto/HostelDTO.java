@@ -1,7 +1,12 @@
 package com.cdac.hostel.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+/**
+ * DTO for hostel data including images and room types.
+ * Used for admin panel and public display.
+ */
 public class HostelDTO {
 
     private Long hostelId;
@@ -10,17 +15,23 @@ public class HostelDTO {
     private String address;
     private String city;
     private String locality;
-
+    private String landmark;
+    private String mapLocation;
+    private String distanceFromCdac;
     private BigDecimal monthlyRentMin;
     private BigDecimal monthlyRentMax;
-
     private Boolean hasWifi;
     private Boolean hasAc;
     private Boolean hasMess;
     private Boolean hasLaundry;
-
-    private Double overallRating;
-    private Long ratingCount;
+    private String contactPersonName;
+    private String contactPersonPhone;
+    private Long submittedByUserId;
+    private String status;
+    private String rejectionReason;
+    private List<String> imageUrls;
+    private List<Integer> roomCapacities; // [1, 2, 3] for single, double, triple
+    private List<String> categories;
 
     // Getters and Setters
     public Long getHostelId() {
@@ -71,6 +82,30 @@ public class HostelDTO {
         this.locality = locality;
     }
 
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public String getMapLocation() {
+        return mapLocation;
+    }
+
+    public void setMapLocation(String mapLocation) {
+        this.mapLocation = mapLocation;
+    }
+
+    public String getDistanceFromCdac() {
+        return distanceFromCdac;
+    }
+
+    public void setDistanceFromCdac(String distanceFromCdac) {
+        this.distanceFromCdac = distanceFromCdac;
+    }
+
     public BigDecimal getMonthlyRentMin() {
         return monthlyRentMin;
     }
@@ -119,19 +154,67 @@ public class HostelDTO {
         this.hasLaundry = hasLaundry;
     }
 
-    public Double getOverallRating() {
-        return overallRating;
+    public String getContactPersonName() {
+        return contactPersonName;
     }
 
-    public void setOverallRating(Double overallRating) {
-        this.overallRating = overallRating;
+    public void setContactPersonName(String contactPersonName) {
+        this.contactPersonName = contactPersonName;
     }
 
-    public Long getRatingCount() {
-        return ratingCount;
+    public String getContactPersonPhone() {
+        return contactPersonPhone;
     }
 
-    public void setRatingCount(Long ratingCount) {
-        this.ratingCount = ratingCount;
+    public void setContactPersonPhone(String contactPersonPhone) {
+        this.contactPersonPhone = contactPersonPhone;
+    }
+
+    public Long getSubmittedByUserId() {
+        return submittedByUserId;
+    }
+
+    public void setSubmittedByUserId(Long submittedByUserId) {
+        this.submittedByUserId = submittedByUserId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public List<Integer> getRoomCapacities() {
+        return roomCapacities;
+    }
+
+    public void setRoomCapacities(List<Integer> roomCapacities) {
+        this.roomCapacities = roomCapacities;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 }

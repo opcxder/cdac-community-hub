@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import client from "@/api/client";
+import { useAuthStore } from "@/stores/authStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,10 +50,18 @@ export default function SubmitFoodPage() {
     useEffect(() => {
         async function fetchCategories() {
             try {
+                console.log('📡 [SUBMIT-FOOD] Fetching categories from /api/food/categories');
                 const response = await client.get<Category[]>("/api/food/categories");
+                console.log('✅ [SUBMIT-FOOD] Categories fetched successfully:', response.data);
+                console.log('📊 [SUBMIT-FOOD] Number of categories:', response.data.length);
                 setCategories(response.data);
+
+                if (response.data.length === 0) {
+                    console.warn('⚠️  [SUBMIT-FOOD] No categories available! Check if food-service is running and categories are seeded.');
+                }
             } catch (err) {
-                console.error("Failed to load categories:", err);
+                console.error("❌ [SUBMIT-FOOD] Failed to load categories:", err);
+                console.error("❌ [SUBMIT-FOOD] Error details:", err);
             }
         }
         fetchCategories();
@@ -70,6 +79,16 @@ export default function SubmitFoodPage() {
         setError(null);
 
         try {
+            console.log('🍽️ [SUBMIT-FOOD] Submitting food place data:', data);
+
+            // Get userId from auth store
+            const userId = useAuthStore.getState().user?.userId;
+            if (!userId) {
+                throw new Error("User not authenticated");
+            }
+
+            console.log('👤 [SUBMIT-FOOD] User ID:', userId);
+
             // Step 1: Create food place
             const placeResponse = await client.post("/api/food/places", {
                 placeName: data.placeName,
@@ -79,23 +98,31 @@ export default function SubmitFoodPage() {
                 locality: data.locality,
                 landmark: data.landmark || "",
                 priceRange: data.priceRange,
-                categoryId: data.categoryId
+                bestForCategoryId: data.categoryId,  // Main category
+                categoryIds: [data.categoryId],      // Array of categories (for now just one)
+                submittedByUserId: userId
             });
 
+            console.log('✅ [SUBMIT-FOOD] Food place created successfully:', placeResponse.data);
             const placeId = placeResponse.data.placeId;
 
             // Step 2: Upload images
             const formData = new FormData();
             images.forEach(image => formData.append('images', image));
 
+            console.log('📤 [SUBMIT-FOOD] Uploading images for place ID:', placeId);
             await client.post(`/api/food/places/${placeId}/images`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
+            console.log('✅ [SUBMIT-FOOD] Images uploaded successfully');
             toast.success("Food place submitted for approval!");
             navigate("/dashboard");
         } catch (err: any) {
-            const message = err?.response?.data?.message || "Failed to submit food place";
+            console.error("❌ [SUBMIT-FOOD] Submission failed:", err);
+            console.error("❌ [SUBMIT-FOOD] Error response:", err?.response?.data);
+
+            const message = err?.response?.data?.message || err?.response?.data?.error || err.message || "Failed to submit food place";
             setError(message);
             toast.error(message);
         } finally {

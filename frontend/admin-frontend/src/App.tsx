@@ -10,10 +10,15 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import DashboardPage from "@/pages/user/DashboardPage";
 import SubmitFoodPage from "@/pages/user/SubmitFoodPage";
 import SubmitHostelPage from "@/pages/user/SubmitHostelPage";
+import SubmitSuggestionPage from "@/pages/user/SubmitSuggestionPage";
+import BrowseSuggestionsPage from "@/pages/user/BrowseSuggestionsPage";
+import ProfilePage from "@/pages/user/ProfilePage";
 
 import { Toaster } from 'sonner';
 import AdminRoute from "./components/auth/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
+import UserLayout from "./components/layout/UserLayout";
+import AccountStatusGuard from "./components/auth/AccountStatusGuard";
 
 // Import all new admin pages
 import {
@@ -39,9 +44,20 @@ export default function App() {
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/submit-food" element={<SubmitFoodPage />} />
-          <Route path="/submit-hostel" element={<SubmitHostelPage />} />
+          {/* User routes with layout */}
+          <Route element={<UserLayout />}>
+            {/* Dashboard - always accessible */}
+            <Route path="/dashboard" element={<DashboardPage />} />
+
+            {/* Protected features - require approved account */}
+            <Route path="/food" element={<AccountStatusGuard><BrowseFoodPage /></AccountStatusGuard>} />
+            <Route path="/hostels" element={<AccountStatusGuard><BrowseHostelsPage /></AccountStatusGuard>} />
+            <Route path="/suggestions" element={<AccountStatusGuard><BrowseSuggestionsPage /></AccountStatusGuard>} />
+            <Route path="/submit-food" element={<AccountStatusGuard><SubmitFoodPage /></AccountStatusGuard>} />
+            <Route path="/submit-hostel" element={<AccountStatusGuard><SubmitHostelPage /></AccountStatusGuard>} />
+            <Route path="/submit-suggestion" element={<AccountStatusGuard><SubmitSuggestionPage /></AccountStatusGuard>} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
 
           {/* Admin routes (all nested inside AdminRouteLayout) */}
           <Route element={<AdminRoute />}>

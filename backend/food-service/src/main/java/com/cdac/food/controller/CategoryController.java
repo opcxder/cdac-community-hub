@@ -30,15 +30,17 @@ public class CategoryController {
      * Create a new category.
      * 
      * @param categoryDTO the category data
-     * @param userId the ID of the user creating the category (simulated from token or request)
+     * @param userId      the ID of the user creating the category (simulated from
+     *                    token or request)
      * @return the created category (pending approval)
      */
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(
-            @Valid @RequestBody CategoryDTO categoryDTO, 
+            @Valid @RequestBody CategoryDTO categoryDTO,
             @RequestParam Long userId) {
         logger.info("Request to create category: {}, userId: {}", categoryDTO.getCategoryName(), userId);
-        // Assuming the DTO comes with a name, but for creation we might just need name and userId.
+        // Assuming the DTO comes with a name, but for creation we might just need name
+        // and userId.
         // The Service takes (String name, Long userId).
         // Let's assume the body has the name.
         return ResponseEntity.ok(categoryService.createCategory(categoryDTO.getCategoryName(), userId));
@@ -52,8 +54,19 @@ public class CategoryController {
      */
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllApprovedCategories() {
-        logger.debug("Request to get all approved categories");
-        return ResponseEntity.ok(categoryService.getAllApprovedCategories());
+        logger.info("📥 [CATEGORY-CONTROLLER] GET /api/food/categories - Fetching all approved categories");
+
+        List<CategoryDTO> categories = categoryService.getAllApprovedCategories();
+
+        logger.info("📤 [CATEGORY-CONTROLLER] Returning {} approved categories", categories.size());
+        if (categories.isEmpty()) {
+            logger.warn("⚠️  [CATEGORY-CONTROLLER] No approved categories found in database!");
+        } else {
+            logger.debug("📋 [CATEGORY-CONTROLLER] Categories: {}",
+                    categories.stream().map(CategoryDTO::getCategoryName).toList());
+        }
+
+        return ResponseEntity.ok(categories);
     }
 
     /**

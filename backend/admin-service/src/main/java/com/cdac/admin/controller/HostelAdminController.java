@@ -15,9 +15,14 @@ import com.cdac.admin.dto.PendingHostelDto;
 import com.cdac.admin.dto.RejectHostelDto;
 import com.cdac.admin.service.HostelAdminService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/admin/hostels")
 public class HostelAdminController {
+
+	private static final Logger logger = LoggerFactory.getLogger(HostelAdminController.class);
 
 	private final HostelAdminService hostelAdminService;
 
@@ -27,7 +32,12 @@ public class HostelAdminController {
 
 	@GetMapping("/pending")
 	public ResponseEntity<List<PendingHostelDto>> getPendingHostels() {
+		logger.info("🏠 [HOSTEL-ADMIN] Fetching pending hostels...");
 		List<PendingHostelDto> pendingHostels = hostelAdminService.getPendingHostels();
+		logger.info("🏠 [HOSTEL-ADMIN] Found {} pending hostels", pendingHostels.size());
+		if (!pendingHostels.isEmpty()) {
+			logger.info("🏠 [HOSTEL-ADMIN] First item: {}", pendingHostels.get(0));
+		}
 		return ResponseEntity.ok(pendingHostels);
 	}
 

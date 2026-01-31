@@ -16,57 +16,76 @@ import java.util.stream.Collectors;
 @RequestMapping("/internal/users")
 public class InternalUserController {
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    /**
-     * Get all pending users (for Admin Service)
-     */
-    @GetMapping("/pending")
-    public ResponseEntity<List<PendingUserDto>> getPendingUsers() {
-        List<User> pendingUsers = userRepository.findByAccountStatus(User.AccountStatus.PENDING);
+        /**
+         * Get all pending users (for Admin Service)
+         */
+        @GetMapping("/pending")
+        public ResponseEntity<List<PendingUserDto>> getPendingUsers() {
+                List<User> pendingUsers = userRepository.findByAccountStatus(User.AccountStatus.PENDING);
 
-        List<PendingUserDto> dtos = pendingUsers.stream()
-                .map(user -> new PendingUserDto(
-                        user.getUserId(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        "PENDING"))
-                .collect(Collectors.toList());
+                List<PendingUserDto> dtos = pendingUsers.stream()
+                                .map(user -> new PendingUserDto(
+                                                user.getUserId(),
+                                                user.getUsername(),
+                                                user.getEmail(),
+                                                "PENDING"))
+                                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(dtos);
-    }
+                return ResponseEntity.ok(dtos);
+        }
 
-    /**
-     * Approve a user (for Admin Service)
-     */
-    @PostMapping("/{id}/approve")
-    public ResponseEntity<Void> approveUser(@PathVariable("id") Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        /**
+         * Approve a user (for Admin Service)
+         */
+        @PostMapping("/{id}/approve")
+        public ResponseEntity<Void> approveUser(@PathVariable("id") Long userId) {
+                User user = userRepository.findById(userId)
+                                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setAccountStatus(User.AccountStatus.APPROVED);
-        user.setApprovedAt(LocalDateTime.now());
-        userRepository.save(user);
+                user.setAccountStatus(User.AccountStatus.APPROVED);
+                user.setApprovedAt(LocalDateTime.now());
+                userRepository.save(user);
 
-        return ResponseEntity.ok().build();
-    }
+                return ResponseEntity.ok().build();
+        }
 
-    /**
-     * Reject a user (for Admin Service)
-     */
-    @PostMapping("/{id}/reject")
-    public ResponseEntity<Void> rejectUser(
-            @PathVariable("id") Long userId,
-            @RequestBody RejectUserDto rejectDto) {
+        /**
+         * Reject a user (for Admin Service)
+         */
+        @PostMapping("/{id}/reject")
+        public ResponseEntity<Void> rejectUser(
+                        @PathVariable("id") Long userId,
+                        @RequestBody RejectUserDto rejectDto) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                User user = userRepository.findById(userId)
+                                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setAccountStatus(User.AccountStatus.REJECTED);
-        user.setRejectionReason(rejectDto.getReason());
-        userRepository.save(user);
+                user.setAccountStatus(User.AccountStatus.REJECTED);
+                user.setRejectionReason(rejectDto.getReason());
+                userRepository.save(user);
 
-        return ResponseEntity.ok().build();
-    }
+                return ResponseEntity.ok().build();
+        }
+
+        /**
+         * Check if a user exists by ID (for Food/Hostel Services)
+         */
+        @GetMapping("/exists/{userId}")
+        public ResponseEntity<Boolean> userExists(@PathVariable Long userId) {
+                boolean exists = userRepository.existsById(userId);
+                return ResponseEntity.ok(exists);
+        }
+
+        /**
+         * Get user by ID (for Food/Hostel Services)
+         */
+        @GetMapping("/{userId}")
+        public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+                User user = userRepository.findById(userId)
+                                .orElseThrow(() -> new RuntimeException("User not found"));
+                return ResponseEntity.ok(user);
+        }
 }
