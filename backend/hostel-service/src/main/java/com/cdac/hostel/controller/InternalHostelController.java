@@ -34,7 +34,7 @@ public class InternalHostelController {
      * @return List of pending hostels
      */
     @GetMapping("/pending")
-    public List<Hostel> getPendingHostels() {
+    public List<com.cdac.hostel.dto.HostelDTO> getPendingHostels() {
         return hostelService.getPendingHostels();
     }
 

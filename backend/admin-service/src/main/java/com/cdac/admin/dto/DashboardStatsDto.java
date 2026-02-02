@@ -2,8 +2,7 @@ package com.cdac.admin.dto;
 
 public class DashboardStatsDto {
 
-	
-	 private long pendingUsers;
+	    private long pendingUsers;
 	    private long pendingFoods;
 	    private long pendingHostels;
 	    private long pendingFoodCategories;
@@ -71,13 +70,7 @@ public class DashboardStatsDto {
 
 		public void setTotalSuggestions(long totalSuggestions) {
 			this.totalSuggestions = totalSuggestions;
-		}
-	    
-	    
-		
-		
-	    
-	    
+		}  
 }
 	
 	

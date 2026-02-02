@@ -68,7 +68,7 @@ export default function HostelCard({
 
                 <div className="flex items-center gap-1 text-sm">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-medium">{overallRating.toFixed(1)}</span>
+                    <span className="font-medium">{overallRating != null ? overallRating.toFixed(1) : '0.0'}</span>
                     <span className="text-muted-foreground">rating</span>
                 </div>
 
@@ -81,7 +81,7 @@ export default function HostelCard({
                     <span className="text-sm font-medium text-primary">{rentRange}</span>
 
                     <div className="flex gap-2">
-                        {facilities.slice(0, 4).map((facility) => {
+                        {facilities && facilities.slice(0, 4).map((facility) => {
                             const Icon = facilityIcons[facility];
                             return Icon ? (
                                 <div key={facility} className="text-muted-foreground" title={facility}>

@@ -13,6 +13,8 @@ import SubmitHostelPage from "@/pages/user/SubmitHostelPage";
 import SubmitSuggestionPage from "@/pages/user/SubmitSuggestionPage";
 import BrowseSuggestionsPage from "@/pages/user/BrowseSuggestionsPage";
 import ProfilePage from "@/pages/user/ProfilePage";
+import FoodDetailsPage from "@/pages/user/FoodDetailsPage";
+import HostelDetailsPage from "@/pages/user/HostelDetailsPage";
 
 import { Toaster } from 'sonner';
 import AdminRoute from "./components/auth/AdminRoute";
@@ -39,8 +41,6 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/food" element={<BrowseFoodPage />} />
-        <Route path="/hostels" element={<BrowseHostelsPage />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
@@ -51,7 +51,9 @@ export default function App() {
 
             {/* Protected features - require approved account */}
             <Route path="/food" element={<AccountStatusGuard><BrowseFoodPage /></AccountStatusGuard>} />
+            <Route path="/food/:id" element={<AccountStatusGuard><FoodDetailsPage /></AccountStatusGuard>} />
             <Route path="/hostels" element={<AccountStatusGuard><BrowseHostelsPage /></AccountStatusGuard>} />
+            <Route path="/hostels/:id" element={<AccountStatusGuard><HostelDetailsPage /></AccountStatusGuard>} />
             <Route path="/suggestions" element={<AccountStatusGuard><BrowseSuggestionsPage /></AccountStatusGuard>} />
             <Route path="/submit-food" element={<AccountStatusGuard><SubmitFoodPage /></AccountStatusGuard>} />
             <Route path="/submit-hostel" element={<AccountStatusGuard><SubmitHostelPage /></AccountStatusGuard>} />

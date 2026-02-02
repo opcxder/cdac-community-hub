@@ -26,16 +26,27 @@ export function HostelCard({ hostel, onClick, showStatus = false }: HostelCardPr
 
     return (
         <Card
-            className={`overflow-hidden transition-shadow hover:shadow-lg ${onClick ? 'cursor-pointer' : ''}`}
+            className={`overflow-hidden rounded-xl border border-border/50 shadow-md hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ${onClick ? 'cursor-pointer' : ''}`}
             onClick={onClick}
         >
+            {/* Cover Image */}
+            {hostel.imageUrls && hostel.imageUrls.length > 0 && (
+                <div className="relative h-40 sm:h-48 w-full overflow-hidden bg-muted">
+                    <img
+                        src={hostel.imageUrls[0]}
+                        alt={hostel.hostelName}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                </div>
+            )}
+
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
-                    <h3 className="line-clamp-1 text-lg font-semibold">{hostel.hostelName}</h3>
+                    <h3 className="line-clamp-1 text-base sm:text-lg font-semibold">{hostel.hostelName}</h3>
                     {showStatus && <StatusBadge status={hostel.status} />}
                 </div>
                 {hostel.description && (
-                    <p className="line-clamp-2 text-sm text-muted-foreground">{hostel.description}</p>
+                    <p className="line-clamp-2 text-xs sm:text-sm text-muted-foreground">{hostel.description}</p>
                 )}
             </CardHeader>
 

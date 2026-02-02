@@ -43,34 +43,37 @@ public class SuggestionServiceWebClient implements SuggestionServiceClient {
 
         log.info("Calling {}: get suggestions page={}, size={}", SERVICE_NAME, page, size);
 
-        JsonNode response = webClient.get()
-            .uri(uri -> uri.path("/internal/suggestions")
-                .queryParam("page", page)
-                .queryParam("size", size)
-                .build())
-            .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError, r -> {
-                if (r.statusCode() == HttpStatus.NOT_FOUND) {
+        try {
+            // Use ParameterizedTypeReference to properly deserialize Spring Page
+            org.springframework.data.domain.Page<SuggestionDto> response = webClient.get()
+                .uri(uri -> uri.path("/internal/suggestions")
+                    .queryParam("page", page)
+                    .queryParam("size", size)
+                    .build())
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, r -> {
+                    if (r.statusCode() == HttpStatus.NOT_FOUND) {
+                        return r.bodyToMono(String.class)
+                            .map(body -> new ResourceNotFoundException(
+                                SERVICE_NAME + ": suggestions not found - " + body));
+                    }
                     return r.bodyToMono(String.class)
-                        .map(body -> new ResourceNotFoundException(
-                            SERVICE_NAME + ": suggestions not found - " + body));
-                }
-                return r.bodyToMono(String.class)
-                    .map(body -> new IllegalArgumentException(
-                        SERVICE_NAME + ": bad request - " + body));
-            })
-            .onStatus(HttpStatusCode::is5xxServerError, r ->
-                r.bodyToMono(String.class)
-                    .map(body -> new ServiceUnavailableException(
-                        SERVICE_NAME + " unavailable - " + body))
-            )
-            .bodyToMono(JsonNode.class)
-            .block(Duration.ofSeconds(5));
+                        .map(body -> new IllegalArgumentException(
+                            SERVICE_NAME + ": bad request - " + body));
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, r ->
+                    r.bodyToMono(String.class)
+                        .map(body -> new ServiceUnavailableException(
+                            SERVICE_NAME + " unavailable - " + body))
+                )
+                .bodyToMono(new org.springframework.core.ParameterizedTypeReference<org.springframework.data.domain.Page<SuggestionDto>>() {})
+                .block(Duration.ofSeconds(5));
 
-        return objectMapper.convertValue(
-            response.get("content"),
-            new TypeReference<List<SuggestionDto>>() {}
-        );
+            return response != null ? response.getContent().stream().toList() : List.of();
+        } catch (Exception e) {
+            log.error("Error fetching suggestions: {}", e.getMessage());
+            return List.of(); // Return empty list on error
+        }
     }
 
     @Override

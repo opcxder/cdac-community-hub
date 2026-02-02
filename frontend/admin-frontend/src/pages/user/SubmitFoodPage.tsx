@@ -131,18 +131,18 @@ export default function SubmitFoodPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background py-8">
-            <div className="container mx-auto px-4 max-w-3xl">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-2xl">Submit Food Place</CardTitle>
-                        <CardDescription>
+        <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-4 sm:py-6 md:py-8">
+            <div className="container mx-auto px-3 sm:px-4 max-w-3xl">
+                <Card className="overflow-hidden rounded-xl shadow-lg border border-border/50">
+                    <CardHeader className="bg-muted/30 border-b">
+                        <CardTitle className="text-xl sm:text-2xl">Submit Food Place</CardTitle>
+                        <CardDescription className="text-sm">
                             Share your favorite food spot with the CDAC community
                         </CardDescription>
                     </CardHeader>
 
-                    <CardContent>
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <CardContent className="p-4 sm:p-6">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
                             {error && (
                                 <Alert variant="destructive">
                                     <AlertDescription>{error}</AlertDescription>
@@ -277,20 +277,20 @@ export default function SubmitFoodPage() {
                                 error={imageError}
                             />
 
-                            <div className="flex gap-4">
+                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
                                 <Button
                                     type="button"
                                     variant="outline"
                                     onClick={() => navigate("/dashboard")}
                                     disabled={loading}
-                                    className="flex-1"
+                                    className="w-full sm:flex-1 h-12"
                                 >
                                     Cancel
                                 </Button>
                                 <Button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1"
+                                    className="w-full sm:flex-1 h-12"
                                 >
                                     {loading ? "Submitting..." : "Submit for Approval"}
                                 </Button>

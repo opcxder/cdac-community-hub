@@ -13,3 +13,5 @@ public class EurekaServerApplication {
         System.out.println("Eureka Server started successfully on port 8761");
     }
 }
+
+

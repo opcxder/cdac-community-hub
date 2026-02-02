@@ -18,9 +18,10 @@ public class DashboardController {
 		this.dashboardService = dashboardService;
 	}
 
-	 @GetMapping
+	 @GetMapping("/stats")
 	    public ResponseEntity<DashboardStatsDto> getDashboard() {
 	        DashboardStatsDto stats = dashboardService.getDashboardStats();
+	        System.out.println(stats);
 	        return ResponseEntity.ok(stats);
 	    }
 }

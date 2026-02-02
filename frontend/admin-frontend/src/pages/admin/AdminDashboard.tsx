@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, UtensilsCrossed, Home, MessageSquare, FolderTree } from 'lucide-react';
+import { Users, UtensilsCrossed, Home, MessageSquare } from 'lucide-react';
 import { LoadingSpinner } from '@/components/shared';
 import { adminService } from '@/api/services';
 import type { DashboardStats } from '@/types';
@@ -55,7 +55,7 @@ export function AdminDashboard() {
         },
         {
             title: 'Pending Food Places',
-            value: stats.pendingFood,
+            value: stats.pendingFoods,
             icon: UtensilsCrossed,
             color: 'text-orange-600',
             bgColor: 'bg-orange-100',
@@ -69,22 +69,23 @@ export function AdminDashboard() {
             bgColor: 'bg-purple-100',
             link: '/admin/hostels',
         },
-        {
-            title: 'Food Categories',
-            value: stats.pendingFoodCategories,
-            icon: FolderTree,
-            color: 'text-green-600',
-            bgColor: 'bg-green-100',
-            link: '/admin/food-categories',
-        },
-        {
-            title: 'Hostel Categories',
-            value: stats.pendingHostelCategories,
-            icon: FolderTree,
-            color: 'text-teal-600',
-            bgColor: 'bg-teal-100',
-            link: '/admin/hostel-categories',
-        },
+        // TODO: Uncomment when category management UI is implemented
+        // {
+        //     title: 'Food Categories',
+        //     value: stats.pendingFoodCategories,
+        //     icon: FolderTree,
+        //     color: 'text-green-600',
+        //     bgColor: 'bg-green-100',
+        //     link: '/admin/food-categories',
+        // },
+        // {
+        //     title: 'Hostel Categories',
+        //     value: stats.pendingHostelCategories,
+        //     icon: FolderTree,
+        //     color: 'text-teal-600',
+        //     bgColor: 'bg-teal-100',
+        //      link: '/admin/hostel-categories',
+        // },
         {
             title: 'Total Suggestions',
             value: stats.totalSuggestions,

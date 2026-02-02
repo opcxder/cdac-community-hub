@@ -13,6 +13,7 @@ public class PendingHostelDto {
 	private String city;
 	private String locality;
 	private String landmark;
+	private String mapLocation;
 	private String distanceFromCdac;
 	private BigDecimal monthlyRentMin;
 	private BigDecimal monthlyRentMax;
@@ -33,6 +34,8 @@ public class PendingHostelDto {
 	public PendingHostelDto() {
 		super();
 	}
+	
+	
 
 	// Getters and Setters
 	public Long getHostelId() {
@@ -89,6 +92,14 @@ public class PendingHostelDto {
 
 	public void setLandmark(String landmark) {
 		this.landmark = landmark;
+	}
+
+	public String getMapLocation() {
+		return mapLocation;
+	}
+
+	public void setMapLocation(String mapLocation) {
+		this.mapLocation = mapLocation;
 	}
 
 	public String getDistanceFromCdac() {
@@ -211,7 +222,7 @@ public class PendingHostelDto {
 		this.categories = categories;
 	}
 
-	public List<String> imageUrls() {
+	public List<String> getImageUrls() {
 		return imageUrls;
 	}
 

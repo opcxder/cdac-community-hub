@@ -69,72 +69,79 @@ export default function SubmitSuggestionPage() {
     };
 
     return (
-        <div className="container mx-auto py-6 max-w-2xl">
-            <div className="mb-6">
-                <h1 className="text-3xl font-bold">Share Your Suggestions</h1>
-                <p className="text-muted-foreground">
-                    Help us improve the platform with your feedback and ideas
-                </p>
+        <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-4 sm:py-6 md:py-8">
+            <div className="container mx-auto px-3 sm:px-4 max-w-2xl">
+                <div className="mb-4 sm:mb-6">
+                    <h1 className="text-2xl sm:text-3xl font-bold">Share Your Suggestions</h1>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        Help us improve the platform with your feedback and ideas
+                    </p>
+                </div>
+
+                <Card className="overflow-hidden rounded-xl shadow-lg border border-border/50">
+                    <CardHeader className="bg-muted/30 border-b">
+                        <div className="flex items-center gap-2">
+                            <MessageSquare className="h-5 w-5 text-primary" />
+                            <CardTitle className="text-lg sm:text-xl">Submit a Suggestion</CardTitle>
+                        </div>
+                        <CardDescription className="text-sm">
+                            Share your thoughts on how we can make this platform better for the CDAC community
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 sm:p-6">
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="category">Category *</Label>
+                                <Select value={category} onValueChange={setCategory}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="OTHER">General / Other</SelectItem>
+                                        <SelectItem value="FACILITIES">Facilities</SelectItem>
+                                        <SelectItem value="CANTEEN">Canteen</SelectItem>
+                                        <SelectItem value="CLASSROOM">Classroom</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="suggestion">Your Suggestion *</Label>
+                                <Textarea
+                                    id="suggestion"
+                                    placeholder="e.g., It would be great if we could filter food places by cuisine type..."
+                                    value={suggestion}
+                                    onChange={(e) => setSuggestion(e.target.value)}
+                                    rows={8}
+                                    className="resize-none"
+                                />
+                                <p className="text-sm text-muted-foreground">
+                                    Be as detailed as possible to help us understand your suggestion better
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+                                <Button
+                                    type="submit"
+                                    disabled={loading || !suggestion.trim()}
+                                    className="w-full sm:flex-1 h-12"
+                                >
+                                    {loading ? "Submitting..." : "Submit Suggestion"}
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => navigate("/dashboard")}
+                                    disabled={loading}
+                                    className="w-full sm:flex-1 h-12"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                        </form>
+                    </CardContent>
+                </Card>
             </div>
-
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center gap-2">
-                        <MessageSquare className="h-5 w-5 text-primary" />
-                        <CardTitle>Submit a Suggestion</CardTitle>
-                    </div>
-                    <CardDescription>
-                        Share your thoughts on how we can make this platform better for the CDAC community
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="category">Category *</Label>
-                            <Select value={category} onValueChange={setCategory}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select a category" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="OTHER">General / Other</SelectItem>
-                                    <SelectItem value="FACILITIES">Facilities</SelectItem>
-                                    <SelectItem value="CANTEEN">Canteen</SelectItem>
-                                    <SelectItem value="CLASSROOM">Classroom</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="suggestion">Your Suggestion *</Label>
-                            <Textarea
-                                id="suggestion"
-                                placeholder="e.g., It would be great if we could filter food places by cuisine type..."
-                                value={suggestion}
-                                onChange={(e) => setSuggestion(e.target.value)}
-                                rows={8}
-                                className="resize-none"
-                            />
-                            <p className="text-sm text-muted-foreground">
-                                Be as detailed as possible to help us understand your suggestion better
-                            </p>
-                        </div>
-
-                        <div className="flex gap-2">
-                            <Button type="submit" disabled={loading || !suggestion.trim()}>
-                                {loading ? "Submitting..." : "Submit Suggestion"}
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => navigate("/dashboard")}
-                                disabled={loading}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </form>
-                </CardContent>
-            </Card>
         </div>
     );
 }

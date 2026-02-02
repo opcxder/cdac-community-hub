@@ -140,10 +140,12 @@ export interface CreateSuggestionRequest {
 }
 
 // Admin Dashboard types
-export interface DashboardStats {
+export interface DashboardStatsResponse {
   pendingUsers: number;
-  pendingFood: number;
+  pendingFoods: number;
   pendingHostels: number;
+  pendingFoodCategories: number;
+  pendingHostelCategories: number;
   totalSuggestions: number;
 }
 

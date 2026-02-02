@@ -56,8 +56,15 @@ public class HostelController {
     }
 
     @GetMapping("/approved")
-    public List<Hostel> getApprovedHostels() {
+    public List<com.cdac.hostel.dto.HostelDTO> getApprovedHostels() {
         return hostelService.getApprovedHostels();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<com.cdac.hostel.dto.HostelDTO> getHostelById(@PathVariable Long id) {
+        logger.info("🏠 [HOSTEL-CONTROLLER] Fetching hostel details for ID: {}", id);
+        com.cdac.hostel.dto.HostelDTO hostel = hostelService.getHostelDTOById(id);
+        return ResponseEntity.ok(hostel);
     }
 
     @GetMapping("/pending")

@@ -148,14 +148,31 @@ public class HostelService {
 
     /**
      * Retrieves all approved hostels visible to public users.
+     * Returns HostelDTO with images included.
      *
-     * @return List of approved hostels
+     * @return List of approved hostels with images
      */
-    public List<Hostel> getApprovedHostels() {
+    public List<com.cdac.hostel.dto.HostelDTO> getApprovedHostels() {
         logger.debug("Fetching all approved hostels");
         List<Hostel> hostels = hostelRepository.findByStatus(HostelStatus.APPROVED);
         logger.info("Retrieved {} approved hostels", hostels.size());
-        return hostels;
+        
+        return hostels.stream()
+                .map(this::mapToDTO)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Retrieves hostel by ID as DTO with images included.
+     * Used for hostel details page.
+     *
+     * @param id The ID of the hostel
+     * @return HostelDTO with images
+     */
+    public com.cdac.hostel.dto.HostelDTO getHostelDTOById(Long id) {
+        logger.debug("Fetching hostel DTO for ID: {}", id);
+        Hostel hostel = getHostelById(id);
+        return mapToDTO(hostel);
     }
 
     /**
@@ -173,6 +190,23 @@ public class HostelService {
         return hostels.stream()
                 .map(this::mapToDTO)
                 .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Retrieves a single hostel by ID.
+     * Used for displaying hostel details page.
+     *
+     * @param id The hostel ID
+     * @return The hostel entity
+     * @throws ResourceNotFoundException if hostel not found
+     */
+    public Hostel getHostelById(Long id) {
+        logger.debug("Fetching hostel by ID: {}", id);
+        return hostelRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("Hostel not found: {}", id);
+                    return new ResourceNotFoundException("Hostel not found with ID: " + id);
+                });
     }
 
     /**

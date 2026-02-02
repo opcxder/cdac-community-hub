@@ -38,10 +38,26 @@ export default function FoodCard({
         return colors[range as keyof typeof colors] || "bg-gray-100 text-gray-800";
     };
 
+    const handleCardClick = () => {
+        console.log("🍽️ [FOOD-CARD] Card clicked:", {
+            placeId,
+            placeName,
+            targetRoute: `/food/${placeId}`
+        });
+
+        console.log("🍽️ [FOOD-CARD] Current location:", window.location.href);
+        console.log("🍽️ [FOOD-CARD] Auth token exists:", !!localStorage.getItem('accessToken'));
+
+        console.log("🍽️ [FOOD-CARD] Navigating to:", `/food/${placeId}`);
+        navigate(`/food/${placeId}`);
+
+        console.log("🍽️ [FOOD-CARD] Navigation initiated");
+    };
+
     return (
         <Card
             className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200"
-            onClick={() => navigate(`/food/${placeId}`)}
+            onClick={handleCardClick}
         >
             <div className="aspect-video w-full overflow-hidden bg-muted">
                 <img

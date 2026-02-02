@@ -25,6 +25,7 @@ logs/
 .settings/
 .project
 .classpath
+.metadata/
 
 # OS files
 .DS_Store
@@ -43,11 +44,13 @@ Thumbs.db
 *.bak
 *.swp
 *~
+.txt
 
 # Documentation temporary files
 docs/*.txt
 docs/error.txt
 docs/testing.txt
+docs/postman.json
 
 # Node modules (if any frontend)
 node_modules/

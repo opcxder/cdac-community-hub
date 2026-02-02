@@ -133,154 +133,159 @@ export function UserManagement() {
     }
 
     return (
-        <div className="container mx-auto py-6">
-            {/* Header */}
-            <div className="mb-6">
-                <h1 className="text-3xl font-bold">User Management</h1>
-                <p className="text-muted-foreground">Review and approve user registrations</p>
-            </div>
+        <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-4 sm:py-6">
+            <div className="container mx-auto px-3 sm:px-4">
+                {/* Header */}
+                <div className="mb-4 sm:mb-6">
+                    <h1 className="text-2xl sm:text-3xl font-bold">User Management</h1>
+                    <p className="text-sm text-muted-foreground">Review and approve user registrations</p>
+                </div>
 
-            {/* Search */}
-            <div className="mb-4">
-                <div className="relative max-w-md">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        placeholder="Search by username, email, or phone..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10"
+                {/* Search */}
+                <div className="mb-4">
+                    <div className="relative max-w-full sm:max-w-md">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                            placeholder="Search by username, email, or phone..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-10 h-12"
+                        />
+                    </div>
+                </div>
+
+                {/* Users Table */}
+                {filteredUsers.length === 0 ? (
+                    <EmptyState
+                        icon={<UserIcon />}
+                        title="No pending users"
+                        description="All user registrations have been reviewed"
                     />
-                </div>
-            </div>
-
-            {/* Users Table */}
-            {filteredUsers.length === 0 ? (
-                <EmptyState
-                    icon={<UserIcon />}
-                    title="No pending users"
-                    description="All user registrations have been reviewed"
-                />
-            ) : (
-                <div className="rounded-md border">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>User</TableHead>
-                                <TableHead>Contact</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Registered</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {filteredUsers.map((user) => (
-                                <TableRow key={user.userId}>
-                                    <TableCell>
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                                                <UserIcon className="h-5 w-5 text-primary" />
-                                            </div>
-                                            <div>
-                                                <p className="font-medium">{user.username}</p>
-                                                <p className="text-sm text-muted-foreground">ID: {user.userId}</p>
-                                            </div>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="space-y-1">
-                                            <div className="flex items-center gap-2 text-sm">
-                                                <Mail className="h-4 w-4 text-muted-foreground" />
-                                                <span>{user.email}</span>
-                                            </div>
-                                            {user.phone && (
-                                                <div className="flex items-center gap-2 text-sm">
-                                                    <Phone className="h-4 w-4 text-muted-foreground" />
-                                                    <span>{user.phone}</span>
+                ) : (
+                    <div className="rounded-xl border border-border/50 shadow-md overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>User</TableHead>
+                                        <TableHead>Contact</TableHead>
+                                        <TableHead>Status</TableHead>
+                                        <TableHead>Registered</TableHead>
+                                        <TableHead className="text-right">Actions</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {filteredUsers.map((user) => (
+                                        <TableRow key={user.userId}>
+                                            <TableCell>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                                                        <UserIcon className="h-5 w-5 text-primary" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-medium">{user.username}</p>
+                                                        <p className="text-sm text-muted-foreground">ID: {user.userId}</p>
+                                                    </div>
                                                 </div>
-                                            )}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <StatusBadge status={user.accountStatus} />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                            <Calendar className="h-4 w-4" />
-                                            <span>
-                                                {user.createdAt
-                                                    ? format(new Date(user.createdAt), 'MMM dd, yyyy')
-                                                    : 'N/A'
-                                                }
-                                            </span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Button
-                                                size="sm"
-                                                variant="outline"
-                                                className="border-green-600 text-green-600 hover:bg-green-50"
-                                                onClick={() => handleApprove(user.userId)}
-                                                disabled={actionLoading === user.userId}
-                                            >
-                                                <Check className="mr-1 h-4 w-4" />
-                                                Approve
-                                            </Button>
-                                            <Button
-                                                size="sm"
-                                                variant="outline"
-                                                className="border-red-600 text-red-600 hover:bg-red-50"
-                                                onClick={() => handleRejectClick(user)}
-                                                disabled={actionLoading === user.userId}
-                                            >
-                                                <X className="mr-1 h-4 w-4" />
-                                                Reject
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </div>
-            )}
-
-            {/* Rejection Dialog */}
-            <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Reject User Registration</DialogTitle>
-                        <DialogDescription>
-                            Please provide a reason for rejecting {selectedUser?.username}'s registration.
-                            This will be sent to the user via email.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="reason">Rejection Reason *</Label>
-                            <Textarea
-                                id="reason"
-                                placeholder="e.g., Invalid email domain, incomplete information, etc."
-                                value={rejectionReason}
-                                onChange={(e) => setRejectionReason(e.target.value)}
-                                rows={4}
-                            />
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2 text-sm">
+                                                        <Mail className="h-4 w-4 text-muted-foreground" />
+                                                        <span>{user.email}</span>
+                                                    </div>
+                                                    {user.phone && (
+                                                        <div className="flex items-center gap-2 text-sm">
+                                                            <Phone className="h-4 w-4 text-muted-foreground" />
+                                                            <span>{user.phone}</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <StatusBadge status={user.accountStatus} />
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                    <Calendar className="h-4 w-4" />
+                                                    <span>
+                                                        {user.createdAt
+                                                            ? format(new Date(user.createdAt), 'MMM dd, yyyy')
+                                                            : 'N/A'
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <div className="flex justify-end gap-2">
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="border-green-600 text-green-600 hover:bg-green-50"
+                                                        onClick={() => handleApprove(user.userId)}
+                                                        disabled={actionLoading === user.userId}
+                                                    >
+                                                        <Check className="mr-1 h-4 w-4" />
+                                                        Approve
+                                                    </Button>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="border-red-600 text-red-600 hover:bg-red-50"
+                                                        onClick={() => handleRejectClick(user)}
+                                                        disabled={actionLoading === user.userId}
+                                                    >
+                                                        <X className="mr-1 h-4 w-4" />
+                                                        Reject
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setRejectDialogOpen(false)}>
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={handleRejectConfirm}
-                            disabled={!rejectionReason.trim()}
-                        >
-                            Reject User
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                )}
+
+                {/* Rejection Dialog */}
+                <Dialog open={rejectDialogOpen} onOpenChange={setRejectDialogOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Reject User Registration</DialogTitle>
+                            <DialogDescription>
+                                Please provide a reason for rejecting {selectedUser?.username}'s registration.
+                                This will be sent to the user via email.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4 py-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="reason">Rejection Reason *</Label>
+                                <Textarea
+                                    id="reason"
+                                    placeholder="e.g., Invalid email domain, incomplete information, etc."
+                                    value={rejectionReason}
+                                    onChange={(e) => setRejectionReason(e.target.value)}
+                                    rows={4}
+                                />
+                            </div>
+                        </div>
+                        <DialogFooter>
+                            <Button variant="outline" onClick={() => setRejectDialogOpen(false)}>
+                                Cancel
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                onClick={handleRejectConfirm}
+                                disabled={!rejectionReason.trim()}
+                            >
+                                Reject User
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            </div>
         </div>
     );
 }
+

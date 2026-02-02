@@ -26,7 +26,8 @@ public class PendingFoodDto {
 	private List<String> categories; // Category names only
 	private Double averageRating;
 
-	public PendingFoodDto(long l, String string, String string2, String string3) {
+	// Empty constructor for Jackson deserialization
+	public PendingFoodDto() {
 		super();
 	}
 

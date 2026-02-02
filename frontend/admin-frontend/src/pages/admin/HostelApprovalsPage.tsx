@@ -113,7 +113,6 @@ export default function HostelApprovalsPage() {
               <TableHead>Location</TableHead>
               <TableHead>Gender</TableHead>
               <TableHead>Submitted By (User)</TableHead>
-              <TableHead>Rating</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -158,7 +157,6 @@ export default function HostelApprovalsPage() {
               <TableHead>Location</TableHead>
               <TableHead>Gender</TableHead>
               <TableHead>Submitted By (User)</TableHead>
-              <TableHead>Rating</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -179,7 +177,6 @@ export default function HostelApprovalsPage() {
                 <TableCell>{hostel.location}</TableCell>
                 <TableCell>{hostel.forGender}</TableCell>
                 <TableCell>{hostel.submittedBy.username}</TableCell>
-                <TableCell>{hostel.overallRating.toFixed(1)}</TableCell>
                 <TableCell className="space-x-2">
                   <Button
                     variant="outline"
@@ -234,8 +231,8 @@ export default function HostelApprovalsPage() {
               {actionLoading
                 ? "Processing..."
                 : actionType === "approve"
-                ? "Approve"
-                : "Reject"}
+                  ? "Approve"
+                  : "Reject"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

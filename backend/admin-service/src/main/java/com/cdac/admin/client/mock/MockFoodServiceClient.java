@@ -23,9 +23,54 @@ public class MockFoodServiceClient implements FoodServiceClient {
 		log.info("Mock: Fetching the pending food");
 
 		List<PendingFoodDto> food = new ArrayList<>();
-		food.add(new PendingFoodDto(1L, "Pista Hourse", "Best Biryani", "PENDING"));
-		food.add(new PendingFoodDto(2L, "Amruttulya", "Best Chai", "PENDING"));
-		food.add(new PendingFoodDto(3L, "Laxmi Marrt", "Everyday Things", "PENDING"));
+		
+		// Food 1: Pista House
+		PendingFoodDto food1 = new PendingFoodDto();
+		food1.setPlaceId(1L);
+		food1.setPlaceName("Pista House");
+		food1.setDescription("Best Biryani in town with authentic Hyderabadi flavors");
+		food1.setAddress("MG Road, Koregaon Park");
+		food1.setCity("Pune");
+		food1.setLocality("Koregaon Park");
+		food1.setLandmark("Near CDAC Main Gate");
+		food1.setPriceRange("MODERATE");
+		food1.setStatus("PENDING");
+		food1.setSubmittedByUserId(101L);
+		food1.setImageUrls(List.of("https://via.placeholder.com/400x300?text=Pista+House"));
+		food1.setCategories(List.of("Biryani", "Indian", "Non-Veg"));
+		food.add(food1);
+		
+		// Food 2: Amrutulya
+		PendingFoodDto food2 = new PendingFoodDto();
+		food2.setPlaceId(2L);
+		food2.setPlaceName("Amrutulya");
+		food2.setDescription("Best Chai and snacks spot for students");
+		food2.setAddress("University Road");
+		food2.setCity("Pune");
+		food2.setLocality("Aundh");
+		food2.setLandmark("Opposite CDAC Campus");
+		food2.setPriceRange("BUDGET");
+		food2.setStatus("PENDING");
+		food2.setSubmittedByUserId(102L);
+		food2.setImageUrls(List.of("https://via.placeholder.com/400x300?text=Amrutulya"));
+		food2.setCategories(List.of("Chai", "Snacks", "Fast Food"));
+		food.add(food2);
+		
+		// Food 3: Laxmi Mart
+		PendingFoodDto food3 = new PendingFoodDto();
+		food3.setPlaceId(3L);
+		food3.setPlaceName("Laxmi Mart");
+		food3.setDescription("Grocery and everyday essentials");
+		food3.setAddress("Housing Board Colony");
+		food3.setCity("Pune");
+		food3.setLocality("Aundh");
+		food3.setPriceRange("BUDGET");
+		food3.setStatus("PENDING");
+		food3.setSubmittedByUserId(103L);
+		food3.setImageUrls(List.of("https://via.placeholder.com/400x300?text=Laxmi+Mart"));
+		food3.setCategories(List.of("Grocery", "General Store"));
+		food.add(food3);
+		
 		return food;
 	}
 

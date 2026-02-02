@@ -23,31 +23,31 @@ export function FoodCard({ foodPlace, onClick, showStatus = false }: FoodCardPro
 
     return (
         <Card
-            className={`overflow-hidden transition-shadow hover:shadow-lg ${onClick ? 'cursor-pointer' : ''}`}
+            className={`overflow-hidden rounded-xl border border-border/50 shadow-md hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ${onClick ? 'cursor-pointer' : ''}`}
             onClick={onClick}
         >
             {/* Image */}
             {foodPlace.imageUrls && foodPlace.imageUrls.length > 0 ? (
-                <div className="relative h-48 w-full overflow-hidden bg-muted">
+                <div className="relative h-48 sm:h-52 md:h-56 w-full overflow-hidden bg-muted rounded-t-xl">
                     <img
                         src={foodPlace.imageUrls[0]}
                         alt={foodPlace.placeName}
-                        className="h-full w-full object-cover transition-transform hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
                     />
                 </div>
             ) : (
-                <div className="flex h-48 items-center justify-center bg-muted">
+                <div className="flex h-48 sm:h-52 md:h-56 items-center justify-center bg-muted/50 rounded-t-xl">
                     <p className="text-sm text-muted-foreground">No image</p>
                 </div>
             )}
 
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
-                    <h3 className="line-clamp-1 text-lg font-semibold">{foodPlace.placeName}</h3>
+                    <h3 className="line-clamp-1 text-base sm:text-lg font-semibold">{foodPlace.placeName}</h3>
                     {showStatus && <StatusBadge status={foodPlace.status} />}
                 </div>
                 {foodPlace.description && (
-                    <p className="line-clamp-2 text-sm text-muted-foreground">{foodPlace.description}</p>
+                    <p className="line-clamp-2 text-xs sm:text-sm text-muted-foreground">{foodPlace.description}</p>
                 )}
             </CardHeader>
 

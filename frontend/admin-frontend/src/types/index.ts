@@ -185,7 +185,7 @@ export interface CreateSuggestionRequest {
 
 export interface DashboardStats {
   pendingUsers: number;
-  pendingFood: number;
+  pendingFoods: number;
   pendingHostels: number;
   totalSuggestions: number;
   pendingFoodCategories: number;
