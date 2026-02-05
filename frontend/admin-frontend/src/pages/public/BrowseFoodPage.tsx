@@ -5,19 +5,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { UtensilsCrossed } from "lucide-react";
 
-interface Category {
-    categoryId: number;
-    categoryName: string;
-}
-
 interface FoodPlace {
     placeId: number;
     placeName: string;
     averageRating: number;
     priceRange: string;
-    imageUrl: string;
-    location: string;
-    categories: Category[];
+    imageUrls: string[];  // Changed from imageUrl: string
+    locality: string;      // Changed from location: string
+    categories: string[];  // Changed from Category[] to string[]
 }
 
 export default function BrowseFoodPage() {

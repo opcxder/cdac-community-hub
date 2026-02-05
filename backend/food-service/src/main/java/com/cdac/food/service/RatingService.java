@@ -2,6 +2,7 @@ package com.cdac.food.service;
 
 import com.cdac.food.dto.RatingDTO;
 import com.cdac.food.dto.RatingRequest;
+import com.cdac.food.dto.RatingStatsDTO;
 import com.cdac.food.dto.ReplyDTO;
 import com.cdac.food.dto.UserDTO;
 import com.cdac.food.exception.DuplicateRatingException;
@@ -20,7 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -154,6 +158,132 @@ public class RatingService {
         logger.debug("Average rating for place {}: {}/5", placeId, result);
         
         return result;
+    }
+    
+    /**
+     * Get user's existing rating for a food place.
+     * Returns null if user hasn't rated this place yet.
+     * 
+     * @param placeId the ID of the food place
+     * @param userId the ID of the user
+     * @return RatingDTO if found, null otherwise
+     */
+    public RatingDTO getUserRating(Long placeId, Long userId) {
+        logger.debug("Fetching user rating: placeId={}, userId={}", placeId, userId);
+        
+        // Validate food place exists
+        FoodPlace place = foodPlaceRepository.findById(placeId)
+                .orElseThrow(() -> {
+                    logger.error("Place not found: placeId={}", placeId);
+                    return new ResourceNotFoundException("Food place not found: " + placeId);
+                });
+        
+        // Find user's rating
+        Optional<FoodPlaceRating> rating = ratingRepository.findByFoodPlaceAndUserId(place, userId);
+        
+        if (rating.isPresent()) {
+            logger.debug("Found existing rating: ratingId={}", rating.get().getRatingId());
+            return mapToDTO(rating.get());
+        }
+        
+        logger.debug("No existing rating found for user");
+        return null;
+    }
+    
+    /**
+     * Get rating statistics for a food place.
+     * Includes average rating, total count, and breakdown by star value (1-5).
+     * 
+     * @param placeId the ID of the food place
+     * @return RatingStatsDTO with statistics
+     */
+    public RatingStatsDTO getRatingStats(Long placeId) {
+        logger.debug("Calculating rating stats for place: placeId={}", placeId);
+        
+        // Validate food place exists
+        FoodPlace place = foodPlaceRepository.findById(placeId)
+                .orElseThrow(() -> {
+                    logger.error("Place not found: placeId={}", placeId);
+                    return new ResourceNotFoundException("Food place not found: " + placeId);
+                });
+        
+        // Calculate average rating
+        Double avgRating = ratingRepository.calculateAverageRating(placeId);
+        
+        // Count total ratings
+        long totalRatings = ratingRepository.countByFoodPlace(place);
+        
+        // Get rating breakdown
+        List<Object[]> breakdownData = ratingRepository.getRatingBreakdown(placeId);
+        Map<Integer, Integer> breakdown = new HashMap<>();
+        
+        // Initialize all ratings (1-5) with 0 count
+        for (int i = 1; i <= 5; i++) {
+            breakdown.put(i, 0);
+        }
+        
+        // Fill in actual counts
+        for (Object[] row : breakdownData) {
+            Integer rating = (Integer) row[0];
+            Long count = (Long) row[1];
+            breakdown.put(rating, count.intValue());
+        }
+        
+        RatingStatsDTO stats = new RatingStatsDTO(
+            avgRating != null ? avgRating : 0.0,
+            (int) totalRatings,
+            breakdown
+        );
+        
+        logger.debug("Rating stats calculated: avg={}, total={}", stats.getAverageRating(), stats.getTotalRatings());
+        
+        return stats;
+    }
+    
+    /**
+     * Update an existing rating/review.
+     * User must have already rated this place.
+     * 
+     * @param placeId the ID of the food place
+     * @param userId the ID of the user
+     * @param request the updated rating request
+     * @return RatingDTO of the updated rating
+     */
+    @Transactional
+    public RatingDTO updateRating(Long placeId, Long userId, RatingRequest request) {
+        logger.info("User {} updating rating for place {}: rating={}/5", userId, placeId, request.getRating());
+        
+        // Validate user exists
+        if (!authServiceClient.userExists(userId)) {
+            logger.error("Update failed - user not found: userId={}", userId);
+            throw new UserNotFoundException("User not found: " + userId);
+        }
+        
+        // Validate food place exists
+        FoodPlace place = foodPlaceRepository.findById(placeId)
+                .orElseThrow(() -> {
+                    logger.error("Update failed - place not found: placeId={}", placeId);
+                    return new ResourceNotFoundException("Food place not found: " + placeId);
+                });
+        
+        // Find existing rating
+        FoodPlaceRating rating = ratingRepository.findByFoodPlaceAndUserId(place, userId)
+                .orElseThrow(() -> {
+                    logger.error("Update failed - no existing rating: placeId={}, userId={}", placeId, userId);
+                    return new ResourceNotFoundException("No existing rating found to update");
+                });
+        
+        // Update rating
+        rating.setRating(request.getRating());
+        rating.setReviewText(request.getReviewText());
+        rating.setUpdatedAt(LocalDateTime.now());
+        
+        FoodPlaceRating updated = ratingRepository.save(rating);
+        
+        logger.info("Rating updated successfully: ratingId={}, placeId={}, userId={}, rating={}/5", 
+                   updated.getRatingId(), placeId, userId, request.getRating());
+        
+        return mapToDTO(updated);
     }
     
     /**

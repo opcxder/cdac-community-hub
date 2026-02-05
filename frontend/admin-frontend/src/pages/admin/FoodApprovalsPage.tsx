@@ -23,11 +23,18 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface PendingFood {
-    placeId: number;  // Fixed: was foodId
-    placeName: string;  // Fixed: was name
-    category: { categoryId: number; categoryName: string };  // Fixed: was name
-    location: string;
-    imageUrl: string;
+    placeId: number;
+    placeName: string;
+    description?: string;
+    address: string;
+    city: string;
+    locality: string;
+    landmark?: string;
+    mapLocation?: string;
+    contactInfo?: string;
+    priceRange: string;
+    categories: string[];  // Array of category names
+    imageUrls: string[];   // Array of image URLs
     submittedBy: { userId: number; username: string };
     approvalStatus: "PENDING";
 }
@@ -158,16 +165,40 @@ export default function FoodApprovalsPage() {
                                 className="hover:bg-zinc-50 transition-colors"
                             >
                                 <TableCell>
-                                    <img
-                                        src={food.imageUrl}
-                                        alt={food.placeName}
-                                        className="h-12 w-12 rounded object-cover"
-                                    />
+                                    {food.imageUrls && food.imageUrls.length > 0 ? (
+                                        <img
+                                            src={food.imageUrls[0]}
+                                            alt={food.placeName}
+                                            className="h-12 w-12 rounded object-cover"
+                                        />
+                                    ) : (
+                                        <div className="h-12 w-12 rounded bg-muted flex items-center justify-center text-xs text-muted-foreground">
+                                            No image
+                                        </div>
+                                    )}
                                 </TableCell>
                                 <TableCell>{food.placeName}</TableCell>
-                                <TableCell>{food.category.categoryName}</TableCell>
+                                <TableCell>
+                                    {food.categories && food.categories.length > 0 ? (
+                                        <div className="flex flex-wrap gap-1">
+                                            {food.categories.slice(0, 2).map((cat, idx) => (
+                                                <span key={idx} className="text-xs bg-muted px-2 py-1 rounded">
+                                                    {cat}
+                                                </span>
+                                            ))}
+                                            {food.categories.length > 2 && (
+                                                <span className="text-xs text-muted-foreground">
+                                                    +{food.categories.length - 2}
+                                                </span>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <span className="text-muted-foreground">-</span>
+                                    )}
+                                </TableCell>
+                                <TableCell>{food.locality}</TableCell>
+                                <TableCell>{food.city}</TableCell>
                                 <TableCell>{food.submittedBy.username}</TableCell>
-                                <TableCell>{food.location}</TableCell>
                                 <TableCell className="space-x-2">
                                     <Button
                                         variant="outline"

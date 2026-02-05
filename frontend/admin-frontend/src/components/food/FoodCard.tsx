@@ -3,19 +3,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin } from "lucide-react";
 
-interface Category {
-    categoryId: number;
-    categoryName: string;
-}
-
 interface FoodCardProps {
     placeId: number;
     placeName: string;
     averageRating: number;
     priceRange: string;
-    imageUrl: string;
-    location: string;
-    categories: Category[];
+    imageUrls: string[];   // Changed from imageUrl: string
+    locality: string;      // Changed from location: string
+    categories: string[];  // Changed from Category[]
 }
 
 export default function FoodCard({
@@ -23,8 +18,8 @@ export default function FoodCard({
     placeName,
     averageRating,
     priceRange,
-    imageUrl,
-    location,
+    imageUrls,    // Changed from imageUrl
+    locality,     // Changed from location
     categories
 }: FoodCardProps) {
     const navigate = useNavigate();
@@ -60,14 +55,20 @@ export default function FoodCard({
             onClick={handleCardClick}
         >
             <div className="aspect-video w-full overflow-hidden bg-muted">
-                <img
-                    src={imageUrl}
-                    alt={placeName}
-                    className="h-full w-full object-cover transition-transform duration-200 hover:scale-105"
-                    onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x300?text=No+Image";
-                    }}
-                />
+                {imageUrls && imageUrls.length > 0 ? (
+                    <img
+                        src={imageUrls[0]}
+                        alt={placeName}
+                        className="h-full w-full object-cover transition-transform duration-200 hover:scale-105"
+                        onError={(e) => {
+                            (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x300?text=No+Image";
+                        }}
+                    />
+                ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-muted/50">
+                        <p className="text-sm text-muted-foreground">No image</p>
+                    </div>
+                )}
             </div>
 
             <CardContent className="p-4 space-y-2">
@@ -86,16 +87,16 @@ export default function FoodCard({
 
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <MapPin className="h-4 w-4" />
-                    <span className="line-clamp-1">{location}</span>
+                    <span className="line-clamp-1">{locality}</span>
                 </div>
 
                 <div className="flex flex-wrap gap-1 pt-1">
-                    {categories.slice(0, 3).map((category) => (
-                        <Badge key={category.categoryId} variant="outline" className="text-xs">
-                            {category.categoryName}
+                    {categories && categories.slice(0, 3).map((category, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                            {category}
                         </Badge>
                     ))}
-                    {categories.length > 3 && (
+                    {categories && categories.length > 3 && (
                         <Badge variant="outline" className="text-xs">
                             +{categories.length - 3}
                         </Badge>

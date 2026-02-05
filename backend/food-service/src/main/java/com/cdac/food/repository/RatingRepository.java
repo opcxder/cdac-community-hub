@@ -73,4 +73,15 @@ public interface RatingRepository extends JpaRepository<FoodPlaceRating, Long> {
      * @return list of ratings submitted by the user
      */
     List<FoodPlaceRating> findByUserIdOrderByCreatedAtDesc(Long userId);
+    
+    /**
+     * Get rating breakdown (count of each star rating 1-5) for a food place.
+     * Used to display rating distribution chart.
+     * Returns array of [rating_value, count] pairs.
+     * 
+     * @param placeId the ID of the food place
+     * @return list of Object[] where [0] = rating value (Integer), [1] = count (Long)
+     */
+    @Query("SELECT r.rating, COUNT(r) FROM FoodPlaceRating r WHERE r.foodPlace.placeId = :placeId GROUP BY r.rating")
+    List<Object[]> getRatingBreakdown(@Param("placeId") Long placeId);
 }

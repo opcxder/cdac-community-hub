@@ -23,7 +23,9 @@ const foodPlaceSchema = z.object({
     locality: z.string().min(2, "Locality is required"),
     landmark: z.string().optional(),
     priceRange: z.enum(["BUDGET", "MEDIUM", "EXPENSIVE"]),
-    categoryId: z.number({ required_error: "Please select a category" })
+    categoryIds: z.array(z.number())
+        .min(1, "Please select at least one category")
+        .max(10, "Maximum 10 categories allowed")
 });
 
 type FoodPlaceFormData = z.infer<typeof foodPlaceSchema>;
@@ -38,14 +40,13 @@ export default function SubmitFoodPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
     const [images, setImages] = useState<File[]>([]);
     const [imageError, setImageError] = useState<string>("");
 
-    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<FoodPlaceFormData>({
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm<FoodPlaceFormData>({
         resolver: zodResolver(foodPlaceSchema)
     });
-
-    const selectedCategoryId = watch("categoryId");
 
     useEffect(() => {
         async function fetchCategories() {
@@ -66,6 +67,20 @@ export default function SubmitFoodPage() {
         }
         fetchCategories();
     }, []);
+
+    const handleCategoryToggle = (categoryId: number, checked: boolean | string) => {
+        const isChecked = checked === true;
+
+        setSelectedCategories(prev => {
+            const newSelection = isChecked
+                ? [...prev, categoryId]
+                : prev.filter(id => id !== categoryId);
+
+            // Update form value
+            setValue("categoryIds", newSelection, { shouldValidate: true });
+            return newSelection;
+        });
+    };
 
     const onSubmit = async (data: FoodPlaceFormData) => {
         // Validate images
@@ -98,8 +113,8 @@ export default function SubmitFoodPage() {
                 locality: data.locality,
                 landmark: data.landmark || "",
                 priceRange: data.priceRange,
-                bestForCategoryId: data.categoryId,  // Main category
-                categoryIds: [data.categoryId],      // Array of categories (for now just one)
+                bestForCategoryId: data.categoryIds[0],  // First selected category as main
+                categoryIds: data.categoryIds,           // All selected categories
                 submittedByUserId: userId
             });
 
@@ -246,28 +261,36 @@ export default function SubmitFoodPage() {
                                         <p className="text-sm text-red-600">{errors.priceRange.message}</p>
                                     )}
                                 </div>
+                            </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="category">Category *</Label>
-                                    <Select
-                                        onValueChange={(value) => setValue("categoryId", parseInt(value))}
-                                        disabled={loading}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {categories.map((cat) => (
-                                                <SelectItem key={cat.categoryId} value={cat.categoryId.toString()}>
-                                                    {cat.categoryName}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {errors.categoryId && (
-                                        <p className="text-sm text-red-600">{errors.categoryId.message}</p>
-                                    )}
+                            <div className="space-y-2">
+                                <Label>Categories * (Select 1-10)</Label>
+                                <p className="text-sm text-muted-foreground">
+                                    Selected: {selectedCategories.length}/10
+                                </p>
+                                <div className="grid grid-cols-2 gap-3 border rounded-md p-4 max-h-64 overflow-y-auto">
+                                    {categories.map((cat) => (
+                                        <div key={cat.categoryId} className="flex items-center space-x-2">
+                                            <input
+                                                type="checkbox"
+                                                id={`cat-${cat.categoryId}`}
+                                                checked={selectedCategories.includes(cat.categoryId)}
+                                                onChange={(e) => handleCategoryToggle(cat.categoryId, e.target.checked)}
+                                                disabled={loading}
+                                                className="h-4 w-4 rounded border-gray-300"
+                                            />
+                                            <label
+                                                htmlFor={`cat-${cat.categoryId}`}
+                                                className="text-sm cursor-pointer"
+                                            >
+                                                {cat.categoryName}
+                                            </label>
+                                        </div>
+                                    ))}
                                 </div>
+                                {errors.categoryIds && (
+                                    <p className="text-sm text-red-600">{errors.categoryIds.message}</p>
+                                )}
                             </div>
 
                             <ImageUpload

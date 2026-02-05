@@ -99,19 +99,20 @@ export default function FoodDetailsPage() {
 
                 setFoodPlace(response.data);
 
-                // TODO: Fetch rating stats when backend endpoint is ready
-                // For now, use mock data
-                setRatingStats({
-                    averageRating: response.data.averageRating || 0,
-                    totalRatings: 0,
-                    ratingBreakdown: {
-                        5: 0,
-                        4: 0,
-                        3: 0,
-                        2: 0,
-                        1: 0
-                    }
-                });
+                // Fetch rating stats from backend
+                try {
+                    const statsResponse = await client.get<RatingStats>(`/api/food/places/${id}/rating-stats`);
+                    setRatingStats(statsResponse.data);
+                    console.log('🍽️ [FOOD-DETAILS] Rating stats:', statsResponse.data);
+                } catch (err) {
+                    console.error('🍽️ [FOOD-DETAILS] Error fetching rating stats:', err);
+                    // Fallback to default stats
+                    setRatingStats({
+                        averageRating: response.data.averageRating || 0,
+                        totalRatings: 0,
+                        ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+                    });
+                }
 
             } catch (err: any) {
                 console.error('🍽️ [FOOD-DETAILS] Error:', err);
@@ -135,19 +136,26 @@ export default function FoodDetailsPage() {
 
             try {
                 console.log('🍽️ [FOOD-DETAILS] Fetching user rating for place ID:', id);
-                // TODO: Implement when backend endpoint is ready
-                // const response = await client.get(`/ api / food / places / ${ id }/my-rating`);
-                // setUserRating(response.data.rating);
+                const response = await client.get<Review>(`/api/food/places/${id}/my-rating?userId=${user.userId}`);
+
+                if (response.data && response.data.rating) {
+                    setUserRating(response.data.rating);
+                    console.log('🍽️ [FOOD-DETAILS] User rating found:', response.data.rating);
+                }
             } catch (err: any) {
-                console.log('🍽️ [FOOD-DETAILS] No existing rating or error:', err);
-                // User hasn't rated yet, which is fine
+                if (err?.response?.status === 404) {
+                    console.log('🍽️ [FOOD-DETAILS] User has not rated this place yet');
+                    setUserRating(null);
+                } else {
+                    console.error('🍽️ [FOOD-DETAILS] Error fetching user rating:', err);
+                }
             }
         }
 
         fetchUserRating();
     }, [id, user]);
 
-    // Handle rating submission
+    // Handle rating submission (create or update)
     const handleRatingSubmit = async (rating: number) => {
         if (!id || !user) {
             toast.error('Please log in to rate this place');
@@ -157,38 +165,45 @@ export default function FoodDetailsPage() {
         setIsSubmittingRating(true);
 
         try {
-            console.log('🍽️ [FOOD-DETAILS] Submitting rating:', { placeId: id, rating, userId: user.userId });
+            console.log('🍽️ [FOOD-DETAILS] Submitting rating:', { placeId: id, userId: user.userId, rating });
 
-            // TODO: Replace with actual API endpoint when ready
-            await client.post(`/api/food/places/${id}/rate?userId=${user.userId}`, {
-                rating: rating,
-                reviewText: null  // Rating only, no review text
-            });
+            let response;
+
+            // Check if user already has a rating (update) or creating new
+            if (userRating !== null) {
+                // Update existing rating
+                response = await client.put<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
+                    rating: rating,
+                    reviewText: null  // Keep existing review text
+                });
+                toast.success('Rating updated successfully!');
+            } else {
+                // Create new rating
+                response = await client.post<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
+                    rating: rating,
+                    reviewText: null
+                });
+                toast.success('Rating submitted successfully!');
+            }
 
             setUserRating(rating);
-            toast.success('Rating submitted successfully! You can now add a review below.');
 
             // Refresh rating stats
-            // TODO: Fetch updated stats from backend
-            if (ratingStats) {
-                const newBreakdown = { ...ratingStats.ratingBreakdown };
-                newBreakdown[rating as keyof typeof newBreakdown] += 1;
+            const statsResponse = await client.get<RatingStats>(`/api/food/places/${id}/rating-stats`);
+            setRatingStats(statsResponse.data);
 
-                const newTotalRatings = ratingStats.totalRatings + 1;
-                const newAverage = (
-                    (ratingStats.averageRating * ratingStats.totalRatings + rating) / newTotalRatings
-                );
-
-                setRatingStats({
-                    averageRating: newAverage,
-                    totalRatings: newTotalRatings,
-                    ratingBreakdown: newBreakdown
-                });
-            }
+            // Refresh food place to get updated average rating
+            const placeResponse = await client.get<FoodPlace>(`/api/food/places/${id}`);
+            setFoodPlace(placeResponse.data);
 
         } catch (err: any) {
             console.error('🍽️ [FOOD-DETAILS] Rating submission error:', err);
-            toast.error(err?.response?.data?.message || 'Failed to submit rating');
+
+            if (err?.response?.data?.message?.includes('already rated')) {
+                toast.error('You have already rated this place. Please refresh the page.');
+            } else {
+                toast.error(err?.response?.data?.message || 'Failed to submit rating');
+            }
         } finally {
             setIsSubmittingRating(false);
         }
@@ -203,21 +218,22 @@ export default function FoodDetailsPage() {
 
             try {
                 console.log('🍽️ [FOOD-DETAILS] Fetching reviews for place ID:', id);
-                // Fetch all ratings (which include reviews)
                 const response = await client.get<Review[]>(`/api/food/places/${id}/ratings`);
-                // Filter out user's own rating from the reviews list
-                const filteredReviews = response.data.filter(review => review.userId !== user?.userId);
-                setReviews(filteredReviews);
+
+                // Show ALL reviews including user's own
+                setReviews(response.data);
+                console.log('🍽️ [FOOD-DETAILS] Loaded', response.data.length, 'reviews');
+
             } catch (err: any) {
                 console.error('🍽️ [FOOD-DETAILS] Error fetching reviews:', err);
-                // Don't show error to user, just log it
+                toast.error('Failed to load reviews');
             } finally {
                 setLoadingReviews(false);
             }
         }
 
         fetchReviews();
-    }, [id]);
+    }, [id, user]);
 
     // Handle review submission
     const handleReviewSubmit = async (reviewText: string) => {
@@ -226,20 +242,39 @@ export default function FoodDetailsPage() {
             return;
         }
 
+        // Enforce rating required before review
+        if (userRating === null) {
+            toast.error('Please rate this place before writing a review');
+            return;
+        }
+
         setIsSubmittingReview(true);
 
         try {
             console.log('🍽️ [FOOD-DETAILS] Submitting review:', { placeId: id, userId: user.userId });
 
-            // Submit as a rating with review text (no star rating)
-            const response = await client.post<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
-                rating: null,  // No rating, just review text
+            // Update existing rating with review text
+            await client.put<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
+                rating: userRating,
                 reviewText: reviewText
             });
 
-            // Add new review to the list
-            setReviews((prev) => [response.data, ...prev]);
             toast.success('Review submitted successfully!');
+
+            // Refresh reviews list
+            setLoadingReviews(true);
+            try {
+                const reviewsResponse = await client.get<Review[]>(`/api/food/places/${id}/ratings`);
+                setReviews(reviewsResponse.data);
+            } catch (err) {
+                console.error('\ud83c\udf7d\ufe0f [FOOD-DETAILS] Error refreshing reviews:', err);
+            } finally {
+                setLoadingReviews(false);
+            }
+
+            // Refresh rating stats
+            const statsResponse = await client.get<RatingStats>(`/api/food/places/${id}/rating-stats`);
+            setRatingStats(statsResponse.data);
 
         } catch (err: any) {
             console.error('🍽️ [FOOD-DETAILS] Review submission error:', err);
@@ -385,6 +420,21 @@ export default function FoodDetailsPage() {
                                             </Badge>
                                         ))}
                                     </div>
+
+                                    {/* Map Location */}
+                                    {foodPlace.mapLocation && (
+                                        <div>
+                                            <p className="text-sm font-medium text-muted-foreground">Map Location</p>
+                                            <a
+                                                href={foodPlace.mapLocation}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-primary hover:underline"
+                                            >
+                                                View on Google Maps
+                                            </a>
+                                        </div>
+                                    )}
                                 </CardContent>
                             </Card>
                         )}
