@@ -21,9 +21,10 @@ public class HostelRequest {
     private BigDecimal monthlyRentMax;
     private String contactPersonName;
     private String contactPhone; // Frontend sends this
+    private String forGender; // BOYS, GIRLS, or BOTH
     private List<String> facilities; // ["wifi", "ac", "mess", "laundry"]
     private List<String> roomTypes; // ["single", "double", "triple", "quad"]
-    private Long categoryId;
+    private List<Long> categoryIds; // Multiple categories (1-10)
 
     // Getters and Setters
     public String getHostelName() {
@@ -138,11 +139,19 @@ public class HostelRequest {
         this.roomTypes = roomTypes;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public List<Long> getCategoryIds() {
+        return categoryIds;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryIds(List<Long> categoryIds) {
+        this.categoryIds = categoryIds;
+    }
+
+    public String getForGender() {
+        return forGender;
+    }
+
+    public void setForGender(String forGender) {
+        this.forGender = forGender;
     }
 }

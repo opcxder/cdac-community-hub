@@ -81,3 +81,54 @@
 2026-02-05 21:01:52.129 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
 2026-02-05 21:06:52.142 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
 2026-02-05 21:11:52.149 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:16:52.166 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:21:52.186 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:26:52.190 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:27:23.388 [http-nio-8086-exec-2] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-05 21:27:23.737 [http-nio-8086-exec-2] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-05 21:27:24.779 [http-nio-8086-exec-4] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-05 21:27:24.789 [http-nio-8086-exec-4] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-05 21:31:52.200 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:36:52.212 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:41:52.222 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:46:52.231 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:51:52.242 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 21:56:52.246 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:01:52.266 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:06:52.311 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:11:52.323 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:16:52.652 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:18:34.120 [http-nio-8086-exec-8] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-05 22:18:34.140 [http-nio-8086-exec-8] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-05 22:18:35.129 [http-nio-8086-exec-5] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-05 22:18:35.131 [http-nio-8086-exec-5] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-05 22:19:06.044 [http-nio-8086-exec-6] INFO  c.c.f.s.impl.RealAuthServiceClient - Successfully fetched user from Auth Service: userId=2, username=MagicCougar9448
+2026-02-05 22:19:06.170 [http-nio-8086-exec-1] INFO  c.c.f.s.impl.RealAuthServiceClient - Successfully fetched user from Auth Service: userId=2, username=MagicCougar9448
+2026-02-05 22:19:16.764 [http-nio-8086-exec-10] INFO  c.c.food.controller.RatingController - Request to rate place: 1, userId: 2, rating: 4
+2026-02-05 22:19:16.776 [http-nio-8086-exec-10] INFO  com.cdac.food.service.RatingService - User 2 rating place 1: rating=4/5
+2026-02-05 22:19:18.551 [http-nio-8086-exec-10] ERROR com.cdac.food.service.RatingService - Rating failed - duplicate rating: placeId=1, userId=2
+2026-02-05 22:21:52.701 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:26:52.783 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:31:52.802 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:36:52.824 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:41:52.829 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:46:52.847 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:51:52.871 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 22:56:52.893 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 23:01:52.957 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 23:06:52.975 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 23:11:53.041 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-05 23:14:56.080 [RMI TCP Connection(156)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2026-02-05 23:14:56.305 [RMI TCP Connection(156)-127.0.0.1] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application FOOD-SERVICE with eureka with status DOWN
+2026-02-05 23:14:56.307 [RMI TCP Connection(156)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1770313496306, current=DOWN, previous=UP]
+2026-02-05 23:14:56.308 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086: registering service...
+2026-02-05 23:14:56.357 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086 - registration status: 204
+2026-02-05 23:14:56.536 [RMI TCP Connection(156)-127.0.0.1] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-05 23:14:56.618 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-02-05 23:14:56.804 [RMI TCP Connection(156)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-05 23:14:56.931 [RMI TCP Connection(156)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-02-05 23:14:56.971 [RMI TCP Connection(156)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-02-05 23:14:56.979 [RMI TCP Connection(156)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2026-02-05 23:14:59.985 [RMI TCP Connection(156)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Unregistering ...
+2026-02-05 23:15:00.024 [RMI TCP Connection(156)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086 - deregister  status: 200
+2026-02-05 23:15:00.027 [RMI TCP Connection(156)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient

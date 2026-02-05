@@ -71,6 +71,11 @@ public class Hostel {
     @Column(name = "room_capacity")
     private Integer roomCapacity;
 
+    // Gender Restriction
+    @Enumerated(EnumType.STRING)
+    @Column(name = "for_gender", nullable = false, length = 10)
+    private HostelGender forGender = HostelGender.BOTH;
+
     // Contact Information
     @Column(length = 100)
     private String contactPersonName;
@@ -279,5 +284,13 @@ public class Hostel {
 
     public void setApprovedAt(Timestamp approvedAt) {
         this.approvedAt = approvedAt;
+    }
+
+    public HostelGender getForGender() {
+        return forGender;
+    }
+
+    public void setForGender(HostelGender forGender) {
+        this.forGender = forGender;
     }
 }

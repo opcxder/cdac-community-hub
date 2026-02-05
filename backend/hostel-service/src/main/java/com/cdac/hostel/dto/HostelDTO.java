@@ -24,6 +24,7 @@ public class HostelDTO {
     private Boolean hasAc;
     private Boolean hasMess;
     private Boolean hasLaundry;
+    private String forGender; // BOYS, GIRLS, or BOTH
     private String contactPersonName;
     private String contactPersonPhone;
     private Long submittedByUserId;
@@ -216,5 +217,13 @@ public class HostelDTO {
 
     public void setCategories(List<String> categories) {
         this.categories = categories;
+    }
+
+    public String getForGender() {
+        return forGender;
+    }
+
+    public void setForGender(String forGender) {
+        this.forGender = forGender;
     }
 }

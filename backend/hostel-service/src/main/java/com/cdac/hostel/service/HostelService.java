@@ -40,6 +40,12 @@ public class HostelService {
     @Autowired
     private com.cdac.hostel.repository.ImageRepository imageRepository;
 
+    @Autowired
+    private com.cdac.hostel.repository.CategoryMappingRepository categoryMappingRepository;
+
+    @Autowired
+    private com.cdac.hostel.repository.CategoryRepository categoryRepository;
+
     /**
      * Creates a new hostel submission from HostelRequest DTO.
      * Maps frontend field names to backend entity fields.
@@ -81,6 +87,16 @@ public class HostelService {
         // Map contactPhone (frontend) to contactPersonPhone (backend)
         hostel.setContactPersonPhone(request.getContactPhone());
 
+        // Map forGender string to enum
+        if (request.getForGender() != null) {
+            try {
+                hostel.setForGender(com.cdac.hostel.model.HostelGender.valueOf(request.getForGender().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                logger.warn("Invalid forGender value: {}, defaulting to BOTH", request.getForGender());
+                hostel.setForGender(com.cdac.hostel.model.HostelGender.BOTH);
+            }
+        }
+
         // Map facilities array to individual boolean fields
         if (request.getFacilities() != null) {
             hostel.setHasWifi(request.getFacilities().contains("wifi"));
@@ -100,6 +116,24 @@ public class HostelService {
         hostel.setStatus(HostelStatus.PENDING);
 
         Hostel savedHostel = hostelRepository.save(hostel);
+
+        // Save category mappings (multiple categories support)
+        if (request.getCategoryIds() != null && !request.getCategoryIds().isEmpty()) {
+            for (Long categoryId : request.getCategoryIds()) {
+                // Verify category exists
+                if (!categoryRepository.existsById(categoryId)) {
+                    logger.warn("Category not found: categoryId={}, skipping", categoryId);
+                    continue;
+                }
+                
+                com.cdac.hostel.model.HostelCategoriesMapping mapping = new com.cdac.hostel.model.HostelCategoriesMapping();
+                mapping.setHostelId(savedHostel.getHostelId());
+                mapping.setCategoryId(categoryId);
+                categoryMappingRepository.save(mapping);
+                logger.debug("Added category mapping: hostelId={}, categoryId={}", 
+                    savedHostel.getHostelId(), categoryId);
+            }
+        }
 
         // Save room types as separate records
         if (request.getRoomTypes() != null && !request.getRoomTypes().isEmpty()) {
@@ -234,6 +268,11 @@ public class HostelService {
         dto.setHasMess(hostel.getHasMess());
         dto.setHasLaundry(hostel.getHasLaundry());
 
+        // Gender restriction
+        if (hostel.getForGender() != null) {
+            dto.setForGender(hostel.getForGender().toString());
+        }
+
         // Contact
         dto.setContactPersonName(hostel.getContactPersonName());
         dto.setContactPersonPhone(hostel.getContactPersonPhone());
@@ -257,8 +296,20 @@ public class HostelService {
                 .collect(java.util.stream.Collectors.toList());
         dto.setRoomCapacities(roomCapacities);
 
-        logger.debug("Mapped hostel {} with {} images and {} room types",
-                hostel.getHostelId(), imageUrls.size(), roomCapacities.size());
+        // Fetch categories
+        List<String> categories = categoryMappingRepository.findByHostelId(hostel.getHostelId())
+                .stream()
+                .map(mapping -> {
+                    return categoryRepository.findById(mapping.getCategoryId())
+                            .map(cat -> cat.getCategoryName())
+                            .orElse(null);
+                })
+                .filter(name -> name != null)
+                .collect(java.util.stream.Collectors.toList());
+        dto.setCategories(categories);
+
+        logger.debug("Mapped hostel {} with {} images, {} room types, and {} categories",
+                hostel.getHostelId(), imageUrls.size(), roomCapacities.size(), categories.size());
 
         return dto;
     }

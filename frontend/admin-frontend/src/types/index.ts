@@ -125,6 +125,7 @@ export interface Hostel {
   hasAc: boolean;
   hasMess: boolean;
   hasLaundry: boolean;
+  forGender?: 'BOYS' | 'GIRLS' | 'BOTH';
   contactPersonName?: string;
   contactPersonPhone?: string;
   description?: string;
@@ -152,6 +153,7 @@ export interface CreateHostelRequest {
   hasAc?: boolean;
   hasMess?: boolean;
   hasLaundry?: boolean;
+  forGender?: 'BOYS' | 'GIRLS' | 'BOTH';
   roomCapacity?: number;
   contactPersonName?: string;
   contactPersonPhone?: string;
