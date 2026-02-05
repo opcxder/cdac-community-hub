@@ -10,10 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * Configuration class for RestTemplate bean.
- * Used by RealAuthServiceClient to make HTTP calls to auth-service.
- */
+
 @Configuration
 public class RestTemplateConfig {
 

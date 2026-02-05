@@ -12,21 +12,12 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Data seeder for predefined hostel categories.
- * Seeds the database with common hostel categories on application startup.
- */
 @Configuration
 public class CategoryDataSeeder {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryDataSeeder.class);
 
-    /**
-     * Predefined hostel categories that will be seeded on startup.
-     * These are created by the system (userId = -1 represents system/admin).
-     * Categories focus on ACCOMMODATION TYPE only (amenities, gender, facilities
-     * are separate form fields).
-     */
+ 
     private static final List<String> PREDEFINED_CATEGORIES = Arrays.asList(
             "PG (Paying Guest)",
             "Hostel",

@@ -6,6 +6,15 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
+
+
+
+
+
+
+
+
+
 # Development stage (Vite dev server)
 FROM node:18-alpine
 WORKDIR /app

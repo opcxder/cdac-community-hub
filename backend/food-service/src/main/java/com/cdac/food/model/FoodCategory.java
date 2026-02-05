@@ -20,10 +20,7 @@ public class FoodCategory {
     @Column(name = "category_name", nullable = false, unique = true, length = 100)
     private String categoryName;
 
-    /**
-     * ID of the user who created this category.
-     * No foreign key constraint - references auth_db.users
-     */
+    
     @Column(name = "created_by_user_id")
     private Long createdByUserId;
 

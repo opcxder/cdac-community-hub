@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
-/**
- * Configuration class for Cloudinary integration.
- * Initializes the Cloudinary instance with credentials from application.properties.
- */
+
 @Configuration
 public class CloudinaryConfig {
 
@@ -23,12 +20,7 @@ public class CloudinaryConfig {
     @Value("${cloudinary.api-secret}")
     private String apiSecret;
 
-    /**
-     * Creates and configures the Cloudinary bean.
-     * This bean is used throughout the application for image upload and deletion.
-     *
-     * @return Configured Cloudinary instance
-     */
+ 
     @Bean
     public Cloudinary cloudinary() {
         return new Cloudinary(ObjectUtils.asMap(

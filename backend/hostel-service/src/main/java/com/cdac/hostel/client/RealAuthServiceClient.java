@@ -8,17 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientException;
 
-/**
- * Real implementation of AuthServiceClient for production.
- * Makes HTTP calls to the Auth Service to validate users.
- * 
- * Active for: prod profile only
- * 
- * Requires:
- * - Auth Service running and accessible
- * - auth.service.url configured in application-prod.properties
- * - RestTemplate bean configured
- */
+
 @Service
 @Profile("prod")
 public class RealAuthServiceClient implements AuthServiceClient {
@@ -30,9 +20,7 @@ public class RealAuthServiceClient implements AuthServiceClient {
     @Value("${auth.service.url}")
     private String authServiceUrl;
     
-    /**
-     * Constructor injection of RestTemplate.
-     */
+    
     public RealAuthServiceClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }

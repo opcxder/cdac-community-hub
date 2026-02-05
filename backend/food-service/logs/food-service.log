@@ -547,3 +547,215 @@ com.netflix.discovery.shared.transport.TransportException: Cannot execute reques
 2026-02-02 12:09:39.254 [RMI TCP Connection(45)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2026-02-02 12:09:39.275 [RMI TCP Connection(45)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
 2026-02-02 12:09:39.280 [RMI TCP Connection(45)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2026-02-02 12:11:36.229 [main] INFO  c.cdac.food.FoodServiceApplication - Starting FoodServiceApplication using Java 21.0.9 with PID 11316 (F:\Cdac-Project\backend\food-service\target\classes started by HP in F:\Cdac-Project\backend\food-service)
+2026-02-02 12:11:36.275 [main] INFO  c.cdac.food.FoodServiceApplication - The following 1 profile is active: "prod"
+2026-02-02 12:11:37.899 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-02 12:11:38.176 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 249 ms. Found 6 JPA repository interfaces.
+2026-02-02 12:11:38.573 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=fdd7aca8-77aa-36d8-b516-de61732f98a3
+2026-02-02 12:11:39.056 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8086 (http)
+2026-02-02 12:11:39.074 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-02 12:11:39.074 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.14]
+2026-02-02 12:11:39.159 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 2802 ms
+2026-02-02 12:11:39.448 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-02 12:11:39.824 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3beaa16d
+2026-02-02 12:11:39.826 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-02 12:11:39.926 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-02 12:11:40.022 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 7.1.8.Final
+2026-02-02 12:11:40.613 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-02 12:11:40.725 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-02 12:11:40.743 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/food_db]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.4.6
+	Default catalog/schema: food_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-02 12:11:42.375 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-02 12:11:43.793 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-02 12:11:43.985 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-02 12:11:44.296 [main] INFO  c.c.food.config.RestTemplateConfig - Configuring RestTemplate for inter-service communication
+2026-02-02 12:11:47.105 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-02 12:11:48.624 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestClient.
+2026-02-02 12:11:48.682 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-02-02 12:11:48.694 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2026-02-02 12:11:48.855 [main] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2026-02-02 12:11:48.893 [main] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2026-02-02 12:11:48.900 [main] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 12:11:48.914 [main] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2026-02-02 12:11:48.915 [main] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2026-02-02 12:11:48.915 [main] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2026-02-02 12:11:48.915 [main] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2026-02-02 12:11:48.915 [main] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2026-02-02 12:11:48.915 [main] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2026-02-02 12:11:48.916 [main] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2026-02-02 12:11:49.484 [main] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2026-02-02 12:11:49.488 [main] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2026-02-02 12:11:49.492 [main] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-02-02 12:11:49.496 [main] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1770014509495 with initial instances count: 1
+2026-02-02 12:11:49.504 [main] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application FOOD-SERVICE with eureka with status UP
+2026-02-02 12:11:49.505 [main] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1770014509505, current=UP, previous=STARTING]
+2026-02-02 12:11:49.508 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086: registering service...
+2026-02-02 12:11:49.547 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8086 (http) with context path '/'
+2026-02-02 12:11:49.552 [main] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8086
+2026-02-02 12:11:49.586 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086 - registration status: 204
+2026-02-02 12:11:49.597 [main] INFO  c.cdac.food.FoodServiceApplication - Started FoodServiceApplication in 14.255 seconds (process running for 15.65)
+2026-02-02 12:11:49.614 [main] INFO  c.c.food.config.CategoryDataSeeder - 🌱 Starting category seeding...
+2026-02-02 12:11:50.063 [main] INFO  c.c.food.config.CategoryDataSeeder - 🎉 Category seeding complete! Seeded: 0, Skipped: 19, Total: 19
+2026-02-02 12:11:50.083 [main] INFO  c.c.food.config.CategoryDataSeeder - 📊 Total approved categories in database: 22
+2026-02-02 12:11:50.086 [main] INFO  c.cdac.food.FoodServiceApplication - Food Service started successfully on port 8086
+2026-02-02 12:11:50.904 [RMI TCP Connection(4)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-02 12:11:50.904 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-02-02 12:11:50.907 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-02-02 12:12:53.112 [http-nio-8086-exec-1] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-02 12:12:53.321 [http-nio-8086-exec-1] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-02 12:12:57.768 [http-nio-8086-exec-3] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-02 12:12:57.781 [http-nio-8086-exec-3] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-02 12:13:11.037 [http-nio-8086-exec-4] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-02 12:13:11.047 [http-nio-8086-exec-4] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-02 12:13:11.317 [http-nio-8086-exec-2] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-02 12:13:11.321 [http-nio-8086-exec-2] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-02 12:16:48.935 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 12:21:28.507 [http-nio-8086-exec-7] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-02 12:21:28.549 [http-nio-8086-exec-7] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-02 12:21:29.926 [http-nio-8086-exec-7] WARN  o.s.d.w.c.SpringDataJackson3Configuration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-02-02 12:21:30.031 [http-nio-8086-exec-8] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-02 12:21:30.031 [http-nio-8086-exec-8] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-02 12:21:35.204 [http-nio-8086-exec-6] INFO  c.c.f.s.impl.RealAuthServiceClient - Successfully fetched user from Auth Service: userId=2, username=MagicCougar9448
+2026-02-02 12:21:35.316 [http-nio-8086-exec-1] INFO  c.c.f.s.impl.RealAuthServiceClient - Successfully fetched user from Auth Service: userId=2, username=MagicCougar9448
+2026-02-02 12:21:48.949 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 12:26:48.964 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 12:31:48.978 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 12:36:49.046 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 12:41:49.060 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 12:45:03.959 [RMI TCP Connection(40)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2026-02-02 12:45:03.971 [RMI TCP Connection(40)-127.0.0.1] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application FOOD-SERVICE with eureka with status DOWN
+2026-02-02 12:45:03.971 [RMI TCP Connection(40)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1770016503971, current=DOWN, previous=UP]
+2026-02-02 12:45:03.971 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086: registering service...
+2026-02-02 12:45:03.997 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086 - registration status: 204
+2026-02-02 12:45:04.000 [RMI TCP Connection(40)-127.0.0.1] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-02 12:45:04.028 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-02-02 12:45:04.061 [RMI TCP Connection(40)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-02 12:45:04.076 [RMI TCP Connection(40)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-02-02 12:45:04.089 [RMI TCP Connection(40)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-02-02 12:45:04.092 [RMI TCP Connection(40)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2026-02-02 12:45:07.095 [RMI TCP Connection(40)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Unregistering ...
+2026-02-02 12:45:07.116 [RMI TCP Connection(40)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086 - deregister  status: 200
+2026-02-02 12:45:07.117 [RMI TCP Connection(40)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient
+2026-02-02 14:45:40.403 [main] INFO  c.cdac.food.FoodServiceApplication - Starting FoodServiceApplication using Java 21.0.9 with PID 10032 (F:\Cdac-Project\backend\food-service\target\classes started by HP in F:\Cdac-Project\backend\food-service)
+2026-02-02 14:45:40.436 [main] INFO  c.cdac.food.FoodServiceApplication - The following 1 profile is active: "prod"
+2026-02-02 14:45:42.842 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-02 14:45:43.104 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 236 ms. Found 6 JPA repository interfaces.
+2026-02-02 14:45:43.520 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=fdd7aca8-77aa-36d8-b516-de61732f98a3
+2026-02-02 14:45:44.004 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8086 (http)
+2026-02-02 14:45:44.020 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-02 14:45:44.021 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.14]
+2026-02-02 14:45:44.117 [main] INFO  o.s.b.w.c.s.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 3588 ms
+2026-02-02 14:45:44.375 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-02 14:45:44.784 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5ad50b02
+2026-02-02 14:45:44.786 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-02 14:45:44.892 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-02 14:45:44.981 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 7.1.8.Final
+2026-02-02 14:45:45.606 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-02 14:45:45.716 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-02 14:45:45.732 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/food_db]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.4.6
+	Default catalog/schema: food_db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DatasourceConnectionProviderImpl
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-02 14:45:47.391 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-02 14:45:48.774 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-02 14:45:48.949 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-02 14:45:49.251 [main] INFO  c.c.food.config.RestTemplateConfig - Configuring RestTemplate for inter-service communication
+2026-02-02 14:45:52.507 [main] WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-02 14:45:55.735 [main] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestClient.
+2026-02-02 14:45:55.816 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-02-02 14:45:55.831 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2026-02-02 14:45:56.019 [main] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2026-02-02 14:45:56.077 [main] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2026-02-02 14:45:56.091 [main] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 14:45:56.118 [main] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2026-02-02 14:45:56.118 [main] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2026-02-02 14:45:56.119 [main] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2026-02-02 14:45:56.119 [main] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2026-02-02 14:45:56.119 [main] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2026-02-02 14:45:56.120 [main] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2026-02-02 14:45:56.120 [main] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2026-02-02 14:45:56.707 [main] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2026-02-02 14:45:56.711 [main] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2026-02-02 14:45:56.715 [main] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2026-02-02 14:45:56.718 [main] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1770023756717 with initial instances count: 1
+2026-02-02 14:45:56.724 [main] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application FOOD-SERVICE with eureka with status UP
+2026-02-02 14:45:56.726 [main] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1770023756726, current=UP, previous=STARTING]
+2026-02-02 14:45:56.729 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086: registering service...
+2026-02-02 14:45:56.762 [main] INFO  o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8086 (http) with context path '/'
+2026-02-02 14:45:56.764 [main] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8086
+2026-02-02 14:45:56.800 [main] INFO  c.cdac.food.FoodServiceApplication - Started FoodServiceApplication in 17.939 seconds (process running for 19.596)
+2026-02-02 14:45:56.801 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086 - registration status: 204
+2026-02-02 14:45:56.815 [main] INFO  c.c.food.config.CategoryDataSeeder - 🌱 Starting category seeding...
+2026-02-02 14:45:57.210 [main] INFO  c.c.food.config.CategoryDataSeeder - 🎉 Category seeding complete! Seeded: 0, Skipped: 19, Total: 19
+2026-02-02 14:45:57.231 [main] INFO  c.c.food.config.CategoryDataSeeder - 📊 Total approved categories in database: 22
+2026-02-02 14:45:57.233 [main] INFO  c.cdac.food.FoodServiceApplication - Food Service started successfully on port 8086
+2026-02-02 14:45:57.849 [RMI TCP Connection(4)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-02 14:45:57.849 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-02-02 14:45:57.853 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+2026-02-02 14:50:56.159 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 14:55:56.243 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 15:00:56.253 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 15:03:51.250 [http-nio-8086-exec-1] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-02 15:03:51.659 [http-nio-8086-exec-1] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-02 15:03:52.639 [http-nio-8086-exec-2] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-02 15:03:52.641 [http-nio-8086-exec-2] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-02 15:03:53.014 [http-nio-8086-exec-2] WARN  o.s.d.w.c.SpringDataJackson3Configuration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-02-02 15:03:53.151 [http-nio-8086-exec-3] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-02 15:03:53.151 [http-nio-8086-exec-3] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-02 15:04:02.126 [http-nio-8086-exec-4] INFO  c.c.f.c.InternalFoodController - Admin request: get pending food places
+2026-02-02 15:04:02.141 [http-nio-8086-exec-4] INFO  c.cdac.food.service.FoodPlaceService - Found 2 pending food places
+2026-02-02 15:04:04.214 [http-nio-8086-exec-5] INFO  c.c.f.controller.CategoryController - 📥 [CATEGORY-CONTROLLER] GET /api/food/categories - Fetching all approved categories
+2026-02-02 15:04:04.220 [http-nio-8086-exec-5] INFO  c.cdac.food.service.CategoryService - 🔍 [CATEGORY-SERVICE] Fetching all approved categories from database
+2026-02-02 15:04:04.239 [http-nio-8086-exec-5] INFO  c.cdac.food.service.CategoryService - 📊 [CATEGORY-SERVICE] Found 22 approved categories
+2026-02-02 15:04:04.246 [http-nio-8086-exec-5] INFO  c.c.f.controller.CategoryController - 📤 [CATEGORY-CONTROLLER] Returning 22 approved categories
+2026-02-02 15:04:04.332 [http-nio-8086-exec-6] INFO  c.c.f.controller.CategoryController - 📥 [CATEGORY-CONTROLLER] GET /api/food/categories - Fetching all approved categories
+2026-02-02 15:04:04.332 [http-nio-8086-exec-6] INFO  c.cdac.food.service.CategoryService - 🔍 [CATEGORY-SERVICE] Fetching all approved categories from database
+2026-02-02 15:04:04.352 [http-nio-8086-exec-6] INFO  c.cdac.food.service.CategoryService - 📊 [CATEGORY-SERVICE] Found 22 approved categories
+2026-02-02 15:04:04.352 [http-nio-8086-exec-6] INFO  c.c.f.controller.CategoryController - 📤 [CATEGORY-CONTROLLER] Returning 22 approved categories
+2026-02-02 15:04:11.483 [http-nio-8086-exec-7] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-02 15:04:11.483 [http-nio-8086-exec-7] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-02 15:04:11.549 [http-nio-8086-exec-9] INFO  c.c.f.controller.FoodPlaceController - Fetching food places: page=0, size=20, search=null, priceRange=null, categoryId=null
+2026-02-02 15:04:11.550 [http-nio-8086-exec-9] INFO  c.cdac.food.service.FoodPlaceService - Searching food places: search=null, priceRange=null, categoryId=null, page=0
+2026-02-02 15:04:17.318 [http-nio-8086-exec-8] INFO  c.c.f.s.impl.RealAuthServiceClient - Successfully fetched user from Auth Service: userId=2, username=MagicCougar9448
+2026-02-02 15:04:17.414 [http-nio-8086-exec-2] INFO  c.c.f.s.impl.RealAuthServiceClient - Successfully fetched user from Auth Service: userId=2, username=MagicCougar9448
+2026-02-02 15:05:56.256 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 15:10:56.276 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 15:15:56.297 [AsyncResolver-bootstrap-executor-%d] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2026-02-02 18:13:01.333 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2h53m46s37ms357µs500ns).
+2026-02-02 18:21:28.152 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8m28s444ms283µs700ns).
+2026-02-02 18:22:03.310 [RMI TCP Connection(4)-127.0.0.1] WARN  javax.management.remote.misc - The server has decided to close this client connection.
+2026-02-02 18:22:14.426 [RMI TCP Connection(41)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2026-02-02 18:22:14.485 [RMI TCP Connection(41)-127.0.0.1] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application FOOD-SERVICE with eureka with status DOWN
+2026-02-02 18:22:14.486 [RMI TCP Connection(41)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1770036734486, current=DOWN, previous=UP]
+2026-02-02 18:22:14.487 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086: registering service...
+2026-02-02 18:22:14.528 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_FOOD-SERVICE/Itachi:food-service:8086 - registration status: 204
+2026-02-02 18:22:14.608 [RMI TCP Connection(41)-127.0.0.1] INFO  o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-02 18:22:14.657 [tomcat-shutdown] INFO  o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-02-02 18:22:14.745 [RMI TCP Connection(41)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-02 18:22:14.795 [RMI TCP Connection(41)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-02-02 18:22:14.812 [RMI TCP Connection(41)-127.0.0.1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-02-02 18:22:14.816 [RMI TCP Connection(41)-127.0.0.1] INFO  c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...

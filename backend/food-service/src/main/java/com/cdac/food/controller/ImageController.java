@@ -27,14 +27,7 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    /**
-     * Upload images for a food place.
-     * POST /api/food/places/{placeId}/images
-     * 
-     * @param placeId the food place ID
-     * @param files the image files (can be multiple)
-     * @return list of uploaded image URLs
-     */
+   
     @PostMapping("/places/{placeId}/images")
     public ResponseEntity<Map<String, Object>> uploadImages(
             @PathVariable Long placeId,
@@ -49,13 +42,7 @@ public class ImageController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Delete an image.
-     * DELETE /api/food/images/{imageId}
-     * 
-     * @param imageId the image ID
-     * @return success message
-     */
+    
     @DeleteMapping("/images/{imageId}")
     public ResponseEntity<Map<String, String>> deleteImage(@PathVariable Long imageId) {
         logger.info("Request to delete image: {}", imageId);

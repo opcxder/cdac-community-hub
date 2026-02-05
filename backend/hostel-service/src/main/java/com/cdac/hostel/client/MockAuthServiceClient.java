@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-/**
- * Mock implementation of AuthServiceClient for development.
- * Accepts any positive userId to simplify testing.
- */
+
 @Service
 @Profile("dev")
 public class MockAuthServiceClient implements AuthServiceClient {

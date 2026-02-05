@@ -2,10 +2,7 @@ package com.cdac.food.model;
 
 import jakarta.persistence.*;
 
-/**
- * Junction table entity for many-to-many relationship between FoodPlace and FoodCategory.
- * A food place can belong to multiple categories (e.g., a restaurant can serve both Breakfast and Lunch).
- */
+
 @Entity
 @Table(name = "food_place_categories", 
        uniqueConstraints = @UniqueConstraint(columnNames = {"place_id", "category_id"}))

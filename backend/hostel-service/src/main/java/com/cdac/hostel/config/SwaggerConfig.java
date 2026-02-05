@@ -9,20 +9,11 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
 
-/**
- * Swagger/OpenAPI 3.0 Configuration for Hostel Service.
- * Provides interactive API documentation accessible at /swagger-ui.html
- * API specification available at /api-docs
- */
+
 @Configuration
 public class SwaggerConfig {
 
-    /**
-     * Configures OpenAPI documentation for the Hostel Service.
-     * Includes API metadata, contact information, and server configuration.
-     *
-     * @return Configured OpenAPI instance
-     */
+
     @Bean
     public OpenAPI hostelServiceOpenAPI() {
         return new OpenAPI()

@@ -29,15 +29,7 @@ public class RatingController {
         this.ratingService = ratingService;
     }
 
-    /**
-     * Submit a rating for a food place.
-     * POST /api/food/places/{placeId}/rate
-     * 
-     * @param placeId the food place ID
-     * @param userId the user ID (passed as query param for now, effectively from context)
-     * @param request the rating details
-     * @return the created rating
-     */
+    
     @PostMapping("/places/{placeId}/rate")
     public ResponseEntity<RatingDTO> ratePlace(
             @PathVariable Long placeId,
@@ -47,28 +39,14 @@ public class RatingController {
         return ResponseEntity.ok(ratingService.ratePlace(placeId, userId, request));
     }
 
-    /**
-     * Get all ratings for a food place.
-     * GET /api/food/places/{placeId}/ratings
-     * 
-     * @param placeId the food place ID
-     * @return list of ratings with replies
-     */
+    
     @GetMapping("/places/{placeId}/ratings")
     public ResponseEntity<List<RatingDTO>> getRatingsForPlace(@PathVariable Long placeId) {
         logger.debug("Request to get ratings for place: {}", placeId);
         return ResponseEntity.ok(ratingService.getRatingsForPlace(placeId));
     }
 
-    /**
-     * Reply to a review.
-     * POST /api/food/ratings/{ratingId}/reply
-     * 
-     * @param ratingId the rating ID
-     * @param userId the user ID replying
-     * @param request body containing "replyText"
-     * @return the created reply
-     */
+   
     @PostMapping("/ratings/{ratingId}/reply")
     public ResponseEntity<ReplyDTO> replyToReview(
             @PathVariable Long ratingId,

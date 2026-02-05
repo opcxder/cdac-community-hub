@@ -3,10 +3,7 @@ package com.cdac.food.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * Entity representing images uploaded for a food place.
- * Images are stored in Cloudinary, and this entity stores the URLs and public IDs.
- */
+
 @Entity
 @Table(name = "food_place_images")
 public class FoodPlaceImage {

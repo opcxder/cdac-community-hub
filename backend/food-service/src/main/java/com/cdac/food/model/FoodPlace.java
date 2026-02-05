@@ -75,21 +75,15 @@ public class FoodPlace {
 
     // Relationships
     
-    /**
-     * Images associated with this food place
-     */
+   
     @OneToMany(mappedBy = "foodPlace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FoodPlaceImage> images = new ArrayList<>();
 
-    /**
-     * Categories this food place belongs to (many-to-many)
-     */
+   
     @OneToMany(mappedBy = "foodPlace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FoodPlaceCategory> placeCategories = new ArrayList<>();
 
-    /**
-     * Ratings and reviews for this food place
-     */
+    
     @OneToMany(mappedBy = "foodPlace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FoodPlaceRating> ratings = new ArrayList<>();
 

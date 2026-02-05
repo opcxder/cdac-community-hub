@@ -3,10 +3,6 @@ package com.cdac.food.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * Entity representing a reply to a food place review.
- * Users can reply to reviews to create discussion threads.
- */
 @Entity
 @Table(name = "food_review_replies")
 public class FoodReviewReply {
@@ -20,10 +16,7 @@ public class FoodReviewReply {
     @JoinColumn(name = "rating_id", nullable = false)
     private FoodPlaceRating rating;
 
-    /**
-     * ID of the user who posted this reply.
-     * No foreign key constraint - references auth_db.users
-     */
+  
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
