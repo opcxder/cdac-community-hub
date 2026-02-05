@@ -2,18 +2,29 @@ import { User, Calendar } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { StarRating } from './StarRating';
 
-interface ReviewCardProps {
-    userName: string;
-    rating?: number;
-    reviewText: string;
+interface Review {
+    ratingId: number;
+    userName?: string;
+    reviewText?: string;
     createdAt: string;
+    overallRating?: number;
+    reply?: {
+        replyText: string;
+        repliedAt: string;
+        repliedByUsername: string;
+    };
+}
+
+interface ReviewCardProps {
+    review: Review;
+    onReplySubmit?: (ratingId: number, replyText: string) => Promise<void>;
 }
 
 /**
  * Review Card Component
  * Displays a single review with user info, rating, and timestamp
  */
-export function ReviewCard({ userName, rating, reviewText, createdAt }: ReviewCardProps) {
+export function ReviewCard({ review }: ReviewCardProps) {
     const formatDate = (dateString: string) => {
         try {
             const date = new Date(dateString);
@@ -38,10 +49,10 @@ export function ReviewCard({ userName, rating, reviewText, createdAt }: ReviewCa
                                 <User className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                                <p className="font-semibold">{userName}</p>
-                                {rating && (
+                                <p className="font-semibold">{review.userName || 'Anonymous'}</p>
+                                {review.overallRating && (
                                     <div className="mt-1">
-                                        <StarRating value={rating} readonly size="sm" />
+                                        <StarRating value={review.overallRating} readonly size="sm" />
                                     </div>
                                 )}
                             </div>
@@ -50,14 +61,16 @@ export function ReviewCard({ userName, rating, reviewText, createdAt }: ReviewCa
                         {/* Timestamp */}
                         <div className="flex items-center gap-1 text-sm text-muted-foreground">
                             <Calendar className="h-3 w-3" />
-                            <span>{formatDate(createdAt)}</span>
+                            <span>{formatDate(review.createdAt)}</span>
                         </div>
                     </div>
 
                     {/* Review Text */}
-                    <p className="text-muted-foreground leading-relaxed pl-12">
-                        {reviewText}
-                    </p>
+                    {review.reviewText && (
+                        <p className="text-muted-foreground leading-relaxed pl-12">
+                            {review.reviewText}
+                        </p>
+                    )}
                 </div>
             </CardContent>
         </Card>

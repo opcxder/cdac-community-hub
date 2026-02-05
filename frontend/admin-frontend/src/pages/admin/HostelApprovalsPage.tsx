@@ -24,20 +24,29 @@ import {
 
 interface PendingHostel {
   hostelId: number;
-  name: string;
-  location: string;
+  hostelName: string;
+  description?: string;
+  address: string;
+  city: string;
+  locality: string;
+  landmark?: string;
+  mapLocation?: string;
+  distanceFromCdac?: string;
+  monthlyRentMin: number;
+  monthlyRentMax: number;
+  hasWifi: boolean;
+  hasAc: boolean;
+  hasMess: boolean;
+  hasLaundry: boolean;
+  contactPersonName?: string;
+  contactPersonPhone?: string;
+  submittedByUserId: number;
+  status: "PENDING";
+  imageUrls: string[];
+  roomCapacities?: number[];
+  categories: string[];
   forGender: "BOYS" | "GIRLS" | "BOTH";
-  images: string[];
-  primaryImageUrl: string;
-  submittedBy: { userId: number; username: string };
-  ratings: {
-    cleanliness: number;
-    food: number;
-    safety: number;
-    location: number;
-  };
-  overallRating: number;
-  approvalStatus: "PENDING";
+  overallRating?: number;
 }
 
 type ActionType = "approve" | "reject";
@@ -167,16 +176,35 @@ export default function HostelApprovalsPage() {
                 className="hover:bg-zinc-50 transition-colors"
               >
                 <TableCell>
-                  <img
-                    src={hostel.primaryImageUrl}
-                    alt={hostel.name}
-                    className="h-12 w-12 rounded object-cover"
-                  />
+                  {hostel.imageUrls && hostel.imageUrls.length > 0 ? (
+                    <img
+                      src={hostel.imageUrls[0]}
+                      alt={hostel.hostelName}
+                      className="h-12 w-12 rounded object-cover"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 bg-muted rounded flex items-center justify-center text-xs">No image</div>
+                  )}
                 </TableCell>
-                <TableCell>{hostel.name}</TableCell>
-                <TableCell>{hostel.location}</TableCell>
+                <TableCell>{hostel.hostelName}</TableCell>
+                <TableCell>
+                  {hostel.categories && hostel.categories.length > 0 ? (
+                    <div className="flex flex-wrap gap-1">
+                      {hostel.categories.slice(0, 2).map((cat, idx) => (
+                        <span key={idx} className="text-xs bg-muted px-2 py-1 rounded">{cat}</span>
+                      ))}
+                      {hostel.categories.length > 2 && (
+                        <span className="text-xs text-muted-foreground">+{hostel.categories.length - 2}</span>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell>{hostel.locality}</TableCell>
+                <TableCell>{hostel.city}</TableCell>
                 <TableCell>{hostel.forGender}</TableCell>
-                <TableCell>{hostel.submittedBy.username}</TableCell>
+                <TableCell>{hostel.submittedByUserId}</TableCell>
                 <TableCell className="space-x-2">
                   <Button
                     variant="outline"
@@ -215,8 +243,7 @@ export default function HostelApprovalsPage() {
             </AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to {actionType}{" "}
-              <span className="font-semibold">{selectedHostel?.name}</span> submitted by{" "}
-              <span className="font-semibold">{selectedHostel?.submittedBy.username}</span>?
+              <span className="font-semibold">{selectedHostel?.hostelName}</span> (User ID: {selectedHostel?.submittedByUserId})?
             </AlertDialogDescription>
           </AlertDialogHeader>
 

@@ -18,12 +18,6 @@ export default function AdminLayout() {
         navigate("/login", { replace: true });
     };
 
-    function getDisplayName(email: string) {
-        if (!email) return "User";
-        const namePart = email.split("@")[0];
-        return namePart.charAt(0).toUpperCase() + namePart.slice(1);
-    }
-
     return (
         <div className="flex h-screen bg-zinc-100">
             {/* Sidebar */}

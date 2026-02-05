@@ -167,19 +167,17 @@ export default function FoodDetailsPage() {
         try {
             console.log('🍽️ [FOOD-DETAILS] Submitting rating:', { placeId: id, userId: user.userId, rating });
 
-            let response;
-
             // Check if user already has a rating (update) or creating new
             if (userRating !== null) {
                 // Update existing rating
-                response = await client.put<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
+                await client.put<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
                     rating: rating,
                     reviewText: null  // Keep existing review text
                 });
                 toast.success('Rating updated successfully!');
             } else {
                 // Create new rating
-                response = await client.post<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
+                await client.post<Review>(`/api/food/places/${id}/rate?userId=${user.userId}`, {
                     rating: rating,
                     reviewText: null
                 });
@@ -192,7 +190,8 @@ export default function FoodDetailsPage() {
             const statsResponse = await client.get<RatingStats>(`/api/food/places/${id}/rating-stats`);
             setRatingStats(statsResponse.data);
 
-            // Refresh food place to get updated average rating
+
+            // Refresh the food place data to get updated ratings
             const placeResponse = await client.get<FoodPlace>(`/api/food/places/${id}`);
             setFoodPlace(placeResponse.data);
 
@@ -584,10 +583,7 @@ export default function FoodDetailsPage() {
                                 {reviews.map((review) => (
                                     <ReviewCard
                                         key={review.ratingId}
-                                        userName={review.username}
-                                        rating={review.rating}
-                                        reviewText={review.reviewText}
-                                        createdAt={review.createdAt}
+                                        review={review}
                                     />
                                 ))}
                             </div>

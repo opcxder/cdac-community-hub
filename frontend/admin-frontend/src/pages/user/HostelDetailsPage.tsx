@@ -11,7 +11,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ImageGallery } from '@/components/shared/ImageGallery';
 import { MultiCriteriaRating } from '@/components/shared/MultiCriteriaRating';
-import { RatingBreakdown } from '@/components/shared/RatingBreakdown';
 import { ReviewCard } from '@/components/shared/ReviewCard';
 import { ReviewForm } from '@/components/shared/ReviewForm';
 
@@ -35,6 +34,7 @@ interface Hostel {
     contactPersonPhone: string;
     forGender: 'BOYS' | 'GIRLS' | 'BOTH';
     images: string[];
+    categories?: string[];  // Add categories
     mapLocation: string | null;
 }
 
@@ -469,11 +469,25 @@ export default function HostelDetailsPage() {
                                     </div>
                                 )}
 
-                                {/* Facilities */}
+                                {/* Amenities/Facilities */}
                                 <div>
-                                    <h3 className="font-semibold text-lg mb-3">Facilities</h3>
+                                    <h3 className="font-semibold text-lg mb-3">Amenities</h3>
                                     {renderFacilities()}
                                 </div>
+
+                                {/* Categories */}
+                                {hostel.categories && hostel.categories.length > 0 && (
+                                    <div>
+                                        <h3 className="font-semibold text-lg mb-3">Categories</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {hostel.categories.map((category, idx) => (
+                                                <Badge key={idx} variant="outline" className="px-3 py-1">
+                                                    {category}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Contact Information */}
                                 <div>

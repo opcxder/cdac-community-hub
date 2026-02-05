@@ -7,13 +7,29 @@ import { Building2 } from "lucide-react";
 
 interface Hostel {
     hostelId: number;
-    name: string;
-    overallRating: number;
-    rentRange: string;
-    primaryImageUrl: string;
-    location: string;
-    facilities: string[];
+    hostelName: string;
+    description?: string;
+    address: string;
+    city: string;
+    locality: string;
+    landmark?: string;
+    mapLocation?: string;
+    distanceFromCdac?: string;
+    monthlyRentMin: number;
+    monthlyRentMax: number;
+    hasWifi: boolean;
+    hasAc: boolean;
+    hasMess: boolean;
+    hasLaundry: boolean;
+    contactPersonName?: string;
+    contactPersonPhone?: string;
+    submittedByUserId?: number;
+    status?: string;
+    imageUrls: string[];
+    roomCapacities?: number[];
+    categories: string[];
     forGender: string;
+    overallRating?: number;
 }
 
 export default function BrowseHostelsPage() {
@@ -30,34 +46,16 @@ export default function BrowseHostelsPage() {
                 const response = await client.get<any>("/api/hostel/hostels/approved");
                 console.log("🏠 [BROWSE-HOSTELS] Response:", response.data);
 
-                // Map backend field names to frontend expected names
-                const mapHostelData = (hostel: any) => ({
-                    ...hostel,
-                    name: hostel.hostelName || hostel.name || 'Unnamed Hostel',
-                    location: hostel.address || hostel.location || hostel.city || 'Location not specified',
-                    primaryImageUrl: hostel.primaryImageUrl || (hostel.images && hostel.images.length > 0 ? hostel.images[0] : null),
-                    rentRange: hostel.monthlyRentMin && hostel.monthlyRentMax
-                        ? `₹${hostel.monthlyRentMin} - ₹${hostel.monthlyRentMax}/month`
-                        : 'Contact for pricing',
-                    facilities: [
-                        hostel.hasWifi && 'WiFi',
-                        hostel.hasAc && 'AC',
-                        hostel.hasMess && 'Mess',
-                        hostel.hasLaundry && 'Laundry'
-                    ].filter(Boolean)
-                });
-
+                // Backend now sends correct field names, no mapping needed
                 // Handle paginated response (Spring Page object)
                 if (response.data && response.data.content && Array.isArray(response.data.content)) {
-                    const mappedHostels = response.data.content.map(mapHostelData);
-                    setHostels(mappedHostels);
-                    console.log("🏠 [BROWSE-HOSTELS] Loaded", mappedHostels.length, "hostels from paginated response");
+                    setHostels(response.data.content);
+                    console.log("🏠 [BROWSE-HOSTELS] Loaded", response.data.content.length, "hostels from paginated response");
                 }
                 // Handle direct array response (fallback)
                 else if (Array.isArray(response.data)) {
-                    const mappedHostels = response.data.map(mapHostelData);
-                    setHostels(mappedHostels);
-                    console.log("🏠 [BROWSE-HOSTELS] Loaded", mappedHostels.length, "hostels from array response");
+                    setHostels(response.data);
+                    console.log("🏠 [BROWSE-HOSTELS] Loaded", response.data.length, "hostels from array response");
                 }
                 // Invalid format
                 else {

@@ -21,7 +21,6 @@ export function SuggestionsManagement() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
-    const [currentPage, setCurrentPage] = useState(0);
     const { toast } = useToast();
 
     const fetchSuggestions = async (page = 0) => {
@@ -29,7 +28,6 @@ export function SuggestionsManagement() {
             setLoading(true);
             const data = await adminService.getAllSuggestions({ page, size: 10 });
             setSuggestions(data);
-            setCurrentPage(page);
         } catch {
             toast({
                 title: 'Error',

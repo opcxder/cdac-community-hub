@@ -7,20 +7,22 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 interface ReviewFormProps {
     onSubmit: (reviewText: string) => Promise<void>;
     isSubmitting?: boolean;
+    disabled?: boolean;
+    placeholder?: string;
 }
 
 /**
  * Review Form Component
  * Form for submitting new reviews/comments
  */
-export function ReviewForm({ onSubmit, isSubmitting = false }: ReviewFormProps) {
+export function ReviewForm({ onSubmit, isSubmitting = false, disabled = false, placeholder = "Share your experience..." }: ReviewFormProps) {
     const [reviewText, setReviewText] = useState('');
     const maxLength = 500;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!reviewText.trim()) {
+        if (!reviewText.trim() || disabled) {
             return;
         }
 
@@ -29,7 +31,7 @@ export function ReviewForm({ onSubmit, isSubmitting = false }: ReviewFormProps) 
     };
 
     const remainingChars = maxLength - reviewText.length;
-    const isValid = reviewText.trim().length > 0 && reviewText.length <= maxLength;
+    const isValid = reviewText.trim().length > 0 && reviewText.length <= maxLength && !disabled;
 
     return (
         <Card>
@@ -40,13 +42,13 @@ export function ReviewForm({ onSubmit, isSubmitting = false }: ReviewFormProps) 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                         <Textarea
-                            placeholder="Share your experience..."
+                            placeholder={placeholder}
                             value={reviewText}
                             onChange={(e) => setReviewText(e.target.value)}
                             maxLength={maxLength}
                             rows={4}
                             className="resize-none"
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || disabled}
                         />
                         <div className="flex items-center justify-between text-sm">
                             <span className={`text-muted-foreground ${remainingChars < 50 ? 'text-orange-500' : ''} ${remainingChars === 0 ? 'text-red-500' : ''}`}>

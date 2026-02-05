@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import client from "@/api/client";
-import { Card, CardContent, CardDescription, CardHeader  } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,7 +11,7 @@ export default function SuggestionsPage() {
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [activeCategory, setActiveCategory] = useState<'ALL' | 'FOOD' | 'HOSTEL' | 'GENERAL'>('ALL');
+    const [activeCategory, setActiveCategory] = useState<'ALL' | 'CANTEEN' | 'CLASSROOM' | 'FACILITIES' | 'OTHER'>('ALL');
 
     const fetchSuggestions = async () => {
         setLoading(true);
@@ -44,9 +44,10 @@ export default function SuggestionsPage() {
 
     const getCategoryBadgeColor = (category: string) => {
         switch (category) {
-            case 'FOOD': return 'bg-orange-100 text-orange-800';
-            case 'HOSTEL': return 'bg-blue-100 text-blue-800';
-            case 'GENERAL': return 'bg-gray-100 text-gray-800';
+            case 'CANTEEN': return 'bg-orange-100 text-orange-800';
+            case 'CLASSROOM': return 'bg-blue-100 text-blue-800';
+            case 'FACILITIES': return 'bg-green-100 text-green-800';
+            case 'OTHER': return 'bg-gray-100 text-gray-800';
             default: return 'bg-gray-100 text-gray-800';
         }
     };
@@ -76,17 +77,20 @@ export default function SuggestionsPage() {
                 </Alert>
             )}
 
-            <Tabs value={activeCategory} onValueChange={(value:any) => setActiveCategory(value as typeof activeCategory)}>
+            <Tabs value={activeCategory} onValueChange={(value: any) => setActiveCategory(value as typeof activeCategory)}>
                 <TabsList className="mb-4">
                     <TabsTrigger value="ALL">All ({suggestions.length})</TabsTrigger>
-                    <TabsTrigger value="GENERAL">
-                        General ({suggestions.filter(s => s.category === 'GENERAL').length})
+                    <TabsTrigger value="CANTEEN">
+                        Canteen ({suggestions.filter(s => s.category === 'CANTEEN').length})
                     </TabsTrigger>
-                    <TabsTrigger value="FOOD">
-                        Food ({suggestions.filter(s => s.category === 'FOOD').length})
+                    <TabsTrigger value="CLASSROOM">
+                        Classroom ({suggestions.filter(s => s.category === 'CLASSROOM').length})
                     </TabsTrigger>
-                    <TabsTrigger value="HOSTEL">
-                        Hostel ({suggestions.filter(s => s.category === 'HOSTEL').length})
+                    <TabsTrigger value="FACILITIES">
+                        Facilities ({suggestions.filter(s => s.category === 'FACILITIES').length})
+                    </TabsTrigger>
+                    <TabsTrigger value="OTHER">
+                        Other ({suggestions.filter(s => s.category === 'OTHER').length})
                     </TabsTrigger>
                 </TabsList>
 
@@ -113,9 +117,11 @@ export default function SuggestionsPage() {
                                                     <Badge className={getCategoryBadgeColor(suggestion.category)}>
                                                         {suggestion.category}
                                                     </Badge>
-                                                    <span className="text-sm text-muted-foreground">
-                                                        User ID: {suggestion.userId}
-                                                    </span>
+                                                    {suggestion.username && (
+                                                        <span className="text-sm text-muted-foreground">
+                                                            by {suggestion.username}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <CardDescription>
                                                     Submitted on {formatDate(suggestion.createdAt)}
@@ -124,7 +130,7 @@ export default function SuggestionsPage() {
                                         </div>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-sm whitespace-pre-wrap">{suggestion.content}</p>
+                                        <p className="text-sm whitespace-pre-wrap">{suggestion.suggestionText}</p>
                                     </CardContent>
                                 </Card>
                             ))}

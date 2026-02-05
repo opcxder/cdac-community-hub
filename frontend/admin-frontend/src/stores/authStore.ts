@@ -5,7 +5,10 @@ export interface User {
   userId: number;
   username: string;
   email: string;
+  phone?: string;
+  createdAt?: string;
   accountStatus: "APPROVED" | "PENDING" | "REJECTED";
+  rejectionReason?: string;  // Added for rejected users
 }
 
 export interface AuthStoreType {

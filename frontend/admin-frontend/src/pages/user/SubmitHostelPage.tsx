@@ -25,12 +25,14 @@ const hostelSchema = z.object({
     landmark: z.string().optional(),
     distanceFromCDAC: z.string().min(1, "Distance is required"),
     mapLocation: z.string().optional(),
-    monthlyRentMin: z.number({ required_error: "Minimum rent is required" }).min(0),
-    monthlyRentMax: z.number({ required_error: "Maximum rent is required" }).min(0),
+    monthlyRentMin: z.number().min(0, "Minimum rent must be at least 0"),
+    monthlyRentMax: z.number().min(0, "Maximum rent must be at least 0"),
     contactPersonName: z.string().min(2, "Contact person name is required"),
     contactPhone: z.string().min(10, "Valid phone number is required"),
     forGender: z.enum(["BOYS", "GIRLS", "BOTH"]),
-    categoryId: z.number({ required_error: "Please select a category" })
+    categoryIds: z.array(z.number())
+        .min(1, "Please select at least one category")
+        .max(10, "Maximum 10 categories allowed")
 });
 
 type HostelFormData = z.infer<typeof hostelSchema>;
@@ -52,6 +54,7 @@ export default function SubmitHostelPage() {
     const [imageError, setImageError] = useState<string>("");
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
     const [selectedRoomTypes, setSelectedRoomTypes] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<HostelFormData>({
         resolver: zodResolver(hostelSchema)
@@ -84,8 +87,19 @@ export default function SubmitHostelPage() {
 
     const toggleRoomType = (roomType: string) => {
         setSelectedRoomTypes(prev =>
-            prev.includes(roomType) ? prev.filter(r => r !== roomType) : [...prev, roomType]
+            prev.includes(roomType) ? prev.filter(rt => rt !== roomType) : [...prev, roomType]
         );
+    };
+
+    const handleCategoryToggle = (categoryId: number, checked: boolean | string) => {
+        const isChecked = checked === true;
+        setSelectedCategories(prev => {
+            const newSelection = isChecked
+                ? [...prev, categoryId]
+                : prev.filter(id => id !== categoryId);
+            setValue("categoryIds", newSelection, { shouldValidate: true });
+            return newSelection;
+        });
     };
 
     const onSubmit = async (data: HostelFormData) => {
@@ -122,7 +136,7 @@ export default function SubmitHostelPage() {
                 contactPersonName: data.contactPersonName,
                 contactPhone: data.contactPhone,
                 forGender: data.forGender,
-                categoryId: data.categoryId,
+                categoryIds: data.categoryIds,  // Multiple categories
                 facilities: selectedFacilities,
                 roomTypes: selectedRoomTypes
             });
@@ -355,24 +369,30 @@ export default function SubmitHostelPage() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="category">Category *</Label>
-                                    <Select
-                                        onValueChange={(value) => setValue("categoryId", parseInt(value))}
-                                        disabled={loading}
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {categories.map((cat) => (
-                                                <SelectItem key={cat.categoryId} value={cat.categoryId.toString()}>
+                                    <Label>Categories * (Select 1-10)</Label>
+                                    <p className="text-sm text-muted-foreground">
+                                        Selected: {selectedCategories.length}/10
+                                    </p>
+                                    <div className="grid grid-cols-2 gap-3 max-h-48 overflow-y-auto p-2 border rounded-md">
+                                        {categories.map((cat) => (
+                                            <div key={cat.categoryId} className="flex items-center space-x-2">
+                                                <Checkbox
+                                                    id={`category-${cat.categoryId}`}
+                                                    checked={selectedCategories.includes(cat.categoryId)}
+                                                    onCheckedChange={(checked) => handleCategoryToggle(cat.categoryId, checked)}
+                                                    disabled={loading}
+                                                />
+                                                <label
+                                                    htmlFor={`category-${cat.categoryId}`}
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                                                >
                                                     {cat.categoryName}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {errors.categoryId && (
-                                        <p className="text-sm text-red-600">{errors.categoryId.message}</p>
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {errors.categoryIds && (
+                                        <p className="text-sm text-red-600">{errors.categoryIds.message}</p>
                                     )}
                                 </div>
                             </div>

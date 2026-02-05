@@ -143,12 +143,12 @@ export function AdminDashboard() {
                                     <p className="font-medium">Review {stats.pendingUsers} user registrations</p>
                                 </Link>
                             )}
-                            {stats.pendingFood > 0 && (
+                            {stats.pendingFoods > 0 && (
                                 <Link
                                     to="/admin/food"
                                     className="block rounded-md bg-orange-50 p-3 transition-colors hover:bg-orange-100"
                                 >
-                                    <p className="font-medium">Review {stats.pendingFood} food submissions</p>
+                                    <p className="font-medium">Review {stats.pendingFoods} food submissions</p>
                                 </Link>
                             )}
                             {stats.pendingHostels > 0 && (
@@ -176,7 +176,7 @@ export function AdminDashboard() {
                                 </Link>
                             )}
                             {stats.pendingUsers === 0 &&
-                                stats.pendingFood === 0 &&
+                                stats.pendingFoods === 0 &&
                                 stats.pendingHostels === 0 &&
                                 stats.pendingFoodCategories === 0 &&
                                 stats.pendingHostelCategories === 0 && (

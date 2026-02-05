@@ -128,15 +128,16 @@ export interface CreateHostelRequest {
 export interface Suggestion {
   suggestionId: number;
   userId: number;
-  category: 'FOOD' | 'HOSTEL' | 'GENERAL';
-  content: string;
+  suggestionText: string;  // Fixed from 'content'
+  category: 'CANTEEN' | 'CLASSROOM' | 'FACILITIES' | 'OTHER';  // Fixed from 'FOOD' | 'HOSTEL' | 'GENERAL'
   createdAt: string;
+  username?: string;  // Added missing field
 }
 
 export interface CreateSuggestionRequest {
   userId: number;
-  category: 'FOOD' | 'HOSTEL' | 'GENERAL';
-  content: string;
+  suggestionText: string;  // Fixed from 'content'
+  category: 'CANTEEN' | 'CLASSROOM' | 'FACILITIES' | 'OTHER';  // Fixed from 'FOOD' | 'HOSTEL' | 'GENERAL'
 }
 
 // Admin Dashboard types
