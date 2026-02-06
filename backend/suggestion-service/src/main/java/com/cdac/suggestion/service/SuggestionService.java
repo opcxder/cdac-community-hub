@@ -9,8 +9,7 @@ import com.cdac.suggestion.repository.SuggestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class SuggestionService {
     private SuggestionRepository repository;
 
     @Autowired
-    private UserCacheService userCacheService;
+    private AuthServiceClient authServiceClient;
 
     public Long submitSuggestion(Long userId, SuggestionRequest request) {
 
@@ -36,8 +35,6 @@ public class SuggestionService {
 
         Suggestion saved = repository.save(suggestion);
 
-        userCacheService.getUserWithCache(userId);
-
         log.info("Suggestion submitted: suggestionId={}, userId={}, category={}",
                 saved.getSuggestionId(), userId, request.getCategory());
 
@@ -46,7 +43,7 @@ public class SuggestionService {
 
     public List<SuggestionDTO> getUserSuggestions(Long userId) {
 
-        UserDTO user = userCacheService.getUserWithCache(userId);
+        UserDTO user = authServiceClient.getUserById(userId);
 
         return repository.findByUserIdOrderByCreatedAtDesc(userId)
                 .stream()
@@ -54,20 +51,11 @@ public class SuggestionService {
                 .collect(Collectors.toList());
     }
 
-    public Page<SuggestionDTO> getAllSuggestions(Pageable pageable) {
-
-        return repository.findAll(pageable)
-                .map(s -> {
-                    String username = userCacheService.getUserWithCache(s.getUserId()).getUsername();
-                    return SuggestionDTO.from(s, username);
-                });
-    }
-
     public List<SuggestionDTO> getSuggestionsByCategory(SuggestionCategory category) {
 
         return repository.findByCategory(category).stream()
                 .map(s -> {
-                    String username = userCacheService.getUserWithCache(s.getUserId()).getUsername();
+                    String username = authServiceClient.getUserById(s.getUserId()).getUsername();
                     return SuggestionDTO.from(s, username);
                 })
                 .toList();
@@ -81,7 +69,21 @@ public class SuggestionService {
 
         return repository.findAll().stream()
                 .map(s -> {
-                    String username = userCacheService.getUserWithCache(s.getUserId()).getUsername();
+                    String username = authServiceClient.getUserById(s.getUserId()).getUsername();
+                    return SuggestionDTO.from(s, username);
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all suggestions for admin (sorted by createdAt descending)
+     */
+    public List<SuggestionDTO> getAllSuggestionsList() {
+        log.info("Fetching all suggestions for admin");
+
+        return repository.findAll(org.springframework.data.domain.Sort.by("createdAt").descending()).stream()
+                .map(s -> {
+                    String username = authServiceClient.getUserById(s.getUserId()).getUsername();
                     return SuggestionDTO.from(s, username);
                 })
                 .collect(Collectors.toList());

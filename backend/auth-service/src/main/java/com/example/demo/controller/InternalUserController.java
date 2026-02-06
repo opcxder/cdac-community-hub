@@ -19,9 +19,7 @@ public class InternalUserController {
         @Autowired
         private UserRepository userRepository;
 
-        /**
-         * Get all pending users (for Admin Service)
-         */
+        
         @GetMapping("/pending")
         public ResponseEntity<List<PendingUserDto>> getPendingUsers() {
                 List<User> pendingUsers = userRepository.findByAccountStatus(User.AccountStatus.PENDING);
@@ -31,16 +29,38 @@ public class InternalUserController {
                                                 user.getUserId(),
                                                 user.getUsername(),
                                                 user.getEmail(),
-                                                "PENDING"))
+                                                user.getPhone(),
+                                                "PENDING",
+                                                user.getCreatedAt() != null ? user.getCreatedAt().toString() : null))
                                 .collect(Collectors.toList());
 
+                System.out.println("📊 [AUTH-SERVICE] Returning " + dtos.size() + " pending users");
+                if (!dtos.isEmpty()) {
+                        System.out.println("📊 [AUTH-SERVICE] Sample user (ID 1): " + 
+                                "userId=" + dtos.get(0).getUserId() + 
+                                ", username=" + dtos.get(0).getUsername() + 
+                                ", email=" + dtos.get(0).getEmail() + 
+                                ", phone=" + dtos.get(0).getPhone() + 
+                                ", accountStatus=" + dtos.get(0).getAccountStatus() + 
+                                ", createdAt=" + dtos.get(0).getCreatedAt());
+                        
+                        // Log user ID 4 if it exists (has phone number)
+                        if (dtos.size() >= 3) {
+                                System.out.println("📊 [AUTH-SERVICE] User with phone (ID 4): " + 
+                                        "userId=" + dtos.get(2).getUserId() + 
+                                        ", username=" + dtos.get(2).getUsername() + 
+                                        ", email=" + dtos.get(2).getEmail() + 
+                                        ", phone=" + dtos.get(2).getPhone() + 
+                                        ", accountStatus=" + dtos.get(2).getAccountStatus() + 
+                                        ", createdAt=" + dtos.get(2).getCreatedAt());
+                        }
+                }
+                
+                System.out.println("📊 [AUTH-SERVICE] About to return ResponseEntity with " + dtos.size() + " DTOs");
                 return ResponseEntity.ok(dtos);
         }
 
-        /**
-         * Approve a user (for Admin Service)
-         */
-        @PostMapping("/{id}/approve")
+               @PostMapping("/{id}/approve")
         public ResponseEntity<Void> approveUser(@PathVariable("id") Long userId) {
                 User user = userRepository.findById(userId)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -70,22 +90,25 @@ public class InternalUserController {
                 return ResponseEntity.ok().build();
         }
 
-        /**
-         * Check if a user exists by ID (for Food/Hostel Services)
-         */
+       
         @GetMapping("/exists/{userId}")
         public ResponseEntity<Boolean> userExists(@PathVariable Long userId) {
                 boolean exists = userRepository.existsById(userId);
                 return ResponseEntity.ok(exists);
         }
 
-        /**
-         * Get user by ID (for Food/Hostel Services)
-         */
+       
         @GetMapping("/{userId}")
         public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+                System.out.println("📊 [AUTH-SERVICE] GET /internal/users/" + userId + " - Fetching user");
+                
                 User user = userRepository.findById(userId)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
+                
+                System.out.println("✅ [AUTH-SERVICE] Returning user: userId=" + user.getUserId() + 
+                        ", username=" + user.getUsername() + 
+                        ", email=" + user.getEmail());
+                
                 return ResponseEntity.ok(user);
         }
 }

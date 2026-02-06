@@ -6,7 +6,7 @@ import com.cdac.suggestion.service.SuggestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,16 +22,24 @@ public class InternalSuggestionController {
         private SuggestionService suggestionService;
 
         @GetMapping
-        public ResponseEntity<Page<SuggestionDTO>> getAllSuggestions(
-                        @RequestParam(defaultValue = "0") int page,
-                        @RequestParam(defaultValue = "20") int size) {
+        public ResponseEntity<List<SuggestionDTO>> getAllSuggestions() {
 
-                log.info("Admin fetching all suggestions: page={}, size={}", page, size);
-
-                Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-
-                Page<SuggestionDTO> suggestions = suggestionService.getAllSuggestions(pageable);
-
+                log.info("💡 [SUGGESTION-SERVICE] Admin fetching all suggestions");
+                
+                // Get all suggestions sorted by createdAt descending
+                List<SuggestionDTO> suggestions = suggestionService.getAllSuggestionsList();
+                
+                log.info("💡 [SUGGESTION-SERVICE] Returning {} suggestions", suggestions.size());
+                if (!suggestions.isEmpty()) {
+                        SuggestionDTO sample = suggestions.get(0);
+                        log.info("💡 [SUGGESTION-SERVICE] Sample DTO: suggestionId={}, suggestionText={}, userId={}, username={}, category={}, createdAt={}", 
+                                sample.getSuggestionId(), 
+                                sample.getSuggestionText(), 
+                                sample.getUserId(), 
+                                sample.getUsername(),
+                                sample.getCategory(),
+                                sample.getCreatedAt());
+                }
                 return ResponseEntity.ok(suggestions);
         }
 

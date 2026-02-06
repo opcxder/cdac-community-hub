@@ -20,12 +20,7 @@ import com.cdac.hostel.repository.ReviewReplyRepository;
 
 import com.cdac.hostel.exception.DuplicateResourceException;
 import com.cdac.hostel.exception.ResourceNotFoundException;
-/**
- * Service layer for hostel rating and reply operations.
- * Implements multi-criteria rating system where users rate hostels across 5 dimensions:
- * cleanliness, food quality, safety, location, and affordability.
- * Also handles review replies from hostel owners/admins.
- */
+
 @Service
 public class HostelRatingService {
 
@@ -40,17 +35,7 @@ public class HostelRatingService {
     @Autowired
     private AuthServiceClient authClient;
 
-    /**
-     * Creates a new multi-criteria rating for a hostel.
-     * Validates user existence and prevents duplicate ratings.
-     * Each rating consists of 5 separate criteria scores (1-5 each).
-     *
-     * @param hostelId The ID of the hostel being rated
-     * @param userId The ID of the user submitting the rating
-     * @param req The rating request containing all 5 criteria scores and optional review text
-     * @return The created rating entity
-     * @throws RuntimeException if user not found or user already rated this hostel
-     */
+
     public HostelRating rateHostel(
             Long hostelId, Long userId, MultiCriteriaRatingRequest req) {
 
@@ -94,12 +79,7 @@ public class HostelRatingService {
         return savedRating;
     }
     
-    /**
-     * Retrieves all ratings for a specific hostel.
-     *
-     * @param hostelId The ID of the hostel
-     * @return List of all ratings for the hostel
-     */
+   
     public List<HostelRating> getRatingsByHostel(Long hostelId) {
         logger.debug("Fetching all ratings for hostel: hostelId={}", hostelId);
         List<HostelRating> ratings = ratingRepository.findByHostelId(hostelId);
@@ -107,15 +87,7 @@ public class HostelRatingService {
         return ratings;
     }
     
-    /**
-     * Calculates and returns the rating summary for a hostel.
-     * Computes the average for each of the 5 criteria individually,
-     * plus an overall average across all criteria.
-     *
-     * @param hostelId The ID of the hostel
-     * @return RatingDTO containing individual criterion averages and overall average
-     */
-    public RatingDTO getRatingSummary(Long hostelId) {
+ public RatingDTO getRatingSummary(Long hostelId) {
         logger.debug("Calculating rating summary for hostel: hostelId={}", hostelId);
 
         List<HostelRating> ratings = ratingRepository.findByHostelId(hostelId);
@@ -127,6 +99,11 @@ public class HostelRatingService {
         if (ratings == null || ratings.isEmpty()) {
             logger.info("No ratings found for hostelId={}", hostelId);
             dto.setOverallRating(0.0);
+            dto.setCleanlinessRating(0.0);
+            dto.setFoodQualityRating(0.0);
+            dto.setSafetyRating(0.0);
+            dto.setLocationRating(0.0);
+            dto.setAffordabilityRating(0.0);
             return dto;
         }
 
@@ -175,21 +152,7 @@ public class HostelRatingService {
 
         return dto;
     }
-  // ADD THESE METHODS TO HostelRatingService.java BEFORE THE CLOSING BRACE }
-
-    // ========== Review Reply Methods ==========
-
-    /**
-     * Creates a reply to a hostel rating/review.
-     * Validates user existence and prevents duplicate replies.
-     * Only one reply is allowed per rating.
-     *
-     * @param ratingId The ID of the rating to reply to
-     * @param userId The ID of the user posting the reply (hostel owner/admin)
-     * @param replyText The reply text content
-     * @return The created reply entity
-     * @throws RuntimeException if user not found, rating not found, or reply already exists
-     */
+ 
     public HostelReviewReply createReply(Long ratingId, Long userId, String replyText) {
         logger.info("User {} attempting to reply to rating {}", userId, ratingId);
 
@@ -227,23 +190,13 @@ public class HostelRatingService {
         return savedReply;
     }
 
-    /**
-     * Retrieves the reply for a specific rating, if it exists.
-     *
-     * @param ratingId The ID of the rating
-     * @return The reply if found, null otherwise
-     */
+    
     public HostelReviewReply getReplyForRating(Long ratingId) {
         logger.debug("Fetching reply for rating: ratingId={}", ratingId);
         return replyRepository.findByRatingId(ratingId).orElse(null);
     }
 
-    /**
-     * Deletes a reply to a rating.
-     *
-     * @param replyId The ID of the reply to delete
-     * @throws RuntimeException if reply not found
-     */
+    
     public void deleteReply(Long replyId) {
         logger.info("Deleting reply: replyId={}", replyId);
 

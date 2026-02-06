@@ -8,13 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-/**
- * Entity representing the many-to-many relationship between hostels and
- * categories.
- * A hostel can belong to multiple categories (e.g., "PG", "Boys Only",
- * "Co-living").
- * The unique constraint ensures a hostel-category pair is not duplicated.
- */
 @Entity
 @Table(name = "hostel_categories_mapping", uniqueConstraints = @UniqueConstraint(name = "unique_hostel_category", columnNames = {
         "hostelId", "categoryId" }))

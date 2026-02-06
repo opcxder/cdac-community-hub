@@ -41,15 +41,12 @@ public class SuggestionServiceWebClient implements SuggestionServiceClient {
     @Override
     public List<SuggestionDto> getSuggestions(int page, int size) {
 
-        log.info("Calling {}: get suggestions page={}, size={}", SERVICE_NAME, page, size);
+        log.info("Calling {}: get all suggestions", SERVICE_NAME);
+        System.out.println("🔍 [SUGGESTION-WEBCLIENT] Calling suggestion-service /internal/suggestions");
 
         try {
-            // Use ParameterizedTypeReference to properly deserialize Spring Page
-            org.springframework.data.domain.Page<SuggestionDto> response = webClient.get()
-                .uri(uri -> uri.path("/internal/suggestions")
-                    .queryParam("page", page)
-                    .queryParam("size", size)
-                    .build())
+            List<SuggestionDto> suggestions = webClient.get()
+                .uri("/internal/suggestions")
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, r -> {
                     if (r.statusCode() == HttpStatus.NOT_FOUND) {
@@ -66,13 +63,16 @@ public class SuggestionServiceWebClient implements SuggestionServiceClient {
                         .map(body -> new ServiceUnavailableException(
                             SERVICE_NAME + " unavailable - " + body))
                 )
-                .bodyToMono(new org.springframework.core.ParameterizedTypeReference<org.springframework.data.domain.Page<SuggestionDto>>() {})
+                .bodyToFlux(SuggestionDto.class)
+                .collectList()
                 .block(Duration.ofSeconds(5));
 
-            return response != null ? response.getContent().stream().toList() : List.of();
+            System.out.println("✅ [SUGGESTION-WEBCLIENT] Received " + (suggestions != null ? suggestions.size() : 0) + " suggestions");
+            return suggestions != null ? suggestions : List.of();
         } catch (Exception e) {
+            System.out.println("❌ [SUGGESTION-WEBCLIENT] Error: " + e.getMessage());
             log.error("Error fetching suggestions: {}", e.getMessage());
-            return List.of(); // Return empty list on error
+            return List.of();
         }
     }
 

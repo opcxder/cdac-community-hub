@@ -5,7 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Loader2 } from "lucide-react";
-import type { Suggestion, PageResponse } from "@/types/api";
+import type { Suggestion } from "@/types/api";
 
 export default function SuggestionsPage() {
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -18,14 +18,13 @@ export default function SuggestionsPage() {
         setError(null);
 
         try {
-            const response = await client.get<PageResponse<Suggestion>>('/api/admin/suggestions', {
-                params: {
-                    page: 0,
-                    size: 100
-                }
-            });
-            setSuggestions(response.data.content);
+            const response = await client.get<Suggestion[]>('/api/admin/suggestions');
+            console.log('📊 [SUGGESTIONS] Response:', response.data);
+            console.log('📊 [SUGGESTIONS] Is array?', Array.isArray(response.data));
+
+            setSuggestions(Array.isArray(response.data) ? response.data : []);
         } catch (err: unknown) {
+            console.error('❌ [SUGGESTIONS] Error:', err);
             const message = (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
                 "Failed to load suggestions";
             setError(message);

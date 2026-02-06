@@ -16,26 +16,15 @@ public class RestTemplateConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(RestTemplateConfig.class);
 
-    /**
-     * Create and configure RestTemplate bean for inter-service communication.
-     * 
-     * @LoadBalanced enables Eureka service discovery - allows using service names
-     *               instead of hardcoded URLs (e.g., http://AUTH-SERVICE/api/users)
-     * 
-     *               Timeouts:
-     *               - Connect timeout: 5 seconds
-     *               - Read timeout: 10 seconds
-     * 
-     * @return configured RestTemplate instance
-     */
+
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate() {
         logger.info("Configuring RestTemplate for inter-service communication");
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(Duration.ofSeconds(5)); // 5 seconds connection timeout
-        factory.setReadTimeout(Duration.ofSeconds(10)); // 10 seconds read timeout
+        factory.setConnectTimeout(Duration.ofSeconds(30)); // 30 seconds connection timeout
+        factory.setReadTimeout(Duration.ofSeconds(60)); // 60 seconds read timeout
 
         return new RestTemplate(factory);
     }

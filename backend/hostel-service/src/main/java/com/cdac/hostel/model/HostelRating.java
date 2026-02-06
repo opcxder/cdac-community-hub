@@ -13,12 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-/**
- * Entity representing a multi-criteria rating for a hostel.
- * Each user can rate a hostel only once across 5 different criteria:
- * cleanliness, food quality, safety, location, and affordability.
- * The overall rating is calculated as the average of these 5 criteria.
- */
+
 @Entity
 @Table(name = "hostel_ratings", uniqueConstraints = @UniqueConstraint(name = "unique_user_hostel_rating", columnNames = {
         "hostelId", "userId" }))

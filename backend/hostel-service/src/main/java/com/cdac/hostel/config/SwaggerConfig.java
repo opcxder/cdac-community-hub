@@ -21,22 +21,10 @@ public class SwaggerConfig {
                         .title("Hostel Service API")
                         .description("CDAC Community Hub - Hostel Management Service\n\n" +
                                 "This service manages hostel listings, multi-criteria ratings, " +
-                                "reviews, and Bayesian ranking algorithm for hostels near CDAC campus.\n\n" +
-                                "**Key Features:**\n" +
-                                "- Multi-criteria rating system (5 dimensions)\n" +
-                                "- Bayesian ranking algorithm\n" +
-                                "- Category management with admin approval\n" +
-                                "- Image upload to Cloudinary\n" +
-                                "- Review replies system")
+                                "reviews, and Bayesian ranking algorithm for hostels near CDAC campus")
                         .version("1.0.0")
-                        .contact(new Contact()
-                                .name("CDAC Community Hub Team")
-                                .email("support@cdac-hub.com")
-                                .url("https://cdac-hub.com"))
-                        .license(new License()
-                                .name("Apache 2.0")
-                                .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
-                .addServersItem(new Server()
+             
+                       )    .addServersItem(new Server()
                         .url("http://localhost:8092")
                         .description("Development Server"))
                 .addServersItem(new Server()

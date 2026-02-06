@@ -2,10 +2,7 @@ package com.cdac.hostel.model;
 
 import jakarta.persistence.*;
 
-/**
- * Entity representing room types available in a hostel.
- * A hostel can offer multiple room capacities (single, double, triple, etc.)
- */
+
 @Entity
 @Table(name = "hostel_room_types")
 public class HostelRoomType {

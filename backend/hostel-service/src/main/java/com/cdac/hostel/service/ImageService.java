@@ -35,14 +35,7 @@ public class ImageService {
     @Autowired
     private Cloudinary cloudinary;
 
-    /**
-     * Uploads multiple images for a hostel.
-     * Enforces the 5-image limit per hostel.
-     *
-     * @param hostelId The ID of the hostel
-     * @param files    The image files to upload
-     * @return List of uploaded image URLs
-     */
+   
     public List<String> uploadImages(Long hostelId, MultipartFile[] files) {
         logger.info("Uploading {} images for hostel: hostelId={}", files.length, hostelId);
 
@@ -92,19 +85,12 @@ public class ImageService {
         return uploadedUrls;
     }
 
-    /**
-     * Uploads a single image (Legacy support, internal use).
-     */
+   
     public HostelImage uploadImage(Long hostelId, MultipartFile file, Integer displayOrder) {
         return null; // Not used anymore by controller
     }
 
-    /**
-     * Retrieves all images for a specific hostel, ordered by display order.
-     *
-     * @param hostelId The ID of the hostel
-     * @return List of images ordered by displayOrder
-     */
+    
     public List<HostelImage> getImagesByHostel(Long hostelId) {
         logger.debug("Fetching images for hostel: hostelId={}", hostelId);
         List<HostelImage> images = imageRepository.findByHostelIdOrderByDisplayOrderAsc(hostelId);
@@ -112,13 +98,7 @@ public class ImageService {
         return images;
     }
 
-    /**
-     * Deletes an image from both Cloudinary and database.
-     *
-     * @param imageId The ID of the image to delete
-     * @throws ResourceNotFoundException if image not found
-     * @throws ImageUploadException      if deletion fails
-     */
+  
     public void deleteImage(Long imageId) {
         logger.info("Deleting image: imageId={}", imageId);
 
@@ -146,12 +126,7 @@ public class ImageService {
         }
     }
 
-    /**
-     * Deletes all images for a specific hostel.
-     * Used when a hostel is deleted.
-     *
-     * @param hostelId The ID of the hostel
-     */
+   
     public void deleteAllImagesForHostel(Long hostelId) {
         logger.info("Deleting all images for hostel: hostelId={}", hostelId);
 

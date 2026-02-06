@@ -24,7 +24,16 @@ public class UserService {
     public User register(RegisterRequest request) {
 
         // Check email uniqueness BEFORE attempting save
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        java.util.Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            
+            // Block rejected users from re-registering
+            if (user.getAccountStatus() == User.AccountStatus.REJECTED) {
+                throw new RuntimeException("This email has been rejected. Please contact admin for assistance.");
+            }
+            
+            // Block if user already exists with PENDING or APPROVED status
             throw new UserAlreadyExistsException("Email already registered");
         }
 

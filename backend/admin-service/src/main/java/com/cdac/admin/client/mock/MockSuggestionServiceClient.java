@@ -21,8 +21,8 @@ public class MockSuggestionServiceClient implements SuggestionServiceClient {
         log.info("Mock Suggestion Service: page={}, size={}", page, size);
 
         List<SuggestionDto> all = List.of(
-            new SuggestionDto(1L, "first suggestion", "alphaking", "2025-05-03"),
-            new SuggestionDto(2L, "second suggestion", "alphaqueen", "2025-05-02")
+            new SuggestionDto(1L, "first suggestion", null, "alphaking", "2025-05-03", null),
+            new SuggestionDto(2L, "second suggestion", null, "alphaqueen", "2025-05-02", null)
         );
 
         return all; 

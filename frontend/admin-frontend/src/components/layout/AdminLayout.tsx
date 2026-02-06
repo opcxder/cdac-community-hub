@@ -21,12 +21,17 @@ export default function AdminLayout() {
     return (
         <div className="flex h-screen bg-zinc-100">
             {/* Sidebar */}
-            <Sidebar onLogout={handleLogout} user={user} />
+            <Sidebar
+                onLogout={handleLogout}
+                user={user}
+                isOpen={sidebarOpen}
+                onClose={() => setSidebarOpen(false)}
+            />
 
             {/* Main content */}
             <div className="flex-1 flex flex-col">
                 {/* Mobile header */}
-                <header className="md:hidden flex items-center justify-between p-4 bg-zinc-900 text-white">
+                <header className="lg:hidden flex items-center justify-between p-4 bg-zinc-900 text-white">
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
                         aria-label="Toggle sidebar"

@@ -11,14 +11,16 @@ public class SuggestionDTO {
     private String suggestionText;
     private SuggestionCategory category;
     private LocalDateTime createdAt;
+    private Long userId;
     private String username;
 
     public SuggestionDTO(Long suggestionId, String suggestionText, SuggestionCategory category, LocalDateTime createdAt,
-            String username) {
+            Long userId, String username) {
         this.suggestionId = suggestionId;
         this.suggestionText = suggestionText;
         this.category = category;
         this.createdAt = createdAt;
+        this.userId = userId;
         this.username = username;
     }
 
@@ -28,6 +30,7 @@ public class SuggestionDTO {
                 suggestion.getSuggestionText(),
                 suggestion.getCategory(),
                 suggestion.getCreatedAt(),
+                suggestion.getUserId(),
                 username);
     }
 
@@ -70,5 +73,13 @@ public class SuggestionDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

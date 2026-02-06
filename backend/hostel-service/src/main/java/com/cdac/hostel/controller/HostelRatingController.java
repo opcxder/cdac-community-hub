@@ -17,7 +17,7 @@ import com.cdac.hostel.model.HostelRating;
 import com.cdac.hostel.service.HostelRatingService;
 
 @RestController
-@RequestMapping("/api/hostels")
+@RequestMapping("/api/hostel/hostels")
 public class HostelRatingController {
 
     @Autowired

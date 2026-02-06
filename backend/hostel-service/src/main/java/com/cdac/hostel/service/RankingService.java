@@ -16,18 +16,7 @@ import com.cdac.hostel.model.HostelStatus;
 import com.cdac.hostel.repository.HostelRatingRepository;
 import com.cdac.hostel.repository.HostelRepository;
 
-/**
- * Service layer for hostel ranking operations.
- * Implements Bayesian average ranking algorithm to fairly rank hostels
- * considering both rating quality and quantity.
- * 
- * Formula: Bayesian Average = (C * m + R * v) / (m + v)
- * Where:
- * - C = Global average rating across all hostels (prior mean)
- * - m = Confidence parameter (minimum votes required)
- * - R = Average rating for this hostel
- * - v = Number of votes (ratings) for this hostel
- */
+
 @Service
 public class RankingService {
 
@@ -43,12 +32,7 @@ public class RankingService {
     @Autowired
     private HostelRatingRepository ratingRepository;
 
-    /**
-     * Calculates the Bayesian average for a specific hostel.
-     * 
-     * @param hostelId The ID of the hostel
-     * @return The Bayesian average rating (1-5 scale)
-     */
+    
     public double calculateBayesianAverage(Long hostelId) {
         logger.debug("Calculating Bayesian average for hostel: hostelId={}", hostelId);
 
@@ -124,12 +108,6 @@ public class RankingService {
         return sorted;
     }
 
-    /**
-     * Retrieves top N ranked hostels.
-     *
-     * @param limit Number of top hostels to retrieve
-     * @return List of top N ranked hostels
-     */
     public List<RankedHostelDTO> getTopRankedHostels(int limit) {
         logger.info("Fetching top {} ranked hostels", limit);
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { adminService } from '@/api/services';
 import type { User } from '@/types';
 import { useToast } from '@/hooks/use-toast';
-import { LoadingSpinner, EmptyState, StatusBadge } from '@/components/shared';
+import { LoadingSpinner, EmptyState } from '@/components/shared';
 import {
     Table,
     TableBody,
@@ -168,9 +168,9 @@ export function UserManagement() {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>User</TableHead>
-                                        <TableHead>Contact</TableHead>
-                                        <TableHead>Status</TableHead>
-                                        <TableHead>Registered</TableHead>
+                                        <TableHead className="hidden md:table-cell">Email</TableHead>
+                                        <TableHead className="hidden lg:table-cell">Phone</TableHead>
+                                        <TableHead className="hidden sm:table-cell">Registered</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -189,21 +189,16 @@ export function UserManagement() {
                                                 </div>
                                             </TableCell>
                                             <TableCell>
-                                                <div className="space-y-1">
-                                                    <div className="flex items-center gap-2 text-sm">
-                                                        <Mail className="h-4 w-4 text-muted-foreground" />
-                                                        <span>{user.email}</span>
-                                                    </div>
-                                                    {user.phone && (
-                                                        <div className="flex items-center gap-2 text-sm">
-                                                            <Phone className="h-4 w-4 text-muted-foreground" />
-                                                            <span>{user.phone}</span>
-                                                        </div>
-                                                    )}
+                                                <div className="flex items-center gap-2 text-sm">
+                                                    <Mail className="h-4 w-4 text-muted-foreground" />
+                                                    <span>{user.email}</span>
                                                 </div>
                                             </TableCell>
                                             <TableCell>
-                                                <StatusBadge status={user.accountStatus} />
+                                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                    <Phone className="h-4 w-4" />
+                                                    <span>{user.phone || 'N/A'}</span>
+                                                </div>
                                             </TableCell>
                                             <TableCell>
                                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">

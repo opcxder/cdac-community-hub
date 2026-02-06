@@ -125,12 +125,12 @@ export default function HostelDetailsPage() {
                 console.log('🏠 [HOSTEL-DETAILS] Fetching ratings and reviews for hostel ID:', id);
 
                 // Fetch rating stats - FIXED PATH
-                const statsResponse = await client.get<RatingStats>(`/api/hostels/${id}/ratings/summary`);
+                const statsResponse = await client.get<RatingStats>(`/api/hostel/hostels/${id}/ratings/summary`);
                 console.log('🏠 [HOSTEL-DETAILS] Rating stats:', statsResponse.data);
                 setRatingStats(statsResponse.data);
 
                 // Fetch all reviews - FIXED PATH
-                const reviewsResponse = await client.get<Review[]>(`/api/hostels/${id}/ratings`);
+                const reviewsResponse = await client.get<Review[]>(`/api/hostel/hostels/${id}/ratings`);
                 console.log('🏠 [HOSTEL-DETAILS] Reviews:', reviewsResponse.data);
 
                 // Filter out reviews without text and user's own review
@@ -157,7 +157,7 @@ export default function HostelDetailsPage() {
             try {
                 console.log('🏠 [HOSTEL-DETAILS] Fetching user ratings for hostel ID:', id);
                 // Fetch all ratings and find user's ratings - FIXED PATH
-                const response = await client.get<any[]>(`/api/hostels/${id}/ratings`);
+                const response = await client.get<any[]>(`/api/hostel/hostels/${id}/ratings`);
                 const userExistingRating = response.data.find(r => r.userId === user.userId);
 
                 if (userExistingRating) {
@@ -199,7 +199,7 @@ export default function HostelDetailsPage() {
             console.log('🏠 [HOSTEL-DETAILS] Submitting ratings:', { hostelId: id, ratings, userId: user.userId });
 
             // FIXED: Send multi-criteria ratings with correct DTO structure
-            await client.post(`/api/hostels/${id}/rate?userId=${user.userId}`, {
+            await client.post(`/api/hostel/hostels/${id}/rate?userId=${user.userId}`, {
                 cleanlinessRating: ratings.cleanliness || null,
                 foodQualityRating: ratings.foodQuality || null,
                 safetyRating: ratings.safety || null,
@@ -213,7 +213,7 @@ export default function HostelDetailsPage() {
             toast.success('Ratings submitted successfully!');
 
             // Refresh rating stats
-            const statsResponse = await client.get<RatingStats>(`/api/hostels/${id}/ratings/summary`);
+            const statsResponse = await client.get<RatingStats>(`/api/hostel/hostels/${id}/ratings/summary`);
             setRatingStats(statsResponse.data);
 
         } catch (err: any) {
@@ -250,7 +250,7 @@ export default function HostelDetailsPage() {
             console.log('🏠 [HOSTEL-DETAILS] Submitting review:', { hostelId: id, userId: user.userId });
 
             // Update the existing rating with review text
-            await client.post(`/api/hostels/${id}/rate?userId=${user.userId}`, {
+            await client.post(`/api/hostel/hostels/${id}/rate?userId=${user.userId}`, {
                 cleanlinessRating: userRatings.cleanliness || null,
                 foodQualityRating: userRatings.foodQuality || null,
                 safetyRating: userRatings.safety || null,
@@ -262,7 +262,7 @@ export default function HostelDetailsPage() {
             toast.success('Review added successfully!');
 
             // Refresh reviews
-            const reviewsResponse = await client.get<Review[]>(`/api/hostels/${id}/ratings`);
+            const reviewsResponse = await client.get<Review[]>(`/api/hostel/hostels/${id}/ratings`);
             const filteredReviews = reviewsResponse.data.filter(
                 (review) => review.reviewText && review.reviewText.trim() !== '' && review.userId !== user.userId
             );
@@ -299,7 +299,7 @@ export default function HostelDetailsPage() {
             toast.success('Reply added successfully!');
 
             // Refresh reviews
-            const reviewsResponse = await client.get<Review[]>(`/api/hostels/${id}/ratings`);
+            const reviewsResponse = await client.get<Review[]>(`/api/hostel/hostels/${id}/ratings`);
             const filteredReviews = reviewsResponse.data.filter(
                 (review) => review.reviewText && review.reviewText.trim() !== '' && review.userId !== user.userId
             );

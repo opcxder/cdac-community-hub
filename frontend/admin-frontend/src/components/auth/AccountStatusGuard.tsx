@@ -50,13 +50,7 @@ export default function AccountStatusGuard({ children }: { children: React.React
                                 <p className="text-sm text-muted-foreground">An administrator will review your account shortly</p>
                             </div>
                         </div>
-                        <div className="flex items-start gap-3">
-                            <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
-                            <div>
-                                <p className="font-medium">You'll be notified</p>
-                                <p className="text-sm text-muted-foreground">We'll send you an email once your account is approved</p>
-                            </div>
-                        </div>
+
 
                         <div className="pt-4 border-t">
                             <Button onClick={() => navigate("/dashboard")} variant="outline" className="w-full">

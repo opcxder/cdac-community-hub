@@ -46,16 +46,7 @@ public class HostelService {
     @Autowired
     private com.cdac.hostel.repository.CategoryRepository categoryRepository;
 
-    /**
-     * Creates a new hostel submission from HostelRequest DTO.
-     * Maps frontend field names to backend entity fields.
-     * Handles amenities as booleans and room types as separate records.
-     *
-     * @param request The hostel request DTO from frontend
-     * @param userId  The ID of the user submitting the hostel
-     * @return The created hostel entity
-     * @throws RuntimeException if user does not exist
-     */
+    
     @org.springframework.transaction.annotation.Transactional
     public Hostel createHostel(com.cdac.hostel.dto.HostelRequest request, Long userId) {
         logger.info("Creating new hostel submission: name={}, submittedBy={}",
@@ -180,12 +171,7 @@ public class HostelService {
         }
     }
 
-    /**
-     * Retrieves all approved hostels visible to public users.
-     * Returns HostelDTO with images included.
-     *
-     * @return List of approved hostels with images
-     */
+   
     public List<com.cdac.hostel.dto.HostelDTO> getApprovedHostels() {
         logger.debug("Fetching all approved hostels");
         List<Hostel> hostels = hostelRepository.findByStatus(HostelStatus.APPROVED);
@@ -196,26 +182,14 @@ public class HostelService {
                 .collect(java.util.stream.Collectors.toList());
     }
 
-    /**
-     * Retrieves hostel by ID as DTO with images included.
-     * Used for hostel details page.
-     *
-     * @param id The ID of the hostel
-     * @return HostelDTO with images
-     */
+   
     public com.cdac.hostel.dto.HostelDTO getHostelDTOById(Long id) {
         logger.debug("Fetching hostel DTO for ID: {}", id);
         Hostel hostel = getHostelById(id);
         return mapToDTO(hostel);
     }
 
-    /**
-     * Retrieves all pending hostels awaiting admin approval.
-     * Returns HostelDTO with images and room types included.
-     * Used by admin interface to review submissions.
-     *
-     * @return List of pending hostels with complete data
-     */
+   
     public List<com.cdac.hostel.dto.HostelDTO> getPendingHostels() {
         logger.debug("Fetching all pending hostels for admin review");
         List<Hostel> hostels = hostelRepository.findByStatus(HostelStatus.PENDING);
@@ -226,14 +200,7 @@ public class HostelService {
                 .collect(java.util.stream.Collectors.toList());
     }
 
-    /**
-     * Retrieves a single hostel by ID.
-     * Used for displaying hostel details page.
-     *
-     * @param id The hostel ID
-     * @return The hostel entity
-     * @throws ResourceNotFoundException if hostel not found
-     */
+   
     public Hostel getHostelById(Long id) {
         logger.debug("Fetching hostel by ID: {}", id);
         return hostelRepository.findById(id)
@@ -243,9 +210,7 @@ public class HostelService {
                 });
     }
 
-    /**
-     * Maps Hostel entity to HostelDTO including images and room types.
-     */
+   
     private com.cdac.hostel.dto.HostelDTO mapToDTO(Hostel hostel) {
         com.cdac.hostel.dto.HostelDTO dto = new com.cdac.hostel.dto.HostelDTO();
 
@@ -341,15 +306,7 @@ public class HostelService {
         return approvedHostel;
     }
 
-    /**
-     * Rejects a pending hostel with an optional reason.
-     * Rejected hostels are not visible to public users.
-     *
-     * @param hostelId The ID of the hostel to reject
-     * @param reason   Optional reason for rejection
-     * @return The rejected hostel entity
-     * @throws RuntimeException if hostel not found
-     */
+   
     public Hostel rejectHostel(Long hostelId, String reason) {
         logger.info("Rejecting hostel: hostelId={}, reason={}", hostelId, reason);
 

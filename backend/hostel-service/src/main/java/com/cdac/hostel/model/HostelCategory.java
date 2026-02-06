@@ -13,13 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-/**
- * Entity representing a hostel category.
- * Categories are user-submitted and require admin approval before being
- * visible.
- * Examples: PG, Hostel, Boys Only, Girls Only, Co-living
- * Users can create new categories dynamically while submitting hostels.
- */
+
 @Entity
 @Table(name = "hostel_categories")
 public class HostelCategory {
@@ -31,10 +25,7 @@ public class HostelCategory {
     @Column(unique = true, nullable = false, length = 100)
     private String categoryName;
 
-    /**
-     * ID of the user who created this category.
-     * No foreign key constraint as user data is in separate auth_db database.
-     */
+   
     private Long createdByUserId;
 
     @Enumerated(EnumType.STRING)

@@ -34,28 +34,48 @@ import com.cdac.admin.exception.ServiceUnavailableException;
 		public List<PendingUserDto> getPendingUser() {
 
 		    log.info("Calling {}: get pending users", SERVICE_NAME);
+		    System.out.println("🔍 [ADMIN-SERVICE-WEBCLIENT] Starting call to auth-service /internal/users/pending");
 
-		    return webClient.get()
-		        .uri("/internal/users/pending")
-		        .retrieve()
-		        .onStatus(HttpStatusCode::is4xxClientError, response -> {
-		            if (response.statusCode() == HttpStatus.NOT_FOUND) {
+		    try {
+		        List<PendingUserDto> result = webClient.get()
+		            .uri("/internal/users/pending")
+		            .retrieve()
+		            .onStatus(HttpStatusCode::is4xxClientError, response -> {
+		                if (response.statusCode() == HttpStatus.NOT_FOUND) {
+		                    return response.bodyToMono(String.class)
+		                        .map(body -> new ResourceNotFoundException(
+		                            SERVICE_NAME + ": users not found - " + body));
+		                }
 		                return response.bodyToMono(String.class)
-		                    .map(body -> new ResourceNotFoundException(
-		                        SERVICE_NAME + ": users not found - " + body));
-		            }
-		            return response.bodyToMono(String.class)
-		                .map(body -> new IllegalArgumentException(
-		                    SERVICE_NAME + ": bad request - " + body));
-		        })
-		        .onStatus(HttpStatusCode::is5xxServerError, response ->
-		            response.bodyToMono(String.class)
-		                .map(body -> new ServiceUnavailableException(
-		                    SERVICE_NAME + " unavailable - " + body))
-		        )
-		        .bodyToFlux(PendingUserDto.class)
-		        .collectList()
-		        .block(Duration.ofSeconds(5));
+		                    .map(body -> new IllegalArgumentException(
+		                        SERVICE_NAME + ": bad request - " + body));
+		            })
+		            .onStatus(HttpStatusCode::is5xxServerError, response ->
+		                response.bodyToMono(String.class)
+		                    .map(body -> new ServiceUnavailableException(
+		                        SERVICE_NAME + " unavailable - " + body))
+		            )
+		            .bodyToFlux(PendingUserDto.class)
+		            .collectList()
+		            .block(Duration.ofSeconds(5));
+		        
+		        System.out.println("✅ [ADMIN-SERVICE-WEBCLIENT] Successfully received " + (result != null ? result.size() : 0) + " users");
+		        if (result != null && !result.isEmpty()) {
+		            PendingUserDto sample = result.get(0);
+		            System.out.println("✅ [ADMIN-SERVICE-WEBCLIENT] Sample deserialized user: userId=" + sample.getUserId() + 
+		                ", username=" + sample.getUsername() + 
+		                ", email=" + sample.getEmail() + 
+		                ", phone=" + sample.getPhone() + 
+		                ", accountStatus=" + sample.getAccountStatus() + 
+		                ", createdAt=" + sample.getCreatedAt());
+		        }
+		        return result;
+		    } catch (Exception e) {
+		        System.out.println("❌ [ADMIN-SERVICE-WEBCLIENT] Error occurred: " + e.getClass().getName());
+		        System.out.println("❌ [ADMIN-SERVICE-WEBCLIENT] Error message: " + e.getMessage());
+		        e.printStackTrace();
+		        throw e;
+		    }
 		}
 
 	

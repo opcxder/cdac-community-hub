@@ -4,16 +4,20 @@ public class PendingUserDto {
     private Long userId;
     private String username;
     private String email;
+    private String phone;
     private String accountStatus;
+    private String createdAt;
 
     public PendingUserDto() {
     }
 
-    public PendingUserDto(Long userId, String username, String email, String accountStatus) {
+    public PendingUserDto(Long userId, String username, String email, String phone, String accountStatus, String createdAt) {
         this.userId = userId;
         this.username = username;
         this.email = email;
+        this.phone = phone;
         this.accountStatus = accountStatus;
+        this.createdAt = createdAt;
     }
 
     // Getters and Setters
@@ -41,11 +45,27 @@ public class PendingUserDto {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getAccountStatus() {
         return accountStatus;
     }
 
     public void setAccountStatus(String accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { adminService } from '@/api/services';
-import type { Suggestion, PageResponse } from '@/types';
+import type { Suggestion } from '@/types';
 import { useToast } from '@/hooks/use-toast';
-import { LoadingSpinner, EmptyState, Pagination } from '@/components/shared';
+import { LoadingSpinner, EmptyState } from '@/components/shared';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -17,18 +17,20 @@ import {
 } from '@/components/ui/select';
 
 export function SuggestionsManagement() {
-    const [suggestions, setSuggestions] = useState<PageResponse<Suggestion> | null>(null);
+    const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const { toast } = useToast();
 
-    const fetchSuggestions = async (page = 0) => {
+    const fetchSuggestions = async () => {
         try {
             setLoading(true);
-            const data = await adminService.getAllSuggestions({ page, size: 10 });
-            setSuggestions(data);
-        } catch {
+            const data = await adminService.getAllSuggestions();
+            console.log('📊 [SUGGESTIONS-MGMT] Received:', data);
+            setSuggestions(Array.isArray(data) ? data : []);
+        } catch (error) {
+            console.error('❌ [SUGGESTIONS-MGMT] Error:', error);
             toast({
                 title: 'Error',
                 description: 'Failed to fetch suggestions',
@@ -43,7 +45,7 @@ export function SuggestionsManagement() {
         fetchSuggestions();
     }, []);
 
-    const filteredSuggestions = suggestions?.content.filter((suggestion) => {
+    const filteredSuggestions = suggestions.filter((suggestion) => {
         const matchesSearch =
             !searchQuery ||
             suggestion.suggestionText.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -168,16 +170,7 @@ export function SuggestionsManagement() {
                             ))}
                         </div>
 
-                        {/* Pagination */}
-                        {suggestions && suggestions.totalPages > 1 && (
-                            <div className="mt-6">
-                                <Pagination
-                                    currentPage={suggestions.number}
-                                    totalPages={suggestions.totalPages}
-                                    onPageChange={fetchSuggestions}
-                                />
-                            </div>
-                        )}
+
                     </>
                 )}
             </div>

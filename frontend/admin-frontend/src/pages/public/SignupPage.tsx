@@ -80,10 +80,10 @@ export default function SignupPage() {
 
             setSuccess(true);
 
-            // Redirect to login after 3 seconds
+            // Redirect to login after 6 seconds
             setTimeout(() => {
                 navigate('/login');
-            }, 3000);
+            }, 6000);
         } catch (err: unknown) {
             const message = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Registration failed. Please try again.";
             setError(message);

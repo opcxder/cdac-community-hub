@@ -32,13 +32,10 @@ public class SuggestionAdminController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
-        logger.info("💡 [SUGGESTION-ADMIN] Fetching suggestions: page={}, size={}", page, size);
+        logger.info("💡 [SUGGESTION-ADMIN] Fetching suggestions");
         List<SuggestionDto> suggestions = suggestionAdminService.getSuggestions(page, size);
-        logger.info("💡 [SUGGESTION-ADMIN] Found {} suggestions", suggestions.size());
-        if (!suggestions.isEmpty()) {
-            logger.info("💡 [SUGGESTION-ADMIN] First item: {}", suggestions.get(0));
-        }
-
+        logger.info("💡 [SUGGESTION-ADMIN] Returning {} suggestions", suggestions.size());
+        
         return ResponseEntity.ok(suggestions);
     }
 

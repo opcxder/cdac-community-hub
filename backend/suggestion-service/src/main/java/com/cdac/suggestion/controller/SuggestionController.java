@@ -4,9 +4,12 @@ import com.cdac.suggestion.dto.SubmissionResponse;
 import com.cdac.suggestion.dto.SuggestionDTO;
 import com.cdac.suggestion.dto.SuggestionRequest;
 import com.cdac.suggestion.service.SuggestionService;
+import com.cdac.suggestion.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,26 +23,40 @@ public class SuggestionController {
     @Autowired
     private SuggestionService suggestionService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping
-    public SubmissionResponse submitSuggestion(
+    public ResponseEntity<?> submitSuggestion(
             @RequestBody SuggestionRequest request,
-            @RequestParam(required = false) Long userId) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
-        logger.info("📝 Received suggestion submission request: suggestionText={}, category={}, userId={}",
-                request.getSuggestionText(), request.getCategory(), userId);
+        logger.info("📝 Received suggestion submission: suggestionText={}, category={}", 
+                request.getSuggestionText(), request.getCategory());
 
-        // Use userId from request body if available, otherwise from query param
-        Long finalUserId = (userId != null) ? userId : 1L; // Fallback to 1L if not provided
+        // Extract userId from JWT token
+        Long userId = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            userId = jwtUtil.extractUserId(token);
+            logger.info("📝 Extracted userId from JWT: {}", userId);
+        }
 
-        logger.info("📝 Processing suggestion with userId={}", finalUserId);
+        if (userId == null) {
+            logger.warn("⚠️ No valid userId found in JWT token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new SubmissionResponse(null, "Authentication required"));
+        }
 
-        Long id = suggestionService.submitSuggestion(finalUserId, request);
+        logger.info("📝 Processing suggestion with userId={}", userId);
 
-        logger.info("✅ Suggestion submitted successfully: suggestionId={}", id);
+        Long id = suggestionService.submitSuggestion(userId, request);
 
-        return new SubmissionResponse(
+        logger.info("✅ Suggestion submitted successfully: suggestionId={}, userId={}", id, userId);
+
+        return ResponseEntity.ok(new SubmissionResponse(
                 id,
-                "Thank you for your feedback. Admin will review it.");
+                "Thank you for your feedback. Admin will review it."));
     }
 
     @GetMapping("/user")
@@ -56,6 +73,17 @@ public class SuggestionController {
         logger.info("💡 [PUBLIC] Fetching all suggestions for community view");
         List<SuggestionDTO> suggestions = suggestionService.getAllSuggestions();
         logger.info("💡 [PUBLIC] Returning {} suggestions", suggestions.size());
+        
+        if (!suggestions.isEmpty()) {
+            SuggestionDTO sample = suggestions.get(0);
+            logger.info("💡 [PUBLIC] Sample suggestion: suggestionId={}, suggestionText={}, userId={}, username={}, category={}", 
+                sample.getSuggestionId(), 
+                sample.getSuggestionText(), 
+                sample.getUserId(),
+                sample.getUsername(),
+                sample.getCategory());
+        }
+        
         return suggestions;
     }
 }

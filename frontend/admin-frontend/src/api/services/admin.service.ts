@@ -146,10 +146,10 @@ export const adminService = {
   // ========== Suggestions ==========
 
   /**
-   * Get all suggestions (with pagination - only endpoint that supports it)
+   * Get all suggestions
    */
-  async getAllSuggestions(params?: PageRequest): Promise<PageResponse<Suggestion>> {
-    const response = await client.get<PageResponse<Suggestion>>('/api/admin/suggestions', { params });
+  async getAllSuggestions(): Promise<Suggestion[]> {
+    const response = await client.get<Suggestion[]>('/api/admin/suggestions');
     return response.data;
   },
 

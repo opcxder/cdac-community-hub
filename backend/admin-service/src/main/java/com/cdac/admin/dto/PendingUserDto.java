@@ -6,17 +6,24 @@ public class PendingUserDto {
 	private Long userId;
 	private String username;
 	private String email;
-	private String status;
+	private String phone;
+	private String accountStatus;
+	private String createdAt;
+	
 	public PendingUserDto() {
 		super();
 	}
-	public PendingUserDto(Long userId, String username, String email, String status) {
+	
+	public PendingUserDto(Long userId, String username, String email, String phone, String accountStatus, String createdAt) {
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.email = email;
-		this.status = status;
+		this.phone = phone;
+		this.accountStatus = accountStatus;
+		this.createdAt = createdAt;
 	}
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -35,13 +42,24 @@ public class PendingUserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getStatus() {
-		return status;
+	public String getPhone() {
+		return phone;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	
+	public String getAccountStatus() {
+		return accountStatus;
+	}
+	public void setAccountStatus(String accountStatus) {
+		this.accountStatus = accountStatus;
+	}
+	public String getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
 	
 	
 }

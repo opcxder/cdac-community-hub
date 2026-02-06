@@ -22,12 +22,12 @@ public class MockAuthServiceClient  implements AuthServiceClient{
 	public List<PendingUserDto> getPendingUser() {
 		log.info("Mock:  Fecting the pending uses" );
 		 List<PendingUserDto> users = new ArrayList<>();
-		 users.add(  new PendingUserDto(1L, "test1" , "test1@gmail.com" , "PENDING") );
-		 users.add(  new PendingUserDto(2L, "test2" , "test2@gmail.com" , "PENDING") );
-		 users.add(  new PendingUserDto(3L, "test3" , "test3@gmail.com" , "PENDING") );
-		 users.add(  new PendingUserDto(4L, "test4" , "test4@gmail.com" , "PENDING") );
-		 users.add(  new PendingUserDto(5L, "test5" , "test5@gmail.com" , "PENDING") );
-		 users.add(  new PendingUserDto(6L, "test6" , "test6@gmail.com" , "PENDING") );
+		 users.add(  new PendingUserDto(1L, "test1" , "test1@gmail.com" , "PENDING", null, null) );
+		 users.add(  new PendingUserDto(2L, "test2" , "test2@gmail.com" , "PENDING", null, null) );
+		 users.add(  new PendingUserDto(3L, "test3" , "test3@gmail.com" , "PENDING", null, null) );
+		 users.add(  new PendingUserDto(4L, "test4" , "test4@gmail.com" , "PENDING", null, null) );
+		 users.add(  new PendingUserDto(5L, "test5" , "test5@gmail.com" , "PENDING", null, null) );
+		 users.add(  new PendingUserDto(6L, "test6" , "test6@gmail.com" , "PENDING", null, null) );
 		 
 		  
 		return users;
