@@ -90,10 +90,15 @@ public class HostelService {
 
         // Map facilities array to individual boolean fields
         if (request.getFacilities() != null) {
-            hostel.setHasWifi(request.getFacilities().contains("wifi"));
-            hostel.setHasAc(request.getFacilities().contains("ac"));
-            hostel.setHasMess(request.getFacilities().contains("mess"));
-            hostel.setHasLaundry(request.getFacilities().contains("laundry"));
+            // Convert all facilities to lowercase for case-insensitive check
+            java.util.Set<String> facilities = request.getFacilities().stream()
+                    .map(String::toLowerCase)
+                    .collect(java.util.stream.Collectors.toSet());
+            
+            hostel.setHasWifi(facilities.contains("wifi"));
+            hostel.setHasAc(facilities.contains("ac") || facilities.contains("a/c"));
+            hostel.setHasMess(facilities.contains("mess"));
+            hostel.setHasLaundry(facilities.contains("laundry"));
         } else {
             // Set to false if not provided
             hostel.setHasWifi(false);
@@ -279,14 +284,7 @@ public class HostelService {
         return dto;
     }
 
-    /**
-     * Approves a pending hostel, making it visible to public users.
-     * Sets the approval timestamp and changes status to APPROVED.
-     *
-     * @param hostelId The ID of the hostel to approve
-     * @return The approved hostel entity
-     * @throws RuntimeException if hostel not found
-     */
+   
     public Hostel approveHostel(Long hostelId) {
         logger.info("Approving hostel: hostelId={}", hostelId);
 

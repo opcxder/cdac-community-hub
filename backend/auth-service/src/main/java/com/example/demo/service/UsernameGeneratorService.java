@@ -57,7 +57,7 @@ public class UsernameGeneratorService {
             }
         } while (userRepository.findByUsername(username).isPresent());
 
-        logger.debug("Generated unique username: {} after {} attempts", username, attempts);
+        
         return username;
     }
 }

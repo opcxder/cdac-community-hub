@@ -19,15 +19,9 @@ public class AuthAdminService {
 	
 	public  List<PendingUserDto> getPendingUsers() {
 		List<PendingUserDto> users = authServiceClient.getPendingUser();
-		System.out.println("📊 [ADMIN-SERVICE] Received " + users.size() + " pending users from auth-service");
+
 		if (!users.isEmpty()) {
 			PendingUserDto sample = users.get(0);
-			System.out.println("📊 [ADMIN-SERVICE] Sample user: userId=" + sample.getUserId() + 
-				", username=" + sample.getUsername() + 
-				", email=" + sample.getEmail() + 
-				", phone=" + sample.getPhone() + 
-				", accountStatus=" + sample.getAccountStatus() + 
-				", createdAt=" + sample.getCreatedAt());
 		}
 		return users;
 	}

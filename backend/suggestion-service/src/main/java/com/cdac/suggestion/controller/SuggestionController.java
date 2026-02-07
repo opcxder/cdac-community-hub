@@ -4,7 +4,6 @@ import com.cdac.suggestion.dto.SubmissionResponse;
 import com.cdac.suggestion.dto.SuggestionDTO;
 import com.cdac.suggestion.dto.SuggestionRequest;
 import com.cdac.suggestion.service.SuggestionService;
-import com.cdac.suggestion.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,27 +22,27 @@ public class SuggestionController {
     @Autowired
     private SuggestionService suggestionService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
     @PostMapping
     public ResponseEntity<?> submitSuggestion(
             @RequestBody SuggestionRequest request,
-            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+            @RequestHeader(value = "X-User-Id", required = false) String userIdHeader) {
 
         logger.info("📝 Received suggestion submission: suggestionText={}, category={}", 
                 request.getSuggestionText(), request.getCategory());
 
-        // Extract userId from JWT token
+        // Extract userId from X-User-Id header (set by API Gateway)
         Long userId = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            userId = jwtUtil.extractUserId(token);
-            logger.info("📝 Extracted userId from JWT: {}", userId);
+        if (userIdHeader != null) {
+            try {
+                userId = Long.parseLong(userIdHeader);
+                logger.info("📝 Received userId from Gateway: {}", userId);
+            } catch (NumberFormatException e) {
+                logger.error("❌ Invalid X-User-Id header: {}", userIdHeader);
+            }
         }
 
         if (userId == null) {
-            logger.warn("⚠️ No valid userId found in JWT token");
+            logger.warn("⚠️ No userId found in X-User-Id header (Gateway authentication failed)");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new SubmissionResponse(null, "Authentication required"));
         }

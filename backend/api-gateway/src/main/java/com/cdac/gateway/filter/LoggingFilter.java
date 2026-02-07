@@ -19,19 +19,19 @@ public class LoggingFilter implements GlobalFilter, Ordered {
         String path = exchange.getRequest().getURI().getPath();
         String method = exchange.getRequest().getMethod().toString();
 
-        System.out.println("🌐 ========================================");
-        System.out.println("🌐 GATEWAY REQUEST");
-        System.out.println("🌐 Method: " + method);
-        System.out.println("🌐 Path: " + path);
-        System.out.println("🌐 Full URI: " + exchange.getRequest().getURI());
+        logger.info("🌐 [GATEWAY] INCOMING: {} {}", method, path);
+        logger.debug("🌐 [GATEWAY] Headers: {}", exchange.getRequest().getHeaders());
 
         return chain.filter(exchange).then(Mono.fromRunnable(() -> {
             int statusCode = exchange.getResponse().getStatusCode() != null
                     ? exchange.getResponse().getStatusCode().value()
                     : 0;
 
-            System.out.println("🌐 Response Status: " + statusCode);
-            System.out.println("🌐 ========================================");
+            if (statusCode >= 400) {
+                logger.error("❌ [GATEWAY] RESPONSE: {} {} -> Status: {}", method, path, statusCode);
+            } else {
+                logger.info("✅ [GATEWAY] RESPONSE: {} {} -> Status: {}", method, path, statusCode);
+            }
         }));
     }
 

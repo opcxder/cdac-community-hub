@@ -6,10 +6,10 @@ interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-// Single-flight refresh promise
+
 let refreshPromise: Promise<string> | null = null;
 
-// Axios instance
+
 const client: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_GATEWAY_URL,
   headers: {
@@ -17,11 +17,13 @@ const client: AxiosInstance = axios.create({
   },
 });
 
-// Request interceptor: attach access token
+
 client.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const authStore = useAuthStore.getState();
     const token = authStore.accessToken;
+
+
 
     if (token) {
       config.headers = new AxiosHeaders(config.headers);
@@ -30,14 +32,25 @@ client.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => {
+    console.error("❌ [API] Request Error:", error);
+    return Promise.reject(error);
+  },
 );
 
-// Response interceptor: handle 401 → refresh token
+
 client.interceptors.response.use(
-  (response) => response,
+  (response) => {
+
+    return response;
+  },
   async (error: AxiosError) => {
     const originalRequest = error.config as RetryAxiosRequestConfig | undefined;
+    console.error(`❌ [API] Response Error: ${error.message}`, {
+      url: originalRequest?.url,
+      status: error.response?.status,
+      data: error.response?.data
+    });
 
     if (
       error.response?.status === 401 &&
@@ -45,11 +58,13 @@ client.interceptors.response.use(
       !originalRequest._retry &&
       !originalRequest.url?.includes("/auth/refresh-token")
     ) {
+
       originalRequest._retry = true;
 
       const authStore = useAuthStore.getState();
 
       if (!authStore.refreshToken) {
+        console.warn("⚠️ [API] No Refresh Token available, logging out.");
         authStore.logout();
         return Promise.reject(error);
       }
@@ -63,8 +78,13 @@ client.interceptors.response.use(
             { timeout: 5000 },
           )
           .then((res) => {
+
             authStore.setAccessToken(res.data.accessToken);
             return res.data.accessToken;
+          })
+          .catch((err) => {
+            console.error("❌ [API] Token Refresh Failed:", err);
+            throw err;
           })
           .finally(() => {
             refreshPromise = null;
@@ -79,8 +99,10 @@ client.interceptors.response.use(
           originalRequest.headers.set("Authorization", `Bearer ${newToken}`);
         }
 
+
         return client(originalRequest);
       } catch (refreshError) {
+        console.error("❌ [API] Refresh Retry Failed, logging out.");
         authStore.logout();
         return Promise.reject(refreshError);
       }

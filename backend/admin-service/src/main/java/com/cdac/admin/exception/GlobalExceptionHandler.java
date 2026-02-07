@@ -19,7 +19,6 @@ public class GlobalExceptionHandler {
 
 	
 
-
 	// Handle bad input
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex,

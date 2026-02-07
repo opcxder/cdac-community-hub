@@ -99,6 +99,21 @@ export function HostelDetailsDialog({ hostel, open, onOpenChange }: HostelDetail
                                             </p>
                                         </div>
                                     )}
+                                    {hostel.mapLocation && (
+                                        <div className="sm:col-span-2 pt-2 border-t">
+                                            <h4 className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                                                <MapPin className="h-3 w-3" /> Map Location
+                                            </h4>
+                                            <a
+                                                href={hostel.mapLocation}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-xs sm:text-sm text-blue-600 hover:underline flex items-center gap-1"
+                                            >
+                                                View on Google Maps
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

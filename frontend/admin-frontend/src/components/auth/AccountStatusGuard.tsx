@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
-import { AlertCircle, CheckCircle, XCircle, Clock } from "lucide-react";
+import { CheckCircle, XCircle, Clock } from "lucide-react";
 
 export default function AccountStatusGuard({ children }: { children: React.ReactNode }) {
     const user = useAuthStore((state) => state.user);

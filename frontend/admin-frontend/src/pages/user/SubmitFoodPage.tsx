@@ -51,10 +51,8 @@ export default function SubmitFoodPage() {
     useEffect(() => {
         async function fetchCategories() {
             try {
-                console.log('📡 [SUBMIT-FOOD] Fetching categories from /api/food/categories');
                 const response = await client.get<Category[]>("/api/food/categories");
-                console.log('✅ [SUBMIT-FOOD] Categories fetched successfully:', response.data);
-                console.log('📊 [SUBMIT-FOOD] Number of categories:', response.data.length);
+
                 setCategories(response.data);
 
                 if (response.data.length === 0) {
@@ -94,7 +92,7 @@ export default function SubmitFoodPage() {
         setError(null);
 
         try {
-            console.log('🍽️ [SUBMIT-FOOD] Submitting food place data:', data);
+
 
             // Get userId from auth store
             const userId = useAuthStore.getState().user?.userId;
@@ -102,7 +100,7 @@ export default function SubmitFoodPage() {
                 throw new Error("User not authenticated");
             }
 
-            console.log('👤 [SUBMIT-FOOD] User ID:', userId);
+
 
             // Step 1: Create food place
             const placeResponse = await client.post("/api/food/places", {
@@ -118,19 +116,19 @@ export default function SubmitFoodPage() {
                 submittedByUserId: userId
             });
 
-            console.log('✅ [SUBMIT-FOOD] Food place created successfully:', placeResponse.data);
+
             const placeId = placeResponse.data.placeId;
 
             // Step 2: Upload images
             const formData = new FormData();
             images.forEach(image => formData.append('images', image));
 
-            console.log('📤 [SUBMIT-FOOD] Uploading images for place ID:', placeId);
+
             await client.post(`/api/food/places/${placeId}/images`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
-            console.log('✅ [SUBMIT-FOOD] Images uploaded successfully');
+
             toast.success("Food place submitted for approval!");
             navigate("/dashboard");
         } catch (err: any) {

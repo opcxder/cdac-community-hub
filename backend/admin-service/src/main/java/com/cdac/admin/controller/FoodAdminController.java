@@ -32,11 +32,11 @@ public class FoodAdminController {
 
 	@GetMapping("/pending")
 	public ResponseEntity<List<PendingFoodDto>> getPendingFood() {
-		logger.info("🍔 [FOOD-ADMIN] Fetching pending food places...");
+		
 		List<PendingFoodDto> pendingFoods = foodAdminService.getPendingFoods();
-		logger.info("🍔 [FOOD-ADMIN] Found {} pending food places", pendingFoods.size());
+		
 		if (!pendingFoods.isEmpty()) {
-			logger.info("🍔 [FOOD-ADMIN] First item: {}", pendingFoods.get(0));
+			
 		}
 		return ResponseEntity.ok(pendingFoods);
 	}
@@ -64,12 +64,12 @@ public class FoodAdminController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/categories/{id}/reject")
-	public ResponseEntity<Void> rejectCategory(
-			@PathVariable Long id,
-			@RequestBody com.cdac.admin.dto.RejectCategoryDto dto) {
-		foodAdminService.rejectCategory(id, dto.getReason());
-		return ResponseEntity.ok().build();
-	}
+	// @PostMapping("/categories/{id}/reject")
+	// public ResponseEntity<Void> rejectCategory(
+	// 		@PathVariable Long id,
+	// 		@RequestBody com.cdac.admin.dto.RejectCategoryDto dto) {
+	// 	foodAdminService.rejectCategory(id, dto.getReason());
+	// 	return ResponseEntity.ok().build();
+	// }
 
 }

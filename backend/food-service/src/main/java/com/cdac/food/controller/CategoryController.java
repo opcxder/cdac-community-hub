@@ -5,14 +5,17 @@ import com.cdac.food.service.CategoryService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller for managing food categories.
  * Exposes endpoints for creating and retrieving categories.
+ * Authentication is handled by API Gateway, which forwards userId via X-User-Id header.
  */
 @RestController
 @RequestMapping("/api/food/categories")
@@ -26,16 +29,35 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    /**
+     * Parse userId from X-User-Id header
+     */
+    private Long parseUserId(String userIdHeader) {
+        if (userIdHeader == null || userIdHeader.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Long.parseLong(userIdHeader);
+        } catch (NumberFormatException e) {
+            logger.error("Invalid X-User-Id header: {}", userIdHeader);
+            return null;
+        }
+    }
+
    
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(
+    public ResponseEntity<?> createCategory(
             @Valid @RequestBody CategoryDTO categoryDTO,
-            @RequestParam Long userId) {
+            @RequestHeader(value = "X-User-Id", required = false) String userIdHeader) {
+        
+        Long userId = parseUserId(userIdHeader);
+        if (userId == null) {
+            logger.warn("⚠️ No userId in X-User-Id header for creating category");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Authentication required"));
+        }
+        
         logger.info("Request to create category: {}, userId: {}", categoryDTO.getCategoryName(), userId);
-        // Assuming the DTO comes with a name, but for creation we might just need name
-        // and userId.
-        // The Service takes (String name, Long userId).
-        // Let's assume the body has the name.
         return ResponseEntity.ok(categoryService.createCategory(categoryDTO.getCategoryName(), userId));
     }
 

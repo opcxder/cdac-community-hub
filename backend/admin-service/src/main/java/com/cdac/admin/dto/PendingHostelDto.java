@@ -28,7 +28,7 @@ public class PendingHostelDto {
 	private String rejectionReason;
 	private Long submittedByUserId;
 	private LocalDateTime createdAt;
-	private List<CategoryDto> categories;
+	private List<String> categories;
 	private List<String> imageUrls;
 
 	public PendingHostelDto() {
@@ -210,15 +210,21 @@ public class PendingHostelDto {
 		return createdAt;
 	}
 
+
+	
+	
+
+	
+
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public List<CategoryDto> getCategories() {
+	public List<String> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<CategoryDto> categories) {
+	public void setCategories(List<String> categories) {
 		this.categories = categories;
 	}
 
@@ -241,27 +247,5 @@ public class PendingHostelDto {
 				", locality='" + locality + '\'' +
 				", status='" + status + '\'' +
 				'}';
-	}
-
-	// Inner class for Category
-	public static class CategoryDto {
-		private Long categoryId;
-		private String categoryName;
-
-		public Long getCategoryId() {
-			return categoryId;
-		}
-
-		public void setCategoryId(Long categoryId) {
-			this.categoryId = categoryId;
-		}
-
-		public String getCategoryName() {
-			return categoryName;
-		}
-
-		public void setCategoryName(String categoryName) {
-			this.categoryName = categoryName;
-		}
 	}
 }

@@ -32,11 +32,11 @@ public class HostelAdminController {
 
 	@GetMapping("/pending")
 	public ResponseEntity<List<PendingHostelDto>> getPendingHostels() {
-		logger.info("🏠 [HOSTEL-ADMIN] Fetching pending hostels...");
+		
 		List<PendingHostelDto> pendingHostels = hostelAdminService.getPendingHostels();
-		logger.info("🏠 [HOSTEL-ADMIN] Found {} pending hostels", pendingHostels.size());
+		
 		if (!pendingHostels.isEmpty()) {
-			logger.info("🏠 [HOSTEL-ADMIN] First item: {}", pendingHostels.get(0));
+			
 		}
 		return ResponseEntity.ok(pendingHostels);
 	}
@@ -65,12 +65,12 @@ public class HostelAdminController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/categories/{id}/reject")
-	public ResponseEntity<Void> rejectCategory(
-			@PathVariable Long id,
-			@RequestBody com.cdac.admin.dto.RejectCategoryDto dto) {
-		hostelAdminService.rejectCategory(id, dto.getReason());
-		return ResponseEntity.ok().build();
-	}
+	// @PostMapping("/categories/{id}/reject")
+	// public ResponseEntity<Void> rejectCategory(
+	// 		@PathVariable Long id,
+	// 		@RequestBody com.cdac.admin.dto.RejectCategoryDto dto) {
+	// 	hostelAdminService.rejectCategory(id, dto.getReason());
+	// 	return ResponseEntity.ok().build();
+	// }
 
 }

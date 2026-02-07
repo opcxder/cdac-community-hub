@@ -1,6 +1,7 @@
 package com.cdac.hostel.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +29,7 @@ import com.cdac.hostel.service.RankingService;
 /**
  * REST controller for public hostel operations.
  * Handles hostel creation, retrieval, review replies, and ranking.
+ * Authentication is handled by API Gateway, which forwards userId via X-User-Id header.
  */
 @RestController
 @RequestMapping("/api/hostel/hostels")
@@ -43,16 +46,38 @@ public class HostelController {
     @Autowired
     private RankingService rankingService;
 
+    /**
+     * Parse userId from X-User-Id header
+     */
+    private Long parseUserId(String userIdHeader) {
+        if (userIdHeader == null || userIdHeader.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Long.parseLong(userIdHeader);
+        } catch (NumberFormatException e) {
+            logger.error("Invalid X-User-Id header: {}", userIdHeader);
+            return null;
+        }
+    }
+
     @PostMapping
-    public Hostel createHostel(
+    public ResponseEntity<?> createHostel(
             @RequestBody com.cdac.hostel.dto.HostelRequest request,
-            @RequestParam Long userId) {
+            @RequestHeader(value = "X-User-Id", required = false) String userIdHeader) {
+
+        Long userId = parseUserId(userIdHeader);
+        if (userId == null) {
+            logger.warn("⚠️ No userId in X-User-Id header for creating hostel");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Authentication required"));
+        }
 
         logger.info("🏠 [HOSTEL-CONTROLLER] Received hostel submission: name={}, userId={}",
                 request.getHostelName(), userId);
         logger.info("🏠 [HOSTEL-CONTROLLER] Request data: {}", request);
 
-        return hostelService.createHostel(request, userId);
+        return ResponseEntity.ok(hostelService.createHostel(request, userId));
     }
 
     @GetMapping("/approved")
@@ -74,60 +99,58 @@ public class HostelController {
 
     // ========== Review Reply Endpoints ==========
 
-    /**
-     * Creates a reply to a hostel rating/review.
-     */
     @PostMapping("/ratings/{ratingId}/reply")
-    public ResponseEntity<HostelReviewReply> createReply(
+    public ResponseEntity<?> createReply(
             @PathVariable Long ratingId,
-            @RequestParam Long userId,
+            @RequestHeader(value = "X-User-Id", required = false) String userIdHeader,
             @RequestBody ReplyRequest request) {
 
+        logger.info("📡 [HOSTEL-CONTROLLER] Received reply request for ratingId={}, X-User-Id={}", ratingId, userIdHeader);
+
+        Long userId = parseUserId(userIdHeader);
+        if (userId == null) {
+            logger.error("❌ [HOSTEL-CONTROLLER] No userId in X-User-Id header for creating reply to rating: {}", ratingId);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Authentication required"));
+        }
+
+        logger.info("📝 [HOSTEL-CONTROLLER] Processing reply: ratingId={}, userId={}", ratingId, userId);
         HostelReviewReply reply = ratingService.createReply(ratingId, userId, request.getReplyText());
         return ResponseEntity.status(HttpStatus.CREATED).body(reply);
     }
 
-    /**
-     * Retrieves the reply for a specific rating.
-     */
-    @GetMapping("/ratings/{ratingId}/reply")
-    public ResponseEntity<HostelReviewReply> getReplyForRating(@PathVariable Long ratingId) {
-        HostelReviewReply reply = ratingService.getReplyForRating(ratingId);
-        if (reply == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(reply);
+   
+    @GetMapping("/ratings/{ratingId}/replies")
+    public ResponseEntity<List<HostelReviewReply>> getRepliesForRating(@PathVariable Long ratingId) {
+        List<HostelReviewReply> replies = ratingService.getRepliesForRating(ratingId);
+        return ResponseEntity.ok(replies);
     }
 
-    /**
-     * Deletes a reply to a rating.
-     */
+   
     @DeleteMapping("/replies/{replyId}")
-    public ResponseEntity<Void> deleteReply(@PathVariable Long replyId) {
-        ratingService.deleteReply(replyId);
+    public ResponseEntity<?> deleteReply(
+            @PathVariable Long replyId,
+            @RequestHeader(value = "X-User-Id", required = false) String userIdHeader) {
+
+        Long userId = parseUserId(userIdHeader);
+        if (userId == null) {
+            logger.warn("⚠️ No userId in X-User-Id header for deleting reply: {}", replyId);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Authentication required"));
+        }
+
+        ratingService.deleteReply(replyId, userId);
         return ResponseEntity.noContent().build();
     }
 
-    // ========== Ranking Endpoints ==========
-
-    /**
-     * Retrieves all approved hostels ranked by Bayesian average.
-     * Hostels with higher quality and quantity of ratings rank higher.
-     *
-     * @return List of ranked hostels sorted by Bayesian average (descending)
-     */
+    
     @GetMapping("/ranked")
     public ResponseEntity<List<RankedHostelDTO>> getRankedHostels() {
         List<RankedHostelDTO> ranked = rankingService.getRankedHostels();
         return ResponseEntity.ok(ranked);
     }
 
-    /**
-     * Retrieves top N ranked hostels.
-     *
-     * @param limit Number of top hostels to retrieve (default: 10)
-     * @return List of top N ranked hostels
-     */
+   
     @GetMapping("/ranked/top")
     public ResponseEntity<List<RankedHostelDTO>> getTopRankedHostels(
             @RequestParam(defaultValue = "10") int limit) {

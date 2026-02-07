@@ -33,7 +33,7 @@ interface Hostel {
     contactPersonName: string;
     contactPersonPhone: string;
     forGender: 'BOYS' | 'GIRLS' | 'BOTH';
-    images: string[];
+    imageUrls: string[];
     categories?: string[];  // Add categories
     mapLocation: string | null;
 }
@@ -58,9 +58,20 @@ interface MultiCriteriaRatings {
 interface Review {
     ratingId: number;
     userId: number;
+    userName?: string;
+    username?: string;
     reviewText: string;
     createdAt: string;
     overallRating: number;
+    reply?: {
+        replyId: number;
+        userId: number;
+        username?: string;
+        repliedByUsername?: string;
+        replyText: string;
+        createdAt?: string;
+        repliedAt?: string;
+    };
 }
 
 /**
@@ -99,9 +110,8 @@ export default function HostelDetailsPage() {
             setError(null);
 
             try {
-                console.log('🏠 [HOSTEL-DETAILS] Fetching details for hostel ID:', id);
+
                 const response = await client.get<Hostel>(`/api/hostel/hostels/${id}`);
-                console.log('🏠 [HOSTEL-DETAILS] Response:', response.data);
                 setHostel(response.data);
             } catch (err: any) {
                 console.error('🏠 [HOSTEL-DETAILS] Error:', err);
@@ -122,22 +132,14 @@ export default function HostelDetailsPage() {
             setLoadingReviews(true);
 
             try {
-                console.log('🏠 [HOSTEL-DETAILS] Fetching ratings and reviews for hostel ID:', id);
-
-                // Fetch rating stats - FIXED PATH
                 const statsResponse = await client.get<RatingStats>(`/api/hostel/hostels/${id}/ratings/summary`);
-                console.log('🏠 [HOSTEL-DETAILS] Rating stats:', statsResponse.data);
                 setRatingStats(statsResponse.data);
 
                 // Fetch all reviews - FIXED PATH
-                const reviewsResponse = await client.get<Review[]>(`/api/hostel/hostels/${id}/ratings`);
-                console.log('🏠 [HOSTEL-DETAILS] Reviews:', reviewsResponse.data);
+                const response = await client.get<Review[]>(`/api/hostel/hostels/${id}/ratings`);
 
-                // Filter out reviews without text and user's own review
-                const filteredReviews = reviewsResponse.data.filter(
-                    (review) => review.reviewText && review.reviewText.trim() !== '' && review.userId !== user?.userId
-                );
-                setReviews(filteredReviews);
+                // Show ALL reviews including user's own
+                setReviews(response.data);
 
             } catch (err: any) {
                 console.error('🏠 [HOSTEL-DETAILS] Error fetching ratings:', err);
@@ -155,7 +157,6 @@ export default function HostelDetailsPage() {
             if (!id || !user) return;
 
             try {
-                console.log('🏠 [HOSTEL-DETAILS] Fetching user ratings for hostel ID:', id);
                 // Fetch all ratings and find user's ratings - FIXED PATH
                 const response = await client.get<any[]>(`/api/hostel/hostels/${id}/ratings`);
                 const userExistingRating = response.data.find(r => r.userId === user.userId);
@@ -169,7 +170,6 @@ export default function HostelDetailsPage() {
                         affordability: userExistingRating.affordabilityRating || 0
                     });
                     setHasRated(true);
-                    console.log('🏠 [HOSTEL-DETAILS] Found existing user ratings:', userExistingRating);
                 }
             } catch (err: any) {
                 console.log('🏠 [HOSTEL-DETAILS] No existing ratings or error:', err);
@@ -179,12 +179,19 @@ export default function HostelDetailsPage() {
         fetchUserRatings();
     }, [id, user]);
 
+    // Handle local rating change
+    const handleRatingChange = (ratings: MultiCriteriaRatings) => {
+        setUserRatings(ratings);
+    };
+
     // Handle rating submission
-    const handleRatingSubmit = async (ratings: MultiCriteriaRatings) => {
+    const submitRatings = async () => {
         if (!id || !user) {
             toast.error('Please log in to rate this hostel');
             return;
         }
+
+        const ratings = userRatings;
 
         // Check if at least one criterion is rated
         const hasAnyRating = Object.values(ratings).some(r => r > 0);
@@ -196,7 +203,7 @@ export default function HostelDetailsPage() {
         setIsSubmittingRating(true);
 
         try {
-            console.log('🏠 [HOSTEL-DETAILS] Submitting ratings:', { hostelId: id, ratings, userId: user.userId });
+
 
             // FIXED: Send multi-criteria ratings with correct DTO structure
             await client.post(`/api/hostel/hostels/${id}/rate?userId=${user.userId}`, {
@@ -208,7 +215,6 @@ export default function HostelDetailsPage() {
                 reviewText: null  // Rating only, no review text
             });
 
-            setUserRatings(ratings);
             setHasRated(true);
             toast.success('Ratings submitted successfully!');
 
@@ -222,7 +228,6 @@ export default function HostelDetailsPage() {
 
             if (errorMessage.includes('already rated')) {
                 toast.error('Your ratings have been updated.');
-                setUserRatings(ratings);
                 setHasRated(true);
             } else {
                 toast.error(errorMessage);
@@ -247,7 +252,7 @@ export default function HostelDetailsPage() {
         setIsSubmittingReview(true);
 
         try {
-            console.log('🏠 [HOSTEL-DETAILS] Submitting review:', { hostelId: id, userId: user.userId });
+
 
             // Update the existing rating with review text
             await client.post(`/api/hostel/hostels/${id}/rate?userId=${user.userId}`, {
@@ -290,24 +295,27 @@ export default function HostelDetailsPage() {
         }
 
         try {
-            console.log('🏠 [HOSTEL-DETAILS] Submitting reply:', { ratingId, userId: user.userId });
 
-            await client.post(`/api/hostel/hostels/ratings/${ratingId}/reply?userId=${user.userId}`, {
-                replyText: replyText
+
+            await client.post(`/api/hostel/hostels/ratings/${ratingId}/reply`, {
+                replyText
             });
 
-            toast.success('Reply added successfully!');
+            toast.success('Reply posted successfully!');
 
-            // Refresh reviews
-            const reviewsResponse = await client.get<Review[]>(`/api/hostel/hostels/${id}/ratings`);
-            const filteredReviews = reviewsResponse.data.filter(
-                (review) => review.reviewText && review.reviewText.trim() !== '' && review.userId !== user.userId
-            );
-            setReviews(filteredReviews);
-
+            // Refresh reviews to show new reply
+            setLoadingReviews(true);
+            try {
+                const reviewsResponse = await client.get<Review[]>(`/api/hostel/hostels/${id}/ratings`);
+                setReviews(reviewsResponse.data);
+            } catch (err) {
+                console.error('🏠 [HOSTEL-DETAILS] Error refreshing reviews:', err);
+            } finally {
+                setLoadingReviews(false);
+            }
         } catch (err: any) {
             console.error('🏠 [HOSTEL-DETAILS] Reply submission error:', err);
-            toast.error(err?.response?.data?.message || 'Failed to submit reply');
+            toast.error(err?.response?.data?.message || 'Failed to post reply');
         }
     };
 
@@ -407,8 +415,8 @@ export default function HostelDetailsPage() {
                     {/* Main Content */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* Image Gallery */}
-                        {hostel.images && hostel.images.length > 0 && (
-                            <ImageGallery images={hostel.images} altText={hostel.hostelName} />
+                        {hostel.imageUrls && hostel.imageUrls.length > 0 && (
+                            <ImageGallery images={hostel.imageUrls} altText={hostel.hostelName} />
                         )}
 
                         {/* Hostel Information */}
@@ -455,6 +463,22 @@ export default function HostelDetailsPage() {
                                     <div>
                                         <h3 className="font-semibold text-lg mb-2">Distance from CDAC</h3>
                                         <p className="text-muted-foreground">{hostel.distanceFromCdac} km</p>
+                                    </div>
+                                )}
+
+                                {/* Map Location */}
+                                {hostel.mapLocation && (
+                                    <div>
+                                        <h3 className="font-semibold text-lg mb-2">Location</h3>
+                                        <a
+                                            href={hostel.mapLocation}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+                                        >
+                                            <MapPin className="h-4 w-4" />
+                                            View on Google Maps
+                                        </a>
                                     </div>
                                 )}
 
@@ -505,6 +529,46 @@ export default function HostelDetailsPage() {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* Rating Section - Moved to Main Content */}
+                                {user && (
+                                    <div className="pt-6 border-t mt-6">
+                                        <h3 className="font-semibold text-lg mb-4">Rate This Hostel</h3>
+                                        <div className="bg-muted/30 p-4 rounded-lg">
+                                            <MultiCriteriaRating
+                                                value={userRatings}
+                                                onChange={handleRatingChange}
+                                                disabled={isSubmittingRating}
+                                            />
+                                            <div className="mt-4 flex justify-end">
+                                                <Button
+                                                    onClick={submitRatings}
+                                                    disabled={isSubmittingRating}
+                                                >
+                                                    {isSubmittingRating ? 'Submitting...' : 'Submit Ratings'}
+                                                </Button>
+                                            </div>
+                                            {hasRated && (
+                                                <p className="text-sm text-muted-foreground mt-2 text-center">
+                                                    You have rated this hostel
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Review Form - Moved to Main Content */}
+                                {user && (
+                                    <div className="pt-6 border-t mt-6">
+                                        <h3 className="font-semibold text-lg mb-4">Write a Review</h3>
+                                        <ReviewForm
+                                            onSubmit={handleReviewSubmit}
+                                            isSubmitting={isSubmittingReview}
+                                            disabled={!hasRated}
+                                            placeholder={!hasRated ? "Please rate this hostel first before writing a review" : "Share your experience..."}
+                                        />
+                                    </div>
+                                )}
                             </CardContent>
                         </Card>
 
@@ -550,9 +614,7 @@ export default function HostelDetailsPage() {
                             <CardContent>
                                 <div className="text-center mb-6">
                                     <span className="text-5xl font-bold">{(ratingStats?.overallRating || 0).toFixed(1)}</span>
-                                    <p className="text-muted-foreground mt-2">
-                                        Based on Bayesian ranking
-                                    </p>
+                                    {/* Removed Bayesian text */}
                                 </div>
                                 {ratingStats && (
                                     <div className="space-y-3">
@@ -581,43 +643,9 @@ export default function HostelDetailsPage() {
                             </CardContent>
                         </Card>
 
-                        {/* User Rating */}
-                        {user && (
-                            <Card className="shadow-lg">
-                                <CardHeader>
-                                    <CardTitle>Rate This Hostel</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <MultiCriteriaRating
-                                        value={userRatings}
-                                        onChange={handleRatingSubmit}
-                                        disabled={isSubmittingRating}
-                                    />
-                                    {hasRated && (
-                                        <p className="text-sm text-muted-foreground mt-4 text-center">
-                                            You have rated this hostel
-                                        </p>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        )}
+                        {/* User Rating - Removed from Sidebar */}
 
-                        {/* Review Form */}
-                        {user && (
-                            <Card className="shadow-lg">
-                                <CardHeader>
-                                    <CardTitle>Write a Review</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <ReviewForm
-                                        onSubmit={handleReviewSubmit}
-                                        isSubmitting={isSubmittingReview}
-                                        disabled={!hasRated}
-                                        placeholder={!hasRated ? "Please rate this hostel first before writing a review" : "Share your experience..."}
-                                    />
-                                </CardContent>
-                            </Card>
-                        )}
+                        {/* Review Form - Removed from Sidebar */}
 
                         {/* Login Prompt */}
                         {!user && (
@@ -632,6 +660,41 @@ export default function HostelDetailsPage() {
                                     >
                                         Log In
                                     </Button>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </div>
+                </div>
+
+                {/* Reviews Section */}
+                <div className="mt-12">
+                    <h2 className="text-2xl font-bold mb-6">Reviews & Comments</h2>
+
+                    <div className="space-y-6">
+                        {/* Reviews List */}
+                        {loadingReviews ? (
+                            <div className="space-y-4">
+                                <Skeleton className="h-32 w-full" />
+                                <Skeleton className="h-32 w-full" />
+                                <Skeleton className="h-32 w-full" />
+                            </div>
+                        ) : reviews.length > 0 ? (
+                            <div className="space-y-4">
+                                {reviews.map((review) => (
+                                    <ReviewCard
+                                        key={review.ratingId}
+                                        review={review}
+                                        onReplySubmit={handleReplySubmit}
+                                        canReply={hasRated}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <Card>
+                                <CardContent className="py-12 text-center">
+                                    <p className="text-muted-foreground">
+                                        No reviews yet. Be the first to share your experience!
+                                    </p>
                                 </CardContent>
                             </Card>
                         )}

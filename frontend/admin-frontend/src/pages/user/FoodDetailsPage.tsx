@@ -57,6 +57,13 @@ interface Review {
     rating?: number;
     reviewText: string;
     createdAt: string;
+    reply?: {
+        replyId: number;
+        userId: number;
+        username: string;
+        replyText: string;
+        createdAt: string;
+    };
 }
 
 /**
@@ -280,6 +287,38 @@ export default function FoodDetailsPage() {
             toast.error(err?.response?.data?.message || 'Failed to submit review');
         } finally {
             setIsSubmittingReview(false);
+        }
+    };
+
+    // Handle reply submission
+    const handleReplySubmit = async (ratingId: number, replyText: string) => {
+        if (!id || !user) {
+            toast.error('Please log in to reply');
+            return;
+        }
+
+        try {
+            console.log('🍽️ [FOOD-DETAILS] Submitting reply:', { ratingId, replyText });
+
+            await client.post(`/api/food/ratings/${ratingId}/reply`, {
+                replyText
+            });
+
+            toast.success('Reply posted successfully!');
+
+            // Refresh reviews to show new reply
+            setLoadingReviews(true);
+            try {
+                const reviewsResponse = await client.get<Review[]>(`/api/food/places/${id}/ratings`);
+                setReviews(reviewsResponse.data);
+            } catch (err) {
+                console.error('🍽️ [FOOD-DETAILS] Error refreshing reviews:', err);
+            } finally {
+                setLoadingReviews(false);
+            }
+        } catch (err: any) {
+            console.error('🍽️ [FOOD-DETAILS] Reply submission error:', err);
+            toast.error(err?.response?.data?.message || 'Failed to post reply');
         }
     };
 
@@ -584,6 +623,8 @@ export default function FoodDetailsPage() {
                                     <ReviewCard
                                         key={review.ratingId}
                                         review={review}
+                                        onReplySubmit={handleReplySubmit}
+                                        canReply={userRating !== null}
                                     />
                                 ))}
                             </div>
@@ -592,6 +633,7 @@ export default function FoodDetailsPage() {
                                 <CardContent className="py-12 text-center">
                                     <p className="text-muted-foreground">
                                         No reviews yet. Be the first to share your experience!
+
                                     </p>
                                 </CardContent>
                             </Card>

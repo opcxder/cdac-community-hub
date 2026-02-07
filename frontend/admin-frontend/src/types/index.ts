@@ -1,6 +1,3 @@
-// ============================================
-// COMMON TYPES
-// ============================================
 
 export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
@@ -8,9 +5,6 @@ export type PriceRange = 'BUDGET' | 'MODERATE' | 'EXPENSIVE';
 
 export type SuggestionCategory = 'FOOD' | 'HOSTEL' | 'GENERAL';
 
-// ============================================
-// USER TYPES
-// ============================================
 
 export interface User {
   userId: number;
@@ -40,9 +34,6 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-// ============================================
-// FOOD TYPES
-// ============================================
 
 export interface FoodCategory {
   categoryId: number;
@@ -131,6 +122,7 @@ export interface Hostel {
   description?: string;
   categories?: HostelCategory[];
   imageUrls?: string[];
+  mapLocation?: string;  // Added map location
   status: ApprovalStatus;
   rejectionReason?: string;
   submittedByUserId: number;

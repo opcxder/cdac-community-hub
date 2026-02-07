@@ -1,7 +1,3 @@
-/**
- * Centralized API services export
- * Import all services from this file for consistency
- */
 
 export { authService } from './auth.service';
 export { foodService } from './food.service';

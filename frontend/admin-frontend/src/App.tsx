@@ -37,19 +37,19 @@ export default function App() {
   return (
     <BrowserRouter><ErrorBoundary>
       <Routes>
-        {/* Public routes */}
+      
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
 
-        {/* Protected routes */}
+      
         <Route element={<ProtectedRoute />}>
           {/* User routes with layout */}
           <Route element={<UserLayout />}>
             {/* Dashboard - always accessible */}
             <Route path="/dashboard" element={<DashboardPage />} />
 
-            {/* Protected features - require approved account */}
+           
             <Route path="/food" element={<AccountStatusGuard><BrowseFoodPage /></AccountStatusGuard>} />
             <Route path="/food/:id" element={<AccountStatusGuard><FoodDetailsPage /></AccountStatusGuard>} />
             <Route path="/hostels" element={<AccountStatusGuard><BrowseHostelsPage /></AccountStatusGuard>} />
@@ -61,7 +61,7 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
 
-          {/* Admin routes (all nested inside AdminRouteLayout) */}
+        
           <Route element={<AdminRoute />}>
             <Route element={<AdminLayout />}>
               <Route path="/admin" element={<AdminDashboard />} />
@@ -75,7 +75,7 @@ export default function App() {
           </Route>
         </Route>
 
-        {/* Catch-all → redirect to landing page */}
+      
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster richColors />

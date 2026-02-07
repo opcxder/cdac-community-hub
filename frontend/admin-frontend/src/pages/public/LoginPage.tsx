@@ -34,43 +34,33 @@ export default function LoginPage() {
         e.preventDefault();
         if (loading) return;
 
-        console.log('🔐 [LOGIN] Starting login attempt for:', email);
+
         setLoading(true);
         setError(null);
 
         try {
-            console.log('📡 [LOGIN] Making API call to /api/auth/login');
+
             const response = await client.post<LoginPageResponse>(
                 "/api/auth/login",
                 { email, password }
             );
 
-            console.log('✅ [LOGIN] API call successful!');
-            console.log('📦 [LOGIN] Response data:', response.data);
-            console.log('📦 [LOGIN] Response status:', response.status);
-            console.log('📦 [LOGIN] Response headers:', response.headers);
+
 
             const { user, accessToken, refreshToken } = response.data;
 
-            console.log('👤 [LOGIN] User:', user);
-            console.log('🔑 [LOGIN] Access Token:', accessToken ? 'Present' : 'Missing');
-            console.log('🔑 [LOGIN] Refresh Token:', refreshToken ? 'Present' : 'Missing');
 
-            // Persist auth state (user + tokens)
             setAuth(user, accessToken, refreshToken);
 
-            console.log('✅ [LOGIN] Auth state set, redirecting...');
-            // Role-based redirect
+
+
             navigate(user.userId === -1 ? "/admin" : "/dashboard");
         } catch (err) {
             console.error('❌ [LOGIN] Login failed!');
             console.error('❌ [LOGIN] Error object:', err);
 
             const error = err as AxiosError<ErrorResponse>;
-            console.error('❌ [LOGIN] Error response:', error.response);
-            console.error('❌ [LOGIN] Error status:', error.response?.status);
-            console.error('❌ [LOGIN] Error data:', error.response?.data);
-            console.error('❌ [LOGIN] Error message:', error.message);
+
 
             const status = error.response?.status;
             const message = error.response?.data?.message;
@@ -87,7 +77,7 @@ export default function LoginPage() {
             }
         } finally {
             setLoading(false);
-            console.log('✅ [LOGIN] Login attempt complete');
+
         }
     };
 

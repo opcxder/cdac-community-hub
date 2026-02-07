@@ -13,10 +13,14 @@ import org.springframework.stereotype.Service;
 import com.cdac.hostel.client.AuthServiceClient;
 import com.cdac.hostel.dto.MultiCriteriaRatingRequest;
 import com.cdac.hostel.dto.RatingDTO;
+import com.cdac.hostel.exception.DuplicateResourceException;
+import com.cdac.hostel.exception.ResourceNotFoundException;
+import com.cdac.hostel.exception.UnauthorizedException;
 import com.cdac.hostel.model.HostelRating;
 import com.cdac.hostel.model.HostelReviewReply;
 import com.cdac.hostel.repository.HostelRatingRepository;
 import com.cdac.hostel.repository.ReviewReplyRepository;
+
 
 import com.cdac.hostel.exception.DuplicateResourceException;
 import com.cdac.hostel.exception.ResourceNotFoundException;
@@ -47,34 +51,31 @@ public class HostelRatingService {
             throw new ResourceNotFoundException("User not found");
         }
 
-        // Check for duplicate rating (one rating per user per hostel)
-        ratingRepository.findByHostelIdAndUserId(hostelId, userId)
-            .ifPresent(r -> {
-                logger.warn("Duplicate rating attempt: userId={}, hostelId={}, existingRatingId={}", 
-                           userId, hostelId, r.getRatingId());
-                throw new DuplicateResourceException("User already rated this hostel");
-            });
+        // Check for existing rating (Upsert logic)
+        HostelRating rating = ratingRepository.findByHostelIdAndUserId(hostelId, userId)
+            .orElse(new HostelRating());
 
-        // Create rating entity with all 5 criteria
-        HostelRating rating = new HostelRating();
+        // Update fields
         rating.setHostelId(hostelId);
         rating.setUserId(userId);
-        rating.setCleanlinessRating(req.getCleanlinessRating());
-        rating.setFoodQualityRating(req.getFoodQualityRating());
-        rating.setSafetyRating(req.getSafetyRating());
-        rating.setLocationRating(req.getLocationRating());
-        rating.setAffordabilityRating(req.getAffordabilityRating());
-        rating.setReviewText(req.getReviewText());
+        
+        // Only update ratings if provided (non-null in request)
+        if (req.getCleanlinessRating() != null) rating.setCleanlinessRating(req.getCleanlinessRating());
+        if (req.getFoodQualityRating() != null) rating.setFoodQualityRating(req.getFoodQualityRating());
+        if (req.getSafetyRating() != null) rating.setSafetyRating(req.getSafetyRating());
+        if (req.getLocationRating() != null) rating.setLocationRating(req.getLocationRating());
+        if (req.getAffordabilityRating() != null) rating.setAffordabilityRating(req.getAffordabilityRating());
+        
+        // Update review text if provided
+        if (req.getReviewText() != null) {
+            rating.setReviewText(req.getReviewText());
+        }
 
         HostelRating savedRating = ratingRepository.save(rating);
         
-        // Calculate overall rating for logging
-        double overall = (req.getCleanlinessRating() + req.getFoodQualityRating() + 
-                         req.getSafetyRating() + req.getLocationRating() + 
-                         req.getAffordabilityRating()) / 5.0;
-        
-        logger.info("Rating created successfully: ratingId={}, hostelId={}, userId={}, overall={}", 
-                    savedRating.getRatingId(), hostelId, userId, overall);
+        logger.info("Rating {} successfully: ratingId={}, hostelId={}, userId={}", 
+                    rating.getRatingId() == null ? "created" : "updated", 
+                    savedRating.getRatingId(), hostelId, userId);
 
         return savedRating;
     }
@@ -196,19 +197,36 @@ public class HostelRatingService {
         return replyRepository.findByRatingId(ratingId).orElse(null);
     }
 
-    
-    public void deleteReply(Long replyId) {
-        logger.info("Deleting reply: replyId={}", replyId);
+    /**
+     * Get all replies for a specific rating (returns list for API consistency)
+     */
+    public List<HostelReviewReply> getRepliesForRating(Long ratingId) {
+        logger.debug("Fetching replies for rating: ratingId={}", ratingId);
+        HostelReviewReply reply = replyRepository.findByRatingId(ratingId).orElse(null);
+        return reply != null ? List.of(reply) : List.of();
+    }
 
-        replyRepository.findById(replyId)
+    
+    /**
+     * Delete a reply (with user authorization check)
+     */
+    public void deleteReply(Long replyId, Long userId) {
+        logger.info("User {} attempting to delete reply: replyId={}", userId, replyId);
+
+        HostelReviewReply reply = replyRepository.findById(replyId)
                 .orElseThrow(() -> {
                     logger.error("Reply deletion failed - Reply not found: replyId={}", replyId);
                     throw new ResourceNotFoundException("Reply", replyId);
-
                 });
 
+        // Verify user owns this reply
+        if (!reply.getRepliedByUserId().equals(userId)) {
+            logger.error("Reply deletion failed - User {} does not own reply {}", userId, replyId);
+            throw new UnauthorizedException("You can only delete your own replies");
+        }
+
         replyRepository.deleteById(replyId);
-        logger.info("Reply deleted successfully: replyId={}", replyId);
+        logger.info("Reply deleted successfully: replyId={}, userId={}", replyId, userId);
     }
 
 }

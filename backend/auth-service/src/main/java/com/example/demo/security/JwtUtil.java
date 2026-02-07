@@ -38,7 +38,7 @@ public class JwtUtil {
                 .claim("user_id", user.getUserId())
                 .claim("email", user.getEmail())
                 .claim("account_status", user.getAccountStatus().toString())
-                .claim("role", role) // Added for admin-service compatibility
+                .claim("role", role) 
                 .issuer("auth-service") // Required by admin-service
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
